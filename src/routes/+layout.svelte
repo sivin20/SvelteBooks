@@ -1,6 +1,8 @@
 <script>
     import Sidebar from '../lib/sidebar.svelte'
     import '../app.css';
+    import Fa from 'svelte-fa'
+    import { faUser } from '@fortawesome/free-solid-svg-icons'
 </script>
 
 <main class="flex w-screen h-screen">
@@ -12,7 +14,7 @@
     </div>
     <div class="absolute fixed right-10 top-10 flex rounded-xl border-slate-100 bg-gray-100 items-center p-2">
         <p class="mr-2">Sigurd Vind</p>
-        <i class="fa-regular fa-user"></i>
+        <Fa icon={faUser} />
     </div>
 </main>
 
