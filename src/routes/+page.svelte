@@ -5,6 +5,7 @@
 
 <script>
     import Book from '$lib/book.svelte'
+    const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
     /** @type {import('.$types').PageData} */
     export let data;
     let searchParam = ''
@@ -12,10 +13,9 @@
     console.log("posts", posts)
     $: books = []
 
-
     const searchBooks = async () => {
         searchParam = searchParam.replace(/ /g, '+');
-        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchParam}&printType=books&key=AIzaSyAOD8ljkCrmkUamc2sOxNXFZipW9p4xmW4`);
+        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchParam}&printType=books&key=${API_KEY}`);
         data =  await res.json();
         books = data.items
         books = books
@@ -28,7 +28,7 @@
     <button on:click={searchBooks} class="bg-purple-400 rounded-lg p-2">Search</button>
 </div>
 <div><p>You searched for: {searchParam.replace(/\+/g, ' ')}</p></div>
-<div class="m-0">
+<div class="m-0 grid grid-cols-2">
     {#each books as book}
         <Book book="{book.volumeInfo}"/>
     {/each}

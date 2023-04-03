@@ -2,7 +2,7 @@
     export let book
 </script>
 
-<div class="flex shadow m-10 rounded-lg border-slate-100">
+<div class="flex shadow m-10 rounded-lg border-slate-100 border-2">
     <div class="w-1/3">
         <img src="{book.imageLinks?.thumbnail}" alt="imagelink" class="rounded-s-lg">
     </div>
