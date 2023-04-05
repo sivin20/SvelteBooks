@@ -1,6 +1,6 @@
 <script lang="ts">
     import Sidebar from '$lib/sidebar.svelte'
-    import '../../app.css';
+    import '../../../app.css';
     import Fa from 'svelte-fa'
     import { faUser } from '@fortawesome/free-solid-svg-icons'
 
