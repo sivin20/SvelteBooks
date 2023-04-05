@@ -1,6 +1,6 @@
+import type {PageLoad} from "./$types";
 
-/** @type {import('./$types').PageLoad} */
-export async function load({fetch}) {
+export const load: PageLoad = async ({fetch}) => {
 
     const fetchPosts = async () => {
         const res = await fetch(`https://jsonplaceholder.typicode.com/posts`);

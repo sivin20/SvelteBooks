@@ -2,6 +2,8 @@
 <script>
     /** @type {import('.$types').PageData} */
     export let data;
+
+    console.log(data.posts)
 </script>
 
 <main>
@@ -13,6 +15,6 @@
     {:else}
         <p>Please login</p>
         <a href="/login">Login</a>
-        <a href="/register">Register</a>
+        <a href="/login">Register</a>
     {/if}
 </main>

@@ -1,6 +1,6 @@
 <script lang="ts">
     import '../app.css';
-
+    import Header from '$lib/sidebar.svelte'
     import { invalidate } from '$app/navigation';
     import { onMount } from 'svelte';
     import type { LayoutData } from './$types';
@@ -21,6 +21,11 @@
     });
 </script>
 
-<slot></slot>
+<main class="h-screen flex flex-col">
+    <Header/>
+    <div class="flex-auto">
+        <slot></slot>
+    </div>
+</main>
 
 

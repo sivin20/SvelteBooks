@@ -3,6 +3,9 @@
     import '../../app.css';
     import Fa from 'svelte-fa'
     import { faUser } from '@fortawesome/free-solid-svg-icons'
+
+    /** @type {import('.$types').PageData} */
+    export let data;
 </script>
 
 
@@ -14,7 +17,7 @@
         <slot></slot>
     </div>
     <div class="absolute fixed right-10 top-10 flex rounded-xl border-slate-100 bg-gray-100 items-center p-2">
-        <p class="mr-2">Sigurd Vind</p>
+        <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
         <Fa icon={faUser} />
     </div>
 </main>

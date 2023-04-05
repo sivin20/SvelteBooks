@@ -1,6 +1,8 @@
 
 <script>
     import Book from '$lib/book.svelte'
+    import {onMount} from "svelte";
+    import {invalidate} from "$app/navigation";
     const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
     /** @type {import('.$types').PageData} */
     export let data;
@@ -10,16 +12,17 @@
     const searchBooks = async () => {
         searchParam = searchParam.replace(/ /g, '+');
         const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchParam}&printType=books&key=${API_KEY}`);
-        data =  await res.json();
-        books = data.items
+        const responseData =  await res.json();
+        books = responseData.items
         books = books
         console.log("books", books)
+        console.log(data.session.user)
     }
 </script>
 
 <main>
     {#if data.session}
-        <p>Welcome, {data.session.user.email}</p>
+        <p>Welcome, {data.session.user.user_metadata.first_name}</p>
         <form action="/logout" method="POST">
             <button type="submit">Logout</button>
         </form>
