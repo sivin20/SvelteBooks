@@ -6,3 +6,51 @@ body {
     background-color: #FFF;
     margin: 0;
 }
+
+:root {
+    --primary: #7CB9E8;
+    --primary-second: #6CB4EE;
+    --secondary: #767c88;
+}
+
+.primary-button {
+    border-radius: 1.5rem;
+    display: flex;
+    background-color: var(--primary);
+    color: #FFF;
+    font-size: 100%;
+    height: 36px;
+    line-height: 1.4rem;
+    padding: 0 1.5rem;
+    align-items: center;
+}
+
+.input-text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f6f7f6;
+    border-radius: 0.25rem;
+    width: 100%;
+    height: 34px;
+    outline: 1px solid var(--primary);
+}
+
+.input-text label {
+    align-self: start;
+    padding-left: 0.5rem;
+    color: var(--primary);
+    height: 12px;
+    font-size: 10px;
+}
+
+.input-text input {
+    outline: none;
+    font-weight: normal;
+    font-size: 1rem;
+    padding-left: 0.5rem;
+    background-color: transparent;
+    border-radius: 0.25rem;
+    width: 100%;
+    height: 20px;
+}

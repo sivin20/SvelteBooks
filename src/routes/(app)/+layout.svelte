@@ -4,7 +4,7 @@
 
 <main class="h-screen flex flex-col">
     <Header/>
-    <div class="flex-auto">
+    <div class="flex-auto bg-[#f6f7f6]">
         <slot></slot>
     </div>
 </main>

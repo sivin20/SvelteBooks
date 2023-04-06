@@ -1,6 +1,7 @@
 <script>
     import Fa from 'svelte-fa'
     import { faBookBookmark } from '@fortawesome/free-solid-svg-icons'
+    import '../app.css';
 </script>
 
 <aside class="absolute fixed left-0 top-0 overflow-y-auto w-1/5 h-full bg-gray-200 p-10">

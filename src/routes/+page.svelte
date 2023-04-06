@@ -1,20 +1,21 @@
 
 <script>
+    import Header from '$lib/header.svelte'
     /** @type {import('.$types').PageData} */
     export let data;
 
     console.log(data.posts)
 </script>
 
-<main>
-    {#if data.session}
-        <p>Welcome, {data.session.user.email}</p>
-        <form action="/logout" method="POST">
-            <button type="submit">Logout</button>
-        </form>
-    {:else}
+
+<main class="h-screen flex flex-col">
+    <Header/>
+    <div class="flex flex-col align-center justify-center h-full w-full">
         <p>Please login</p>
         <a href="/login">Login</a>
         <a href="/login">Register</a>
-    {/if}
+    </div>
+</main>
+<main>
+
 </main>

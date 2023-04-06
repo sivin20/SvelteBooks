@@ -1,8 +1,6 @@
 
 <script>
     import Book from '$lib/book.svelte'
-    import {onMount} from "svelte";
-    import {invalidate} from "$app/navigation";
     const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
     /** @type {import('.$types').PageData} */
     export let data;

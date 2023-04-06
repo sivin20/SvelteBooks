@@ -4,7 +4,7 @@
     import { faBookBookmark } from '@fortawesome/free-solid-svg-icons'
 </script>
 
-<aside class="bg-gray-200 p-5 flex items-center">
+<aside class="bg-[--primary] text-white p-5 flex items-center">
     <a class="flex items-center text-4xl" href="/dashboard">
         <h1 class="mr-[5px]">SigLib</h1>
         <Fa icon="{faBookBookmark}"/>
