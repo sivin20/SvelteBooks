@@ -1,6 +1,6 @@
 
 <script>
-    import Book from '$lib/book.svelte'
+    import BookCard from '$lib/bookCard.svelte'
     const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
     /** @type {import('.$types').PageData} */
     export let data;
@@ -36,7 +36,7 @@
     <div><p>You searched for: {searchParam.replace(/\+/g, ' ')}</p></div>
     <div class="m-0 grid grid-cols-2">
         {#each books as book}
-            <Book book="{book.volumeInfo}"/>
+            <BookCard book="{book.volumeInfo}"/>
         {/each}
     </div>
 </main>
