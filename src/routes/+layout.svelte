@@ -1,5 +1,6 @@
 <script lang="ts">
     import '../app.css';
+    import Background from "../lib/assets/white-waves.webp"
     import { invalidate } from '$app/navigation';
     import { onMount } from 'svelte';
     import type { LayoutData } from './$types';
@@ -20,7 +21,7 @@
     });
 </script>
 
-<slot></slot>
-
-
+<div style="background: #FFF url({Background});">
+    <slot></slot>
+</div>
 

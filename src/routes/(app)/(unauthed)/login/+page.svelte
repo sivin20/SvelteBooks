@@ -14,8 +14,8 @@
 
 <main class="h-screen items-center justify-center flex flex-col drop-shadow-xl">
     <a class="flex items-center text-4xl mb-10 text-[--primary]" href="/">
-        <h1 class="mr-[5px]">SigLib</h1>
-        <Fa icon="{faBookBookmark}"/>
+        <img class="mr-[5px] h-[30px]" src="./src/lib/assets/siglib_logo.png" alt="">
+        <h1 class="italic" style="font-family: 'Brush Script MT'">Siglib</h1>
     </a>
     <div class="p-2 bg-[--primary-second] rounded-md">
         <div class="loginBook drop-shadow-lg">
@@ -55,7 +55,7 @@
             </div>
             <div class="pg pg2 p-10 flex items-center bg-white border-l-2 border-slate-600 shadow-[inset_30px_0px_50px_-20px_rgba(0,0,0,0.6)]">
                 <div class="w-full flex flex-col items-center">
-                    <h1 class="text-lg mb-10">Register</h1>
+                    <h1 class="text-lg mb-10 text-[--primary]">Register</h1>
                     <form action="?/register" method="POST" class="flex flex-col items-center w-full p-4">
                         <div class="input-text">
                             <label for="registerName">Name</label>
