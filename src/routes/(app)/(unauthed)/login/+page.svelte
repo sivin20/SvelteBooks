@@ -99,6 +99,7 @@
         border-radius: 20px 0 0 20px;
         transform-origin: center right;
         transition: 1s ease all;
+
     }
 
     .transformed180 {

@@ -1,6 +1,16 @@
 <script>
     export let book
     export let active
+
+    import {createEventDispatcher} from 'svelte'
+
+    const dispatch = createEventDispatcher();
+
+    function sayHello() {
+        dispatch('message', {
+            text: book
+        });
+    }
 </script>
 
 <main class="list">
@@ -8,14 +18,20 @@
         <img src='{book.imageLinks?.thumbnail}' alt="Book Cover" class='book'>
         <div class='flex-column info'>
             <div class='title overflow'>{book.title}</div>
-            <div class='author overflow'>{book.authors}</div>
-            <div class='hidden bottom summary'>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod ratione impedit temporibus maiores autem aperiam assumenda exercitationem, quisquam nobis esse.
+            <div class='author overflow flex flex-row'>
+                <p class="overflow flex-auto">{book.authors}</p>
+                <p class="self-end">
+                    <strong>Pages:</strong>{book.pageCount}
+                </p>
+            </div>
+            <div class='bottom' class:hidden={!active}>
+                <p class="summary">{book.description}</p>
+                <p class="mt-2"><strong>ISBN_13: </strong>{book.industryIdentifiers[1].identifier}</p>
             </div>
         </div>
         <div class='flex-column group'>
             <div class='members'>
-                <button class="primary-button">Add</button>
+                <button on:click={sayHello} class="primary-button">Add</button>
             </div>
         </div>
     </div>
@@ -60,7 +76,7 @@
       & .bottom {
         height:0px;
         overflow:hidden;
-        width:200px;
+        width:350px;
         font-size:12px;
         color:#777;
         font-weight:normal;
@@ -117,8 +133,7 @@
       }
       & .info {
         transition:all 0.2s;
-        min-width:200px;
-        max-width: 400px;
+        width: 400px;
         padding:0px 30px;
         font-family:'Montserrat';
         font-weight:bold;
@@ -131,6 +146,15 @@
           font-size:12px;
           font-weight:normal;
           color:#888;
+        }
+        & .summary {
+          overflow: hidden;
+          -webkit-line-clamp: 3;
+          text-overflow: ellipsis;
+          max-height: 60px;
+
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
         }
       }
       & .group {

@@ -21,7 +21,7 @@
     });
 </script>
 
-<div style="background: #FFF url({Background});">
+<div style="background: #FFF url({Background})">
     <slot></slot>
 </div>
 

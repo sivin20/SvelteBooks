@@ -4,7 +4,7 @@
     export let data;
 </script>
 
-<main>
+<main class="bg-white rounded-lg p-4">
     {#if data.session}
         <p>Welcome, {data.session.user.user_metadata.first_name}</p>
         <form action="/logout" method="POST">
