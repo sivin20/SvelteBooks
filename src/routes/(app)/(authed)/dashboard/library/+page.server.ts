@@ -2,6 +2,8 @@ import { supabase } from "$lib/supabaseClient";
 import type {PageServerLoad} from "../../../../../../.svelte-kit/types/src/routes/(app)/(unauthed)/login/$types";
 import { fail, redirect} from "@sveltejs/kit";
 import type { Actions } from './$types'
+import { bookData } from "../../../../../lib/stores/bookStore";
+import {Book} from "../../../../../lib/models/Book";
 
 
 export const load: PageServerLoad = (async ({ locals: { getSession } }) => {
@@ -12,8 +14,16 @@ export const load: PageServerLoad = (async ({ locals: { getSession } }) => {
     }
 
     const { data } = await supabase.from("libraries").select().eq('owner_id', session.user.id);
+
+    // @ts-ignore
+    const firstLibraryId = Object.values(data)[0]?.id
+    const books = await supabase.from("books").select().eq('library_id',  firstLibraryId)
+    // bookData.set(books)
+    console.log("books", books)
+
     return {
         libraries: data ?? [],
+        books: books.data as Book[] ?? []
     };
 })
 

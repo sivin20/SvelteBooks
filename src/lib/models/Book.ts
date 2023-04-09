@@ -1,9 +1,9 @@
 
 export interface Book {
+    id: string,
     title: string,
     authors: string[],
-    imagelinks?: {
-        thumbnail: string
-    }
-    pageCount: number,
+    image_link: string,
+    page_count: number,
+    isbn_13: string
 }

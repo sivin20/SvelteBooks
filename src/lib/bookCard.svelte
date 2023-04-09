@@ -1,4 +1,5 @@
 <script>
+
     export let book
     export let active
 
@@ -15,18 +16,18 @@
 
 <main class="list">
     <div class='card flex-row' class:open={active}>
-        <img src='{book.imageLinks?.thumbnail}' alt="Book Cover" class='book'>
+        <img src='{book.image_link}' alt="Book Cover" class='book'>
         <div class='flex-column info'>
             <div class='title overflow'>{book.title}</div>
             <div class='author overflow flex flex-row'>
                 <p class="overflow flex-auto">{book.authors}</p>
                 <p class="self-end">
-                    <strong>Pages:</strong>{book.pageCount}
+                    <strong>Pages:</strong>{book.page_count}
                 </p>
             </div>
             <div class='bottom' class:hidden={!active}>
                 <p class="summary">{book.description}</p>
-                <p class="mt-2"><strong>ISBN_13: </strong>{book.industryIdentifiers[1].identifier}</p>
+                <p class="mt-2"><strong>ISBN_13: </strong>{book.isbn_13}</p>
             </div>
         </div>
         <div class='flex-column group'>
@@ -46,9 +47,6 @@
   }
 
   $bg-color:#f6f7f6;
-  body {
-    background-color: $bg-color;
-  }
   .flex-row {
     display:flex;
     flex-flow:row;
@@ -57,13 +55,6 @@
   .flex-column{
     display:flex;
     flex-flow:column;
-  }
-  .center {
-    align-items:center;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
   }
   .list {
     border-radius:3px;
@@ -102,22 +93,6 @@
           padding:15px 20px;
           border-radius:4px;
           align-self:flex-start;
-        }
-      }
-      & button.simple {
-        cursor:pointer;
-        color:#CCC;
-        border:none;
-        outline:none;
-        border-radius:4px;
-        background-color:#1ea94b;
-        padding:15px 20px;
-        font-family:'Montserrat';
-        font-weight:bold;
-        transition:all 0.1s;
-        &:hover {
-          box-shadow:0px 15px 20px -5px rgba(0,0,0,.3);
-          transform:translate(0,-2px);
         }
       }
       background-color:lighten($bg-color,8%);
@@ -161,20 +136,11 @@
         margin-left:auto;
       }
       & .members {
-
         transition:all 0.1s;
         padding:40px;
         font-family:'Montserrat';
         color:#CCC;
         background-color:lighten($bg-color,5%);
-        & .current {
-          font-weight:bold;
-          margin-right:10px;
-        }
-        & .max {
-          opacity:0.5;
-          margin-left:10px;
-        }
       }
     }
   }

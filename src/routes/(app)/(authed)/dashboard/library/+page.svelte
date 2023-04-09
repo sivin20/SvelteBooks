@@ -3,7 +3,11 @@
     export let data
 
     const { libraries } = data
-    console.log("libs", data.libraries)
+    const { books } = data
+
+    console.log("bookspage", books)
+    console.log("bookspage", libraries)
+
 </script>
 
 <main class="flex flex-col">
@@ -21,11 +25,31 @@
             </select>
         </div>
         <p>This is your library</p>
-        {#each libraries as library}
-            <div>
-                <p>{library.name}</p>
-            </div>
-        {/each}
+        <!--{#each books as library}-->
+        <!--    <div>-->
+        <!--        <p>{library.name}</p>-->
+        <!--    </div>-->
+        <!--{/each}-->
+        {#await books}
+            <p>...loading</p>
+        {:then result}
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>page count</th>
+                </tr>
+                {#each result as book, i}
+                <tr>
+                    <td>{book.title}</td>
+                    <td>{book.page_count}</td>
+
+                </tr>
+                {/each}
+            </table>
+
+        {:catch error}
+            <p>Error {error}</p>
+        {/await}
     </div>
 
     <div class="w-1/5 items-center flex flex-col bg-white rounded-lg p-4 mt-4">
