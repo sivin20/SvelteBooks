@@ -5,13 +5,19 @@
 
     import {createEventDispatcher} from 'svelte'
 
+    let bookAdded = false
+
     const dispatch = createEventDispatcher();
 
     function sayHello() {
+        bookAdded = true
+        console.log("Book added", bookAdded)
         dispatch('message', {
             text: book
         });
     }
+
+    $: bookAdded
 </script>
 
 <main class="list">
@@ -32,13 +38,17 @@
         </div>
         <div class='flex-column group'>
             <div class='members'>
-                <button on:click={sayHello} class="primary-button">Add</button>
+                <button on:click={sayHello} class="primary-button" class:added-button={bookAdded}>Add</button>
             </div>
         </div>
     </div>
 </main>
 
 <style lang="scss">
+
+  .group .members .added-button {
+    background-color: plum !important;
+  }
 
   .overflow {
     text-overflow: ellipsis;
@@ -65,7 +75,7 @@
       perspective:600px;
       transition:all 0.1s;
       & .bottom {
-        height:0px;
+        height:0;
         overflow:hidden;
         width:350px;
         font-size:12px;
@@ -103,13 +113,13 @@
       & .book {
         transition:all 0.5s;
         width:120px;
-        box-shadow:0px 2px 10px rgba(0,0,0,0.3);
+        box-shadow:0 2px 10px rgba(0,0,0,0.3);
         overflow:hidden;
       }
       & .info {
         transition:all 0.2s;
         width: 400px;
-        padding:0px 30px;
+        padding:0 30px;
         font-family:'Montserrat';
         font-weight:bold;
         & .title {

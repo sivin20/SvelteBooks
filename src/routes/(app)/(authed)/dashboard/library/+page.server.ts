@@ -2,8 +2,7 @@ import { supabase } from "$lib/supabaseClient";
 import type {PageServerLoad} from "../../../../../../.svelte-kit/types/src/routes/(app)/(unauthed)/login/$types";
 import { fail, redirect} from "@sveltejs/kit";
 import type { Actions } from './$types'
-import { bookData } from "../../../../../lib/stores/bookStore";
-import {Book} from "../../../../../lib/models/Book";
+import type {Book} from "../../../../../lib/models/Book";
 
 
 export const load: PageServerLoad = (async ({ locals: { getSession } }) => {
