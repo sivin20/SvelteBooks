@@ -1,7 +1,7 @@
 <script lang="ts">
-    import BookCard from '$lib/bookCard.svelte'
+    import BookCard from '$lib/components/bookCard.svelte'
     import type { Book } from "../../../../../../lib/models/Book";
-    import {BookService} from "../../../../../../lib/bookService/book.service";
+    import {BookService} from "../../../../../../lib/services/book.service";
     import toast, { Toaster } from "svelte-french-toast";
 
     /** @type {import('.$types').PageData} */
@@ -46,22 +46,25 @@
 
 <main class="p-4 bg-white rounded-xl">
     <Toaster/>
-    <div class="w-4/5">
-        <p>Which library do you want to add the book to?</p>
-        <select name="library" id="library" class="input-text flex items-center" bind:value="{library}">
+    <div class="w-1/2">
+        <div class="mt-5">
+            <p>Search for a book...</p>
+            <form action="#" class="flex mt-1">
+                <div class="input-text">
+                    <label for="search">Search query</label>
+                    <input type="text" id="search" bind:value={searchParam} placeholder="E.g. 'Harry Potter'">
+                </div>
+                <button type="submit" on:click={handleSearch} class="primary-button">Search</button>
+            </form>
+        </div>
+        <p class="mt-5">Which library do you want to add the book to?</p>
+        <select name="library" id="library" class="input-text flex items-center mt-1" bind:value="{library}">
             {#each libraries as library}
                 <option value="{library.id}">{library.name}</option>
             {/each}
         </select>
-        <div class="mt-5">
-            <p>Search for something..</p>
-            <form action="#" class="flex">
-                <input type="text" class="border border-solid rounded-lg border-slate-400 mr-2 p-2" bind:value={searchParam} placeholder="E.g. 'Harry Potter'">
-                <button type="submit" on:click={handleSearch} class="primary-button">Search</button>
-            </form>
-        </div>
     </div>
-    <div class="m-0 flex flex-col items-center overflow-y-auto">
+    <div class="mt-5 flex flex-col items-center overflow-y-auto">
         {#await books}
             <p>...loading</p>
             {:then result}

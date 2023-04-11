@@ -1,7 +1,7 @@
 <script>
     import BookSpine from './bookSpine.svelte'
     import BookForeEdge from './bookForeEdge.svelte'
-    import '../../app.css';
+    import '../../../app.css';
 </script>
 
 <aside class="absolute fixed left-0 top-0 w-[350px] h-full flex flex-col">

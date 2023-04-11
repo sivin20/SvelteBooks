@@ -1,6 +1,6 @@
 <script>
     export let link
-    import Logo from "../assets/siglib_logo.png"
+    import Logo from "../../assets/siglib_logo.png"
 </script>
 
 <a href="{link}">

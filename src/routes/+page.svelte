@@ -1,6 +1,6 @@
 
 <script>
-    import Header from '$lib/header.svelte'
+    import Header from '$lib/components/header.svelte'
     /** @type {import('.$types').PageData} */
     export let data;
 
