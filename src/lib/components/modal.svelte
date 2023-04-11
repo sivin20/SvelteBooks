@@ -25,7 +25,7 @@
         <slot />
         <hr />
         <div class="flex items-center justify-center pt-4">
-            <button class="secondary-button">Yes</button>
+            <slot name="yes-button"></slot>
             <button class="primary-button">No</button>
         </div>
         <!-- svelte-ignore a11y-autofocus -->

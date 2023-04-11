@@ -44,11 +44,20 @@ export namespace BookService {
         }
     }
 
+    export async function deleteBook(book:any) {
+        const res = await supabase.from('books').delete().eq('id', book.id)
+        if(res.status === 204) {
+            return "successful"
+        } else {
+            return new Error("Error here")
+        }
+    }
+
     export async function getBooksFromLibrary(libraryId: string) {
         const res  = await supabase.from("books").select().eq('library_id', libraryId);
         const data = res.data
         if(res.status === 200) {
-            return data
+            return data as Book[]
         } else {
             throw new Error("Error here")
         }

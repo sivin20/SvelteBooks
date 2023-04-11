@@ -5,6 +5,8 @@
     import Fa from "svelte-fa";
     import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
     import type {Library} from "../../../../../lib/models/Library";
+    import toast, {Toaster} from "svelte-french-toast";
+    import {onMount} from "svelte";
 
     /** @type {import('.$types').PageData} */
     export let data
@@ -18,10 +20,12 @@
         return BookService.getBooksFromLibrary(current_library.id)
     }
 
-    $: books = getBooksFromLibrary();
+    let books: Book[] = [];
+    $: books;
 
     const handleGetBooks = async()  => {
-        books = await getBooksFromLibrary()
+        books = await getBooksFromLibrary() as Book[]
+        console.log(Array.isArray(books))
     }
 
     let showModal = false
@@ -32,6 +36,26 @@
         bookToBeDeleted = book
         showModal = true
     }
+
+    async function deleteBook() {
+
+        console.log("Deleting", bookToBeDeleted.title)
+        let response = await BookService.deleteBook(bookToBeDeleted).then(() => {
+            showModal = false
+            toast.success(`Succesfully deleted${bookToBeDeleted.title}`, {
+                duration: 5000,
+                position: "top-right"
+            })
+        })
+        console.log("books", books)
+        console.log("books", Array.isArray(books))
+        books = books.filter(b => b.id != bookToBeDeleted.id)
+        console.log("books2", books)
+    }
+
+    onMount(async () => {
+        books = await getBooksFromLibrary()
+    })
 
 </script>
 
@@ -79,7 +103,7 @@
                     <th class="text-right">Page Count</th>
                     <th class="text-right"></th>
                 </tr>
-                {#each result as book, i}
+                {#each result as book, i (book.id)}
                     <tr>
                         <td class="text-left">{book.title}</td>
                         <td class="text-left">{book.authors}</td>
@@ -99,7 +123,8 @@
             <div>
                 <p>Are you sure you want to remove {bookToBeDeleted.title} from this library?</p>
             </div>
+            <button slot="yes-button" class="secondary-button" on:click={() => deleteBook()}>Yes</button>
         </Modal>
     {/if}
-
+    <Toaster/>
 </main>
