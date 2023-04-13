@@ -1,6 +1,5 @@
 <script>
-    import Fa from 'svelte-fa'
-    import { faBookBookmark } from '@fortawesome/free-solid-svg-icons'
+    import Logo from '$lib//assets/siglib_logo.png'
 
     let current = 1
 
@@ -14,7 +13,7 @@
 
 <main class="h-screen items-center justify-center flex flex-col drop-shadow-xl">
     <a class="flex items-center text-4xl mb-10 text-[--primary]" href="/">
-        <img class="mr-[5px] h-[30px]" src="./src/lib/assets/siglib_logo.png" alt="">
+        <img class="mr-[5px] h-[30px]" src="{Logo}" alt="Logo">
         <h1 class="italic" style="font-family: 'Brush Script MT'">Siglib</h1>
     </a>
     <div class="p-2 bg-[--primary-second] rounded-md">
@@ -99,7 +98,6 @@
         border-radius: 20px 0 0 20px;
         transform-origin: center right;
         transition: 1s ease all;
-
     }
 
     .transformed180 {

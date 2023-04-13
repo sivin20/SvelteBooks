@@ -1,7 +1,32 @@
 
-<script>
+<script lang="ts">
     /** @type {import('.$types').PageData} */
     export let data;
+
+    // function customIn(node, params) {
+    //     return {
+    //         duration: params.duration,
+    //         css: (t, u) => {
+    //             const line = linear(u);
+    //             return `
+    //                 transform-origin: center right;
+    //                 transform: rotatey(${line * 180}deg);
+    //             `
+    //         }
+    //     }
+    // }
+    // function customOut(node, params) {
+    //     return {
+    //         duration: params.duration,
+    //         css: (t, u) => {
+    //             const line = linear(u);
+    //             return `
+    //                 transform-origin: center left;
+    //                 transform: rotatey(${line * 180}deg);
+    //             `
+    //         }
+    //     }
+    // }
 </script>
 
 <main class="bg-white rounded-lg p-4">
