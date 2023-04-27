@@ -18,7 +18,7 @@ export namespace BookService {
                 {
                     id: book.id,
                     title: book.volumeInfo.title ? book.volumeInfo.title : '',
-                    authors: book.volumeInfo.authors ? book.volumeInfo.authors : '',
+                    author: book.volumeInfo.authors ? book.volumeInfo.authors : '',
                     image_link: !!book.volumeInfo.imageLinks ?.thumbnail ? book.volumeInfo.imageLinks?.thumbnail : null,
                     page_count: book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 0,
                     isbn_13: book.volumeInfo.industryIdentifiers ? book.volumeInfo.industryIdentifiers[0]?.identifier : '',
@@ -33,10 +33,11 @@ export namespace BookService {
         }
     }
 
-    export async function addBook(book: any, library: string) {
+    export async function addBook(book: Book, library: string) {
         const { data, error: err } = await supabase.from('books').insert({
             ...book,
-            library_id: library
+            library_id: library,
+            author: book.author[0]
         })
 
         if (err) {
@@ -46,6 +47,15 @@ export namespace BookService {
 
     export async function deleteBook(book:any) {
         const res = await supabase.from('books').delete().eq('id', book.id)
+        if(res.status === 204) {
+            return "successful"
+        } else {
+            return new Error("Error here")
+        }
+    }
+
+    export async function deleteAllBooks(libraryId: string) {
+        const res = await supabase.from('books').delete().eq('library_id', libraryId);
         if(res.status === 204) {
             return "successful"
         } else {

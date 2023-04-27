@@ -49,7 +49,7 @@
     <div class="w-1/2">
         <div class="mt-5">
             <p>Search for a book...</p>
-            <form action="#" class="flex mt-1">
+            <form class="flex mt-1">
                 <div class="input-text">
                     <label for="search">Search query</label>
                     <input type="text" id="search" bind:value={searchParam} placeholder="E.g. 'Harry Potter'">
@@ -64,7 +64,7 @@
             {/each}
         </select>
     </div>
-    <div class="mt-5 flex flex-col items-center overflow-y-auto">
+    <div class="mt-5 flex flex-col items-center">
         {#await books}
             <p>...loading</p>
             {:then result}

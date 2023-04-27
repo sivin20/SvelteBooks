@@ -23,13 +23,10 @@
         </div>
         <hr />
         <slot />
-        <hr />
         <div class="flex items-center justify-center pt-4">
             <slot name="yes-button"></slot>
-            <button class="primary-button">No</button>
+            <button class="primary-button ml-2" on:click|self={() => dialog.close()}>No</button>
         </div>
-        <!-- svelte-ignore a11y-autofocus -->
-
     </div>
 </dialog>
 

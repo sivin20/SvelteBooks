@@ -28,29 +28,39 @@
         console.log(Array.isArray(books))
     }
 
-    let showModal = false
+    let showDeleteBookModal = false
+    let showDeleteAllModal = false
     let bookToBeDeleted: Book;
 
     function openDeleteModal(book: Book) {
-        console.log("Book", book)
         bookToBeDeleted = book
-        showModal = true
+        showDeleteBookModal = true
+    }
+
+    function openDeleteAllModal() {
+        showDeleteAllModal = true
     }
 
     async function deleteBook() {
-
-        console.log("Deleting", bookToBeDeleted.title)
-        let response = await BookService.deleteBook(bookToBeDeleted).then(() => {
-            showModal = false
-            toast.success(`Succesfully deleted${bookToBeDeleted.title}`, {
+        await BookService.deleteBook(bookToBeDeleted).then(() => {
+            showDeleteBookModal = false
+            toast.success(`Succesfully deleted ${bookToBeDeleted.title}`, {
                 duration: 5000,
                 position: "top-right"
             })
+            books = books.filter(b => b.id != bookToBeDeleted.id)
         })
-        console.log("books", books)
-        console.log("books", Array.isArray(books))
-        books = books.filter(b => b.id != bookToBeDeleted.id)
-        console.log("books2", books)
+    }
+
+    async function deleteAllBooks() {
+        await BookService.deleteAllBooks(current_library.id).then(() => {
+            showDeleteAllModal = false
+            toast.success(`Succesfully deleted all books`, {
+                duration: 5000,
+                position: "top-right"
+            })
+            books = []
+        })
     }
 
     onMount(async () => {
@@ -95,30 +105,35 @@
         {#await books}
             <p>...loading</p>
         {:then result}
-            <table class="w-full border-separate border-spacing-[1rem]">
-                <tr>
-                    <th class="text-left">Title</th>
-                    <th class="text-left">Authors</th>
-                    <th class="text-right">ISBN 13</th>
-                    <th class="text-right">Page Count</th>
-                    <th class="text-right"></th>
-                </tr>
+            <button class="secondary-button self-end" on:click={() => openDeleteAllModal()}>Delete all</button>
+            <table class="w-full border-separate border-spacing-[0]">
+                <thead>
+                    <tr>
+                        <th class="text-left">Title</th>
+                        <th class="text-left">Authors</th>
+                        <th class="text-right">ISBN 13</th>
+                        <th class="text-right">Page Count</th>
+                        <th class="text-right"></th>
+                    </tr>
+                </thead>
+                <tbody>
                 {#each result as book, i (book.id)}
                     <tr>
                         <td class="text-left">{book.title}</td>
-                        <td class="text-left">{book.authors}</td>
+                        <td class="text-left">{book.author}</td>
                         <td class="text-right">{book.isbn_13}</td>
                         <td class="text-right">{book.page_count}</td>
                         <td class="text-right"><button on:click={() => openDeleteModal(book)}> <Fa icon={faTrashCan} color="--primary"/></button></td>
                     </tr>
                 {/each}
+                </tbody>
             </table>
         {:catch error}
             <p>Error {error}</p>
         {/await}
     </div>
-    {#if showModal}
-        <Modal bind:showModal>
+    {#if showDeleteBookModal}
+        <Modal showModal="{showDeleteBookModal}">
             <h2 slot="header" class="text-[--primary]">Deleting</h2>
             <div>
                 <p>Are you sure you want to remove {bookToBeDeleted.title} from this library?</p>
@@ -126,5 +141,30 @@
             <button slot="yes-button" class="secondary-button" on:click={() => deleteBook()}>Yes</button>
         </Modal>
     {/if}
+    {#if showDeleteAllModal}
+        <Modal showModal="{showDeleteAllModal}">
+            <h2 slot="header" class="text-[--primary]">Deleting</h2>
+            <div>
+                <p>Are you sure you want to remove EVERY book from this library?</p>
+            </div>
+            <button slot="yes-button" class="secondary-button" on:click={() => deleteAllBooks()}>Yes</button>
+        </Modal>
+    {/if}
+
     <Toaster/>
 </main>
+
+<style>
+    table tbody tr:nth-child(even) {
+        background-color: #F1F5F8;
+    }
+
+    table thead tr th {
+        border-bottom: 2px solid var(--primary);
+        padding: 0.5rem;
+    }
+
+    td {
+        padding: 0.5rem;
+    }
+</style>

@@ -10,6 +10,7 @@
     export let data;
 
     let toggleSidebar = true
+    let showUserInfoBox = false
 </script>
 
 
@@ -28,12 +29,27 @@
             <Fa class="ml-1" icon="{faCaretRight}"/>
         </button>
     {/if}
-    <div class="flex-auto overflow-y-auto flex justify-center">
-        <div class="w-[1280px] mt-10 relative overflow-y-auto">
-            <slot></slot>
-            <div class="absolute fixed right-10 top-10 flex rounded-xl border-slate-100 bg-gray-100 items-center p-2">
-                <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
-                <Fa icon={faUser} />
+    <div class="flex-auto flex justify-center">
+        <div class="w-[1280px] mt-10 relative">
+            <div class="absolute fixed right-10 top-10 rounded-xl border-slate-100 bg-gray-100 items-center p-2"
+                 on:mouseover={() => {showUserInfoBox = true}} on:mouseout={() => {showUserInfoBox = false}}>
+                {#if showUserInfoBox}
+                    <div>
+                        <div class="flex">
+                            <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
+                            <Fa icon={faUser} color="var(--primary)"/>
+                        </div>
+                        <p><u>logout</u></p>
+                    </div>
+                {:else}
+                    <div class="flex">
+                        <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
+                        <Fa icon={faUser} color="var(--primary)"/>
+                    </div>
+                {/if}
+            </div>
+            <div class="overflow-y-auto h-full">
+                <slot></slot>
             </div>
         </div>
     </div>
