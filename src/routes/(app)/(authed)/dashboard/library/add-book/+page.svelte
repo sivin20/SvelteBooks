@@ -3,6 +3,8 @@
     import type { Book } from "../../../../../../lib/models/Book";
     import {BookService} from "../../../../../../lib/services/book.service";
     import toast, { Toaster } from "svelte-french-toast";
+    import Fa from 'svelte-fa'
+    import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
     /** @type {import('.$types').PageData} */
     export let data;
@@ -44,29 +46,32 @@
 
 </script>
 
-<main class="p-4 bg-white rounded-xl">
-    <Toaster/>
-    <div class="w-1/2">
-        <div class="mt-5">
-            <p>Search for a book...</p>
-            <form class="flex mt-1">
-                <div class="input-text">
-                    <label for="search">Search query</label>
-                    <input type="text" id="search" bind:value={searchParam} placeholder="E.g. 'Harry Potter'">
-                </div>
-                <button type="submit" on:click={handleSearch} class="primary-button">Search</button>
-            </form>
+<main class="h-full flex flex-col">
+    <h1 class="text-xl">Add books</h1>
+    <div class="p-4 bg-white rounded-xl border-2 border-slate-200">
+        <div class="w-1/2">
+            <p class="mt-5">Which library do you want to add the book to?</p>
+            <select name="library" id="library" class="input-text flex items-center mt-1" bind:value="{library}">
+                {#each libraries as library}
+                    <option value="{library.id}">{library.name}</option>
+                {/each}
+            </select>
+            <div class="mt-5">
+                <form class="flex mt-1">
+                    <div class="flex p-1 bg-slate-200 rounded-xl w-full h-[36px] items-center mr-2">
+                        <Fa class="h-full mr-2 ml-2 text-[--primary]" icon="{faSearch}"></Fa>
+                        <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchParam} placeholder="Search">
+                    </div>
+                    <button type="submit" on:click={handleSearch} class="primary-button">Search</button>
+                </form>
+            </div>
         </div>
-        <p class="mt-5">Which library do you want to add the book to?</p>
-        <select name="library" id="library" class="input-text flex items-center mt-1" bind:value="{library}">
-            {#each libraries as library}
-                <option value="{library.id}">{library.name}</option>
-            {/each}
-        </select>
     </div>
-    <div class="mt-5 flex flex-col items-center">
-        {#await books}
-            <p>...loading</p>
+
+    <div class="mt-5 mb-5 p-4 bg-white rounded-xl border-2 border-slate-200 overflow-y-auto w-full flex flex-col flex-auto">
+        <div class="flex flex-col items-center">
+            {#await books}
+                <p>...loading</p>
             {:then result}
                 {#each result as book, i (book.id)}
                     <div on:mouseenter="{() => activeCard = i}" on:mouseleave="{() => activeCard = 999}">
@@ -75,6 +80,21 @@
                 {/each}
             {:catch error}
                 <p>Error {error}</p>
-        {/await}
+            {/await}
+        </div>
     </div>
+    <Toaster/>
 </main>
+
+<style lang="scss">
+    input, input:focus, input:active {
+      outline: none;
+      background-color: transparent;
+    }
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      transition: background-color 5000s ease-in-out 0s;
+    }
+</style>
