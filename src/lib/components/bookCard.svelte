@@ -73,7 +73,7 @@
       min-width:700px;
       margin-bottom:10px;
       perspective:600px;
-      transition:all 0.1s;
+      transition:all 0.4s;
       & .bottom {
         height:0;
         overflow:hidden;
