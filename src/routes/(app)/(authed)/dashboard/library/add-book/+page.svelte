@@ -47,28 +47,27 @@
 </script>
 
 <main class="h-full flex flex-col">
-    <h1 class="text-xl">Add books</h1>
-    <div class="p-4 bg-white rounded-xl border-2 border-slate-200">
-        <div class="w-1/2">
-            <p class="mt-5">Which library do you want to add the book to?</p>
+    <div class="flex flex-row justify-between">
+        <h1 class="text-2xl">Add books</h1>
+        <div class="flex">
+            <p>Which library do you want to add the book to?</p>
             <select name="library" id="library" class="input-text flex items-center mt-1" bind:value="{library}">
                 {#each libraries as library}
                     <option value="{library.id}">{library.name}</option>
                 {/each}
             </select>
-            <div class="mt-5">
-                <form class="flex mt-1">
-                    <div class="flex p-1 bg-slate-200 rounded-xl w-full h-[36px] items-center mr-2">
-                        <Fa class="h-full mr-2 ml-2 text-[--primary]" icon="{faSearch}"></Fa>
-                        <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchParam} placeholder="Search">
-                    </div>
-                    <button type="submit" on:click={handleSearch} class="primary-button">Search</button>
-                </form>
-            </div>
         </div>
     </div>
+    <p>Add books to your chosen library:</p>
 
-    <div class="mt-5 mb-5 p-4 bg-white rounded-xl border-2 border-slate-200 overflow-y-auto w-full flex flex-col flex-auto">
+    <div class="mt-5 mb-5 p-4 content-box overflow-y-auto w-full flex flex-col flex-auto">
+        <form class="flex mt-1 w-1/2">
+            <div class="flex p-1 bg-slate-200 rounded-xl w-full h-[36px] items-center mr-2">
+                <Fa class="h-full mr-2 ml-2 text-[--primary]" icon="{faSearch}"></Fa>
+                <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchParam} placeholder="Search">
+            </div>
+            <button type="submit" on:click={handleSearch} class="primary-button">Search</button>
+        </form>
         <div class="flex flex-col items-center">
             {#await books}
                 <p>...loading</p>

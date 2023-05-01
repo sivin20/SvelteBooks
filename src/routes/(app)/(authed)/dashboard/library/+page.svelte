@@ -70,7 +70,7 @@
 </script>
 
 <main class="flex flex-col w-full items-center p-2 box-border">
-    <div class="bg-white rounded-lg shadow-xl p-4 w-full box-border">
+    <div class="content-box p-4 w-full">
         <div>
             <p class="text-3xl">Your libraries</p>
         </div>
@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <div class="items-center flex flex-col bg-white shadow-xl rounded-lg p-4 mt-4 w-full box-border">
+    <div class="items-center flex flex-col content-box p-4 mt-4 w-full">
         {#if !!current_library}
             <p class="self-start text-2xl mb-2">{current_library.name}</p>
         {/if}

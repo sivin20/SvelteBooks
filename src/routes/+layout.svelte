@@ -21,7 +21,7 @@
     });
 </script>
 
-<div style="background: #FFF">
+<div class="bg-[--accents-1]">
     <slot></slot>
 </div>
 

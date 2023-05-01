@@ -12,50 +12,50 @@
         <div class="flex flex-col justify-between h-full w-full items-center mt-10 mb-10">
             <div class="flex items-center flex-col text-white h-full w-full">
                 <a href="/dashboard" class="h-1/5 w-full flex flex-col justify-center items-center">
-                    <div class="h-1/4 w-full bg-white">
+                    <div class="h-1/4 w-full bg-[--accents-1]">
                         <div class="h-full w-full bg-[--primary] fill-box-start" class:rounded-ee-[30px]={$page.url.pathname === '/dashboard'}></div>
                     </div>
                     <div class="flex w-full ml-10 h-1/2 justify-center items-center nav-item"
                          class:active={$page.url.pathname === '/dashboard'}>
                         <Fa class="mr-10" icon="{faHome}"></Fa>
                     </div>
-                    <div class="h-1/4 w-full bg-white">
+                    <div class="h-1/4 w-full bg-[--accents-1]">
                         <div class="h-full w-full bg-[--primary] fill-box-end" class:rounded-se-[30px]={$page.url.pathname === '/dashboard'}></div>
                     </div>
                 </a>
                 <a href="/dashboard/library" class="h-1/5 w-full flex flex-col justify-center items-center">
-                    <div class="h-1/4 w-full bg-white">
+                    <div class="h-1/4 w-full bg-[--accents-1]">
                         <div class="h-full w-full bg-[--primary] fill-box-start" class:rounded-ee-[30px]={$page.url.pathname === '/dashboard/library'}></div>
                     </div>
                     <div class="flex w-full ml-10 h-1/2 justify-center items-center nav-item"
                          class:active={$page.url.pathname === '/dashboard/library'}>
                         <Fa class="mr-10" icon="{faFolder}"></Fa>
                     </div>
-                    <div class="h-1/4 w-full bg-white">
+                    <div class="h-1/4 w-full bg-[--accents-1]">
                         <div class="h-full w-full bg-[--primary] fill-box-end" class:rounded-se-[30px]={$page.url.pathname === '/dashboard/library'}></div>
                     </div>
                 </a>
                 <a href="/dashboard/library/add-book" class="h-1/5 w-full flex flex-col justify-center items-center">
-                    <div class="h-1/4 w-full bg-white">
+                    <div class="h-1/4 w-full bg-[--accents-1]">
                         <div class="h-full w-full bg-[--primary] fill-box-start" class:rounded-ee-[30px]={$page.url.pathname === '/dashboard/library/add-book'}></div>
                     </div>
                     <div class="flex w-full ml-10 h-1/2 justify-center items-center nav-item"
                          class:active={$page.url.pathname === '/dashboard/library/add-book'}>
                         <Fa class="mr-10" icon="{faBookMedical}"></Fa>
                     </div>
-                    <div class="h-1/4 w-full bg-white">
+                    <div class="h-1/4 w-full bg-[--accents-1]">
                         <div class="h-full w-full bg-[--primary] fill-box-end" class:rounded-se-[30px]={$page.url.pathname === '/dashboard/library/add-book'}></div>
                     </div>
                 </a>
             </div>
             <form action="/logout" method="POST" class="h-1/5 w-full flex flex-col justify-center items-center cursor-pointer">
-                <div class="h-1/4 w-full bg-white">
+                <div class="h-1/4 w-full bg-[--accents-1]">
                     <div class="h-full w-full bg-[--primary] fill-box-start"></div>
                 </div>
                 <div class="flex w-full ml-10 h-1/2 justify-center items-center nav-item">
                     <button type="submit"><Fa class="mr-10" icon="{faRightFromBracket}"></Fa></button>
                 </div>
-                <div class="h-1/4 w-full bg-white">
+                <div class="h-1/4 w-full bg-[--accents-1]">
                     <div class="h-full w-full bg-[--primary] fill-box-end"></div>
                 </div>
             </form>
@@ -65,13 +65,13 @@
 
 <style lang="scss">
     .active {
-        background-color: #FFF;
+        background-color: var(--accents-1);
         color: var(--primary);
         border-bottom-left-radius: 30px;
         border-top-left-radius: 30px;
     }
     a:hover .nav-item, form:hover .nav-item {
-        background-color: #FFF;
+        background-color: var(--accents-1);
         color: var(--primary);
         border-bottom-left-radius: 30px;
         border-top-left-radius: 30px;

@@ -20,7 +20,7 @@
     </a>
     <div class="p-2 bg-[--primary-second] rounded-md">
         <div class="loginBook drop-shadow-lg">
-            <div class="loginPage bg-white drop-shadow-lg shadow-[inset_-40px_0px_50px_-30px_rgba(0,0,0,0.6)]" class:transformed180={current === 1}>
+            <div class="loginPage bg-[--accents-1] drop-shadow-lg shadow-[inset_-40px_0px_50px_-30px_rgba(0,0,0,0.6)]" class:transformed180={current === 1}>
                 {#if current !== 1}
                     <button on:click="{flipPage}" class="absolute bottom-10 left-10 text-left text-[--secondary]">
                         <u>
@@ -37,7 +37,7 @@
                     </button>
                 {/if}
             </div>
-            <div class="pg pg1 p-10 flex items-center bg-white border-r-2 border-slate-600 shadow-[inset_-40px_0px_50px_-30px_rgba(0,0,0,0.6)]">
+            <div class="pg pg1 p-10 flex items-center bg-[--accents-1] border-r-2 border-slate-600 shadow-[inset_-40px_0px_50px_-30px_rgba(0,0,0,0.6)]">
                 <div class="w-full flex flex-col items-center">
                     <h1 class="text-lg mb-10 text-[--primary]">Login</h1>
                     <form action="?/login" method="POST" class="flex flex-col items-center w-full p-4">
@@ -54,7 +54,7 @@
                     </form>
                 </div>
             </div>
-            <div class="pg pg2 p-10 flex items-center bg-white border-l-2 border-slate-600 shadow-[inset_30px_0px_50px_-20px_rgba(0,0,0,0.6)]">
+            <div class="pg pg2 p-10 flex items-center bg-[--accents-1] border-l-2 border-slate-600 shadow-[inset_30px_0px_50px_-20px_rgba(0,0,0,0.6)]">
                 <div class="w-full flex flex-col items-center">
                     <h1 class="text-lg mb-10 text-[--primary]">Register</h1>
                     <form action="?/register" method="POST" class="flex flex-col items-center w-full p-4">

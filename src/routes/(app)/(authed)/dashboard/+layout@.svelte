@@ -48,7 +48,7 @@
                     </div>
                 {/if}
             </div>
-            <div class="overflow-y-auto h-full">
+            <div class="overflow-y-auto h-full p-4">
                 <slot></slot>
             </div>
         </div>
