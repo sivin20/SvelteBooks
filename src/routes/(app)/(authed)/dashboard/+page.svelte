@@ -29,7 +29,7 @@
     // }
 </script>
 
-<main class="bg-[--accents-1] rounded-lg p-4">
+<main class="content-box rounded-lg p-4">
     <p>Welcome, {data.session.user.user_metadata.first_name}</p>
     <a href="/dashboard/library"><p><u>Go to your libraries</u></p></a>
     <div class="mt-5">
