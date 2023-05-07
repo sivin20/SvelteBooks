@@ -8,6 +8,7 @@
     import toast, {Toaster} from "svelte-french-toast";
     import {onMount} from "svelte";
     import LibraryCard from '$lib/components/library/libraryCard.svelte'
+    import LibrarySettings from '$lib/components/library/librarySettings.svelte'
 
     /** @type {import('.$types').PageData} */
     export let data
@@ -84,6 +85,10 @@
                     </div>
                 {/each}
             </div>
+        </div>
+
+        <div class="w-full mt-4">
+            <LibrarySettings></LibrarySettings>
         </div>
 
         <div class="content-box p-4 w-full mt-4">
