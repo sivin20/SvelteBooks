@@ -29,10 +29,9 @@
 <!--    {/if}-->
     <div class="flex-auto flex justify-center">
         <div class="w-full mt-10 px-4 relative">
-            <div class="absolute fixed top-4 right-10 rounded-xl border-slate-100 bg-gray-100 items-center p-2"
-                 on:mouseover={() => {showUserInfoBox = true}} on:mouseout={() => {showUserInfoBox = false}}>
+            <div class="absolute fixed top-4 right-10 rounded-xl" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
                 {#if showUserInfoBox}
-                    <div>
+                    <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
                         <div class="flex">
                             <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
                             <Fa icon={faUser} color="var(--primary)"/>
@@ -40,7 +39,7 @@
                         <p><u>logout</u></p>
                     </div>
                 {:else}
-                    <div class="flex">
+                    <div class="flex border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
                         <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
                         <Fa icon={faUser} color="var(--primary)"/>
                     </div>

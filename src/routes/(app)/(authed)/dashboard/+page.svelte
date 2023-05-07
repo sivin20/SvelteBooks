@@ -31,7 +31,7 @@
 
 <main class="content-box rounded-lg p-4">
     <p>Welcome, {data.session.user.user_metadata.first_name}</p>
-    <a href="/dashboard/library"><p><u>Go to your libraries</u></p></a>
+    <p class="w-1/5"><a href="/dashboard/library"><u>Go to your libraries</u></a></p>
     <div class="mt-5">
         <form action="/logout" method="POST">
             <button type="submit">Logout</button>

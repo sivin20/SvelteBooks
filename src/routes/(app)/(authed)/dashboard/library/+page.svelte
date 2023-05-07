@@ -7,6 +7,7 @@
     import type {Library} from "../../../../../lib/models/Library";
     import toast, {Toaster} from "svelte-french-toast";
     import {onMount} from "svelte";
+    import LibraryCard from '$lib/components/library/libraryCard.svelte'
 
     /** @type {import('.$types').PageData} */
     export let data
@@ -78,26 +79,24 @@
         <div class="flex items-start justify-start w-full">
             <div class="flex mt-4">
                 {#each libraries as library}
-                    <div class="p-4 content-box mr-5" class:active-library={current_library === library}
-                         on:click={() => handleGetBooks(library)}>
-                        <p>{library.name}</p>
-                        <p>Number of books: {library.books}</p>
-                        <p>Total number of pages: {library.pages}</p>
+                    <div on:click={() => handleGetBooks(library)} >
+                        <LibraryCard active="{current_library === library}" library="{library}"></LibraryCard>
                     </div>
                 {/each}
             </div>
-            <div class="content-box p-4 w-full">
-                <div class="p-4 flex items-center flex-col self-end">
-                    <p>Add a new library</p>
-                    <form action="?/create" method="POST" class="flex flex-col items-center w-full p-4">
-                        <div class="input-text">
-                            <label for="name">NAME</label>
-                            <input type="text" id="name" name="name">
-                        </div>
+        </div>
 
-                        <button type="submit" class="primary-button mt-4">Login</button>
-                    </form>
-                </div>
+        <div class="content-box p-4 w-full mt-4">
+            <div class="p-4 flex items-center flex-col self-end">
+                <p>Add a new library</p>
+                <form action="?/create" method="POST" class="flex flex-col items-center w-full p-4">
+                    <div class="input-text">
+                        <label for="name">NAME</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+
+                    <button type="submit" class="primary-button mt-4">Login</button>
+                </form>
             </div>
         </div>
 
@@ -170,9 +169,5 @@
 
     td {
         padding: 0.5rem;
-    }
-    .active-library {
-        background-color: var(--primary);
-        color: var(--background-primary);
     }
 </style>
