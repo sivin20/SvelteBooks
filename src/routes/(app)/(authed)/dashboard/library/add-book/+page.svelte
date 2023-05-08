@@ -51,8 +51,19 @@
         <p class="text-3xl"><strong>Add books</strong></p>
     </div>
     <h1 class="text-xl">Search for books you wish to add to your library</h1>
-    <section class="flex mt-4 mb-4 flex-auto overflow-hidden">
-        <div class="p-4 content-box  w-3/5 flex flex-col items-center overflow-y-auto">
+    <section class="md:flex mt-4 flex-auto overflow-hidden h-full">
+        <div class="md:mr-4 flex md:w-2/6 p-4 content-box">
+            <div >
+                <p>Which library do you want to add the book to?</p>
+                <select name="library" id="library" class="input-text flex items-center mt-1" bind:value="{library}">
+                    {#each libraries as library}
+                        <option value="{library.id}">{library.name}</option>
+                    {/each}
+                </select>
+            </div>
+        </div>
+
+        <div class="p-4 mt-4 md:mt-0 content-box md:w-4/6 flex flex-col items-center overflow-y-auto">
             <form class="flex mt-1 w-1/2 sticky top-0 z-[100] bg-[--background-primary] rounded w-full border-slate-200 border-2 p-4">
                 <div class="flex p-1 bg-slate-200 rounded-xl w-full h-[36px] items-center mr-2">
                     <Fa class="h-full mr-2 ml-2 text-[--primary]" icon="{faSearch}"></Fa>
@@ -72,17 +83,6 @@
                 {:catch error}
                     <p>Error {error}</p>
                 {/await}
-            </div>
-        </div>
-
-        <div class="ml-4 flex w-2/5 p-4 content-box">
-            <div >
-                <p>Which library do you want to add the book to?</p>
-                <select name="library" id="library" class="input-text flex items-center mt-1" bind:value="{library}">
-                    {#each libraries as library}
-                        <option value="{library.id}">{library.name}</option>
-                    {/each}
-                </select>
             </div>
         </div>
     </section>

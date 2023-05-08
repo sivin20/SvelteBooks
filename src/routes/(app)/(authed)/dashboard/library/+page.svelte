@@ -78,8 +78,8 @@
     </div>
     <div class="flex flex-col w-full items-center box-border">
 
-        <div class="flex items-start justify-start w-full">
-            <div class="w-1/2">
+        <div class="md:flex items-start justify-start w-full">
+            <div class="md:w-1/2">
                 <p class="self-start text-xl">Active libraries</p>
                 <div class="flex mt-4">
                     {#each libraries as library}
@@ -89,7 +89,7 @@
                     {/each}
                 </div>
             </div>
-            <div class="w-1/2">
+            <div class="md:w-1/2">
                 <p class="self-start text-xl mb-4">Edit your libraries</p>
                 <LibrarySettings></LibrarySettings>
             </div>
