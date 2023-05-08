@@ -47,41 +47,45 @@
 </script>
 
 <main class="h-full flex flex-col">
-    <div class="flex flex-row justify-between">
-        <h1 class="text-2xl">Add books</h1>
-        <div class="flex">
-            <p>Which library do you want to add the book to?</p>
-            <select name="library" id="library" class="input-text flex items-center mt-1" bind:value="{library}">
-                {#each libraries as library}
-                    <option value="{library.id}">{library.name}</option>
-                {/each}
-            </select>
-        </div>
+    <div class="mb-2">
+        <p class="text-3xl"><strong>Add books</strong></p>
     </div>
-    <p>Add books to your chosen library:</p>
-
-    <div class="mt-5 mb-5 p-4 content-box overflow-y-auto w-full flex flex-col flex-auto">
-        <form class="flex mt-1 w-1/2">
-            <div class="flex p-1 bg-slate-200 rounded-xl w-full h-[36px] items-center mr-2">
-                <Fa class="h-full mr-2 ml-2 text-[--primary]" icon="{faSearch}"></Fa>
-                <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchParam} placeholder="Search">
+    <h1 class="text-xl">Search for books you wish to add to your library</h1>
+    <section class="flex mt-4 mb-4 flex-auto overflow-hidden">
+        <div class="p-4 content-box  w-3/5 flex flex-col items-center overflow-y-auto">
+            <form class="flex mt-1 w-1/2 sticky top-0 z-[100] bg-[--background-primary] rounded w-full border-slate-200 border-2 p-4">
+                <div class="flex p-1 bg-slate-200 rounded-xl w-full h-[36px] items-center mr-2">
+                    <Fa class="h-full mr-2 ml-2 text-[--primary]" icon="{faSearch}"></Fa>
+                    <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchParam} placeholder="Search">
+                </div>
+                <button type="submit" on:click={handleSearch} class="primary-button">Search</button>
+            </form>
+            <div class="flex flex-col items-center mt-6">
+                {#await books}
+                    <p>...loading</p>
+                {:then result}
+                    {#each result as book, i (book.id)}
+                        <div on:mouseenter="{() => activeCard = i}" on:mouseleave="{() => activeCard = 999}">
+                            <BookCard on:message={addBook} active="{activeCard === i}" book="{book}"/>
+                        </div>
+                    {/each}
+                {:catch error}
+                    <p>Error {error}</p>
+                {/await}
             </div>
-            <button type="submit" on:click={handleSearch} class="primary-button">Search</button>
-        </form>
-        <div class="flex flex-col items-center">
-            {#await books}
-                <p>...loading</p>
-            {:then result}
-                {#each result as book, i (book.id)}
-                    <div on:mouseenter="{() => activeCard = i}" on:mouseleave="{() => activeCard = 999}">
-                        <BookCard on:message={addBook} active="{activeCard === i}" book="{book}"/>
-                    </div>
-                {/each}
-            {:catch error}
-                <p>Error {error}</p>
-            {/await}
         </div>
-    </div>
+
+        <div class="ml-4 flex w-2/5 p-4 content-box">
+            <div >
+                <p>Which library do you want to add the book to?</p>
+                <select name="library" id="library" class="input-text flex items-center mt-1" bind:value="{library}">
+                    {#each libraries as library}
+                        <option value="{library.id}">{library.name}</option>
+                    {/each}
+                </select>
+            </div>
+        </div>
+    </section>
     <Toaster/>
 </main>
 

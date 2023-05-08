@@ -12,7 +12,7 @@ export const load: PageServerLoad = (async ({ locals: { getSession } }) => {
     }
 
     const { data } =  await supabase.rpc('get_libraries_with_book_info', {owner_uid: session.user.id})
-
+    console.log("data", data)
 
     return {
         libraries: data ?? []

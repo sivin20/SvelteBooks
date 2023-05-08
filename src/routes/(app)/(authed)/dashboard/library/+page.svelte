@@ -77,33 +77,25 @@
         <p class="text-3xl"><strong>Your libraries</strong></p>
     </div>
     <div class="flex flex-col w-full items-center box-border">
+
         <div class="flex items-start justify-start w-full">
-            <div class="flex mt-4">
-                {#each libraries as library}
-                    <div on:click={() => handleGetBooks(library)} >
-                        <LibraryCard active="{current_library === library}" library="{library}"></LibraryCard>
-                    </div>
-                {/each}
+            <div class="w-1/2">
+                <p class="self-start text-xl">Active libraries</p>
+                <div class="flex mt-4">
+                    {#each libraries as library}
+                        <div on:click={() => handleGetBooks(library)}>
+                            <LibraryCard active="{current_library === library}" library="{library}"></LibraryCard>
+                        </div>
+                    {/each}
+                </div>
+            </div>
+            <div class="w-1/2">
+                <p class="self-start text-xl mb-4">Edit your libraries</p>
+                <LibrarySettings></LibrarySettings>
             </div>
         </div>
 
-        <div class="w-full mt-4">
-            <LibrarySettings></LibrarySettings>
-        </div>
 
-        <div class="content-box p-4 w-full mt-4">
-            <div class="p-4 flex items-center flex-col self-end">
-                <p>Add a new library</p>
-                <form action="?/create" method="POST" class="flex flex-col items-center w-full p-4">
-                    <div class="input-text">
-                        <label for="name">NAME</label>
-                        <input type="text" id="name" name="name">
-                    </div>
-
-                    <button type="submit" class="primary-button mt-4">Login</button>
-                </form>
-            </div>
-        </div>
 
         <div class="items-center flex flex-col content-box p-4 mt-4 w-full">
             {#if !!current_library}

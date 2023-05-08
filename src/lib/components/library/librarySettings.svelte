@@ -7,7 +7,7 @@
 
 <main class="content-box p-4">
     {#if !toggle}
-        <div class="flex items-center justify-between" on:click={() => {toggle=true}}>
+        <div class="flex items-center justify-between cursor-pointer" on:click={() => {toggle=true}}>
             <div class="flex items-center">
                 <p class="mr-2">Open settings for libraries</p>
                 <div class="fa">
@@ -19,10 +19,10 @@
             </div>
         </div>
     {:else}
-        <div class="flex-col flex"  on:click={() => {toggle=false}}>
-            <div class="flex items-center justify-between" on:click={() => {toggle=true}}>
-                <div class="flex items-center">
-                    <p class="mr-2">Open settings for libraries</p>
+        <div class="flex-col flex">
+            <div class="flex items-center justify-between cursor-pointer" on:click={() => {toggle=false}}>
+                <div class="flex items-center mb-4">
+                    <p class="mr-2">Close settings for libraries</p>
                     <div class="fa">
                         <Fa icon="{faCog}"></Fa>
                     </div>
@@ -38,7 +38,7 @@
                     <input type="text" id="name" name="name">
                 </div>
 
-                <button type="submit" class="primary-button mt-4">Login</button>
+                <button type="submit" class="primary-button mt-4">Create</button>
             </form>
         </div>
     {/if}
