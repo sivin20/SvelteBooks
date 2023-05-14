@@ -4,28 +4,31 @@
 
 body {
     margin: 0;
-    font-family: 'Gill Sans MT', serif;
+    font-family: 'Inter', sans-serif;
+    color: var(--secondary)
 }
 
 :root {
-    --primary: #5D3FD3;
-    --primary-second: #CF9FFF;
-    --secondary: #767c88;
+    --primary: #FE4848;
+    --primary-accent-1: #FED9D9;
+    --primary-accent-2: #FFF4F4;
+    --secondary: #1E3F6D;
+    --secondary--accent-1: #589BC5;
+    --secondary--accent-2: #D0EFF1;
+    --secondary--accent-3: #E7F7F8;
     --background-primary: #FFF;
-    --accents-1: #fafafa;
-    --accents-2: #eaeaea;
-    --bg-accent-1: #614385;
-    --bg-accent-2: #516395;
-    --bg-gradient: var(--bg-accent-1), var(--bg-accent-2);
+    --border-color: #00000029;
+    --input-field-color: #F3F5F6;
 }
 
 .primary-button {
-    border-radius: 1.5rem;
+    border-radius: 6px;
     display: flex;
     background-color: var(--primary);
     color: #FFF;
     font-size: 100%;
-    height: 36px;
+    font-weight: bold;
+    height: 52px;
     line-height: 1.4rem;
     padding: 0 1.5rem;
     align-items: center;
@@ -33,12 +36,14 @@ body {
 }
 
 .secondary-button {
-    border-radius: 1.5rem;
+    border-radius: 6px;
     display: flex;
-    background-color: var(--secondary);
+    background-color: var(--secondary--accent-1);
     color: #FFF;
     font-size: 100%;
-    height: 36px;
+    font-weight: bold;
+    height: 52px;
+    min-width: 133px;
     line-height: 1.4rem;
     padding: 0 1.5rem;
     align-items: center;
@@ -49,11 +54,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f6f7f6;
-    border-radius: 0.25rem;
+    background-color: var(--input-field-color);
+    border-radius: 6px;
     width: 100%;
-    height: 34px;
-    outline: 1px solid var(--primary);
+    height: 52px;
 }
 
 .input-text:active, .input-text:focus {
@@ -63,9 +67,10 @@ body {
 .input-text label {
     align-self: start;
     padding-left: 0.5rem;
-    color: var(--primary);
+    color: var(--secondary--accent-1);
+    font-weight: bold;
     height: 12px;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .input-text input {
@@ -76,14 +81,7 @@ body {
     background-color: transparent;
     border-radius: 0.25rem;
     width: 100%;
-    height: 20px;
-}
-
-.content-box {
-    background-color: var(--background-primary);
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.12);
-    border-radius: 5px;
-    border: 1px solid var(--accents-2)
+    height: 40px;
 }
 
 /* width */

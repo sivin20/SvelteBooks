@@ -1,6 +1,5 @@
 <script lang="ts">
     import '../app.css';
-    import Background from "../lib/assets/white-waves.webp"
     import { invalidate } from '$app/navigation';
     import { onMount } from 'svelte';
     import type { LayoutData } from './$types';
@@ -21,7 +20,7 @@
     });
 </script>
 
-<div class="bg-[--accents-1]">
+<div class="bg-[--background-primary]">
     <slot></slot>
 </div>
 

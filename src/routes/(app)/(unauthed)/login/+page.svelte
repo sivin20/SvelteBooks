@@ -1,63 +1,87 @@
 <script>
-    import Fa from 'svelte-fa'
-    import { faBookBookmark } from '@fortawesome/free-solid-svg-icons'
-    import Logo from '$lib//assets/siglib_logo.png'
+    import {crossfade, fly} from "svelte/transition";
+    import {quintOut} from "svelte/easing";
+    import {flip} from "svelte/animate";
 
-    let current = 1
+    let currentPageIsLogin = true
 
-    const flipPage = () => {
-        console.log("current", current)
-        current = current === 1 ? 0 : 1
-        current = current
+    function change() {
+        console.log("current", currentPageIsLogin)
+        currentPageIsLogin = !currentPageIsLogin
+        currentPageIsLogin = currentPageIsLogin
     }
-    $: current
+    $: currentPageIsLogin
+
+    const [send, receive] = crossfade({
+        duration: d => Math.sqrt(d * 200),
+
+        fallback(node, params) {
+            const style = getComputedStyle(node);
+            const transform = style.transform === 'none' ? '' : style.transform;
+
+            return {
+                duration: 600,
+                easing: quintOut,
+                css: t => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`
+            };
+        }
+    });
 </script>
 
-<main class="h-screen items-center justify-center flex flex-col drop-shadow-xl">
-    <a class="flex items-center text-4xl mb-10 text-[--primary]" href="/">
-        <img class="mr-[5px] h-[30px]" src="{Logo}" alt="Logo">
-        <h1 class="italic" style="font-family: 'Brush Script MT'">Siglib</h1>
-    </a>
-    <div class="p-2 bg-[--primary-second] rounded-md">
-        <div class="loginBook drop-shadow-lg">
-            <div class="loginPage bg-[--accents-1] drop-shadow-lg shadow-[inset_-40px_0px_50px_-30px_rgba(0,0,0,0.6)]" class:transformed180={current === 1}>
-                {#if current !== 1}
-                    <button on:click="{flipPage}" class="absolute bottom-10 left-10 text-left text-[--secondary]">
-                        <u>
-                            <p>Already have an account?</p>
-                            <p>Login</p>
-                        </u>
-                    </button>
-                {:else}
-                    <button on:click="{flipPage}" class="absolute bottom-10 left-10 text-right transformed180 text-[--secondary]">
-                        <u>
-                            <p>Don't have an account yet?</p>
-                            <p>Register</p>
-                        </u>
-                    </button>
-                {/if}
+<main class="h-screen items-start justify-center flex relative overflow-hidden">
+    {#if !!currentPageIsLogin}
+        <section class="items-center justify-center flex h-5/6 absolute"
+                 in:fly={{ y: '100%', duration: 2000, opacity: 1}}
+                 out:fly={{ y: '100%', duration: 2000, opacity: 1}}>
+            <div class="bg-[--primary] w-[125px] h-full flex flex-col justify-between">
+                <div class="mt-10 h-full flex items-center justify-center">
+                    <a href="/">
+                        <img src="src/lib/assets/siglib_blue_white.svg" alt="logo" class="h-[285px]">
+                    </a>
+                </div>
+                <div class="arrow-up"></div>
             </div>
-            <div class="pg pg1 p-10 flex items-center bg-[--accents-1] border-r-2 border-slate-600 shadow-[inset_-40px_0px_50px_-30px_rgba(0,0,0,0.6)]">
-                <div class="w-full flex flex-col items-center">
-                    <h1 class="text-lg mb-10 text-[--primary]">Login</h1>
-                    <form action="?/login" method="POST" class="flex flex-col items-center w-full p-4">
-                        <div class="input-text">
-                           <label for="loginEmail">EMAIL</label>
-                           <input type="text" id="loginEmail" name="email">
-                        </div>
-                        <div class="input-text mt-3">
-                            <label for="loginPassword">PASSWORD</label>
-                            <input type="password" id="loginPassword" name="password">
-                        </div>
+            <div class="h-full relative ml-[100px] flex flex-col items-center justify-center w-[425px]">
+                    <!--        Login-->
+                    <div class="flex flex-col items-center w-[425px]">
+                        <h1 class="text-[50px] mb-10 text-[--secondary] font-bold">LOGIN</h1>
+                        <form action="?/login" method="POST" class="flex flex-col items-center w-full">
+                            <div class="input-text">
+                                <label for="loginEmail">Email</label>
+                                <input type="text" id="loginEmail" name="email">
+                            </div>
+                            <div class="input-text mt-5">
+                                <label for="loginPassword">Password</label>
+                                <input type="password" id="loginPassword" name="password">
+                            </div>
 
-                        <button type="submit" class="primary-button mt-4">Login</button>
-                    </form>
+                            <button type="submit" class="secondary-button mt-5">LOGIN</button>
+                        </form>
+                        <p class="mt-5 font-bold cursor-pointer"><u>Forgot password?</u></p>
+                        <p class="mt-5 font-bold cursor-pointer" on:click={() => {change()}}><u>Don't have an account yet?</u></p>
+                    </div>
+            </div>
+        </section>
+    {:else}
+        <section class="items-center justify-center flex h-full absolute"
+                 in:fly={{ y: '-100%', duration: 2000, opacity: 1}}
+                 out:fly={{ y: '-100%', duration: 2000, opacity: 1}}>
+            <div class="bg-[--primary] w-[125px] h-full flex flex-col justify-between">
+                <div class="mt-10 h-full flex items-center justify-center">
+                    <a href="/">
+                        <img src="src/lib/assets/siglib_blue_white.svg" alt="logo" class="h-[285px]">
+                    </a>
                 </div>
             </div>
-            <div class="pg pg2 p-10 flex items-center bg-[--accents-1] border-l-2 border-slate-600 shadow-[inset_30px_0px_50px_-20px_rgba(0,0,0,0.6)]">
-                <div class="w-full flex flex-col items-center">
-                    <h1 class="text-lg mb-10 text-[--primary]">Register</h1>
-                    <form action="?/register" method="POST" class="flex flex-col items-center w-full p-4">
+            <div class="h-full relative ml-[100px] flex flex-col items-center justify-center w-[425px]">
+                <!--        Register-->
+                <div class="flex flex-col items-center w-[425px]"
+                     >
+                    <h1 class="text-[50px] mb-10 text-[--secondary] font-bold">REGISTER</h1>
+                    <form action="?/register" method="POST" class="flex flex-col items-center w-full">
                         <div class="input-text">
                             <label for="registerName">Name</label>
                             <input type="text" id="registerName" name="name" >
@@ -73,55 +97,25 @@
                             <input type="password" id="registerPassword" name="password">
                         </div>
 
-                        <button type="submit" class="primary-button mt-4">Login</button>
+                        <button type="submit" class="secondary-button mt-4">Login</button>
                     </form>
+                    <p class="mt-5 font-bold cursor-pointer"><u>Forgot password?</u></p>
+                    <p class="mt-5 font-bold cursor-pointer" on:click={() => {change()}}><u>Already have an account?</u></p>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    {/if}
 </main>
 
 <style>
 
-    .loginBook {
-        background-color: #fff;
-        width: 800px;
-        height: 600px;
-        border-radius: 20px;
-        perspective: 3000px;
+    .arrow-up {
+        width: 0;
+        height: 0;
+        border-left: 60px solid transparent;
+        border-right: 60px solid transparent;
+
+        border-bottom: 40px solid #FFF;
     }
 
-    .loginPage {
-        position: absolute;
-        z-index: 5;
-        width: 50%;
-        height: 100%;
-        right: 50%;
-        border-radius: 20px 0 0 20px;
-        transform-origin: center right;
-        transition: 1s ease all;
-
-    }
-
-    .transformed180 {
-        transform: rotateY(180deg);
-    }
-
-    .loginBook .pg {
-        position: absolute;
-        width: 50%;
-        top: 0;
-        bottom: 0;
-        font-weight: bold;
-    }
-
-    .loginBook .pg.pg1 {
-        border-radius: 20px 0 0 20px;
-        left: 0;
-    }
-
-    .loginBook .pg.pg2 {
-        right: 0;
-        border-radius: 0 20px 20px 0;
-    }
 </style>

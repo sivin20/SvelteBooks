@@ -7,79 +7,62 @@
     $: console.log($page.url.pathname)
 </script>
 
-<aside class="absolute fixed left-0 top-0 w-32 h-full flex flex-col bg-[--primary] rounded-xl">
+<aside class="absolute fixed left-0 top-0 w-24 h-full flex flex-col bg-[--primary]">
     <div class="flex items-center flex-col text-white h-full w-full text-[32px]">
-        <div class="flex flex-col justify-between h-full w-full items-center mt-10 mb-10">
-            <div class="flex items-center flex-col text-white h-full w-full">
-                <a href="/dashboard" class="h-1/5 w-full flex flex-col justify-center items-center">
-                    <div class="h-1/4 w-full bg-[--accents-1]">
-                        <div class="h-full w-full bg-[--primary] fill-box-start" class:rounded-ee-[30px]={$page.url.pathname === '/dashboard'}></div>
-                    </div>
-                    <div class="flex w-full ml-10 h-1/2 justify-center items-center nav-item"
+        <div class="flex flex-col justify-between h-full w-full items-center">
+            <div class="flex items-center flex-col text-white w-full">
+                <a href="/dashboard" class="mt-10 mb-14">
+                    <img src="src/lib/assets/siglib_blue_white.svg" alt="logo">
+                </a>
+                <a href="/dashboard" class="h-1/5 w-full flex flex-col justify-center items-center h-24">
+                    <div class="flex justify-center items-center nav-item"
                          class:active={$page.url.pathname === '/dashboard'}>
-                        <Fa class="mr-10" icon="{faHome}"></Fa>
-                    </div>
-                    <div class="h-1/4 w-full bg-[--accents-1]">
-                        <div class="h-full w-full bg-[--primary] fill-box-end" class:rounded-se-[30px]={$page.url.pathname === '/dashboard'}></div>
+                        <Fa icon="{faHome}"></Fa>
                     </div>
                 </a>
-                <a href="/dashboard/library" class="h-1/5 w-full flex flex-col justify-center items-center">
-                    <div class="h-1/4 w-full bg-[--accents-1]">
-                        <div class="h-full w-full bg-[--primary] fill-box-start" class:rounded-ee-[30px]={$page.url.pathname === '/dashboard/library'}></div>
-                    </div>
-                    <div class="flex w-full ml-10 h-1/2 justify-center items-center nav-item"
+                <a href="/dashboard/library" class="h-1/5 w-full flex flex-col justify-center items-center h-24">
+                    <div class="flex justify-center items-center nav-item"
                          class:active={$page.url.pathname === '/dashboard/library'}>
-                        <Fa class="mr-10" icon="{faFolder}"></Fa>
-                    </div>
-                    <div class="h-1/4 w-full bg-[--accents-1]">
-                        <div class="h-full w-full bg-[--primary] fill-box-end" class:rounded-se-[30px]={$page.url.pathname === '/dashboard/library'}></div>
+                        <img src="src/lib/assets/book_stack.svg" alt="">
                     </div>
                 </a>
-                <a href="/dashboard/library/add-book" class="h-1/5 w-full flex flex-col justify-center items-center">
-                    <div class="h-1/4 w-full bg-[--accents-1]">
-                        <div class="h-full w-full bg-[--primary] fill-box-start" class:rounded-ee-[30px]={$page.url.pathname === '/dashboard/library/add-book'}></div>
-                    </div>
-                    <div class="flex w-full ml-10 h-1/2 justify-center items-center nav-item"
+                <a href="/dashboard/library/add-book" class="h-1/5 w-full flex flex-col justify-center items-center h-24">
+                    <div class="flex justify-center items-center nav-item"
                          class:active={$page.url.pathname === '/dashboard/library/add-book'}>
-                        <Fa class="mr-10" icon="{faBookMedical}"></Fa>
-                    </div>
-                    <div class="h-1/4 w-full bg-[--accents-1]">
-                        <div class="h-full w-full bg-[--primary] fill-box-end" class:rounded-se-[30px]={$page.url.pathname === '/dashboard/library/add-book'}></div>
+                        <Fa icon="{faBookMedical}"></Fa>
                     </div>
                 </a>
             </div>
-            <form action="/logout" method="POST" class="h-1/5 w-full flex flex-col justify-center items-center cursor-pointer">
-                <div class="h-1/4 w-full bg-[--accents-1]">
-                    <div class="h-full w-full bg-[--primary] fill-box-start"></div>
-                </div>
-                <div class="flex w-full ml-10 h-1/2 justify-center items-center nav-item">
-                    <button type="submit"><Fa class="mr-10" icon="{faRightFromBracket}"></Fa></button>
-                </div>
-                <div class="h-1/4 w-full bg-[--accents-1]">
-                    <div class="h-full w-full bg-[--primary] fill-box-end"></div>
-                </div>
-            </form>
+            <div class="arrow-up">
+            </div>
         </div>
     </div>
 </aside>
 
 <style lang="scss">
+    .arrow-up {
+      width: 0;
+      height: 0;
+      border-left: 45px solid transparent;
+      border-right: 45px solid transparent;
+
+      border-bottom: 40px solid #FFF;
+    }
+
     .active {
-        background-color: var(--accents-1);
+        background-color: var(--background-primary);
         color: var(--primary);
-        border-bottom-left-radius: 30px;
-        border-top-left-radius: 30px;
+        border-radius: 6px;
+        height: 52px;
+        width: 52px;
     }
+
     a:hover .nav-item, form:hover .nav-item {
-        background-color: var(--accents-1);
+        background-color: var(--background-primary);
+        border-radius: 6px;
+        height: 52px;
+        width: 52px;
+
         color: var(--primary);
-        border-bottom-left-radius: 30px;
-        border-top-left-radius: 30px;
-    }
-    a:hover .fill-box-end, form:hover .fill-box-end {
-      border-top-right-radius: 30px;
-    }
-    a:hover .fill-box-start, form:hover .fill-box-start {
-      border-bottom-right-radius: 30px;
     }
 </style>

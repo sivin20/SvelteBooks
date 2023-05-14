@@ -14,7 +14,7 @@
 
 <main class="flex w-screen h-screen">
     <!--{#if toggleSidebar}-->
-    <div class="w-32 m-2 relative hidden md:block">
+    <div class="w-32 mb-4 relative hidden md:block">
         <Sidebar/>
     </div>
 <!--        <button class="self-start flex m-5" on:click={() => {toggleSidebar = !toggleSidebar}}>-->
