@@ -18,29 +18,3 @@ export const load: PageServerLoad = (async ({ locals: { getSession } }) => {
         libraries: data ?? []
     };
 })
-
-export const actions: Actions = {
-    create: async ({request, locals: {supabase, getSession}}) => {
-        const session = await getSession()
-
-        if(!session) {
-            throw redirect(303, "/")
-        }
-
-        const body = Object.fromEntries(await request.formData())
-
-        const { data, error: err } = await supabase.from('libraries').insert({
-            id: crypto.randomUUID(),
-            name: body.name as string,
-            owner_id: session.user.id
-        })
-
-        if (err) {
-            return fail(500, {
-                error: "Server error. Please try again later"
-            })
-        }
-
-        throw redirect(303, "/dashboard/library")
-    }
-}

@@ -21,6 +21,18 @@ body {
     --input-field-color: #F3F5F6;
 }
 
+/* Removes input highligting */
+input, input:focus, input:active {
+    outline: none;
+    background-color: transparent;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 .primary-button {
     border-radius: 6px;
     display: flex;

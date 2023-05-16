@@ -8,7 +8,6 @@
     import toast, {Toaster} from "svelte-french-toast";
     import {onMount} from "svelte";
     import LibraryCard from '$lib/components/library/libraryCard.svelte'
-    import LibrarySettings from '$lib/components/library/librarySettings.svelte'
 
     /** @type {import('.$types').PageData} */
     export let data
@@ -74,13 +73,13 @@
 
 <main>
     <div class="mb-2">
-        <p class="text-3xl"><strong>Your libraries</strong></p>
+        <p class="text-[50px]"><strong>MY LIBRARIES</strong></p>
     </div>
     <div class="flex flex-col w-full items-center box-border">
 
         <div class="md:flex items-start justify-start w-full">
-            <div class="md:w-1/2">
-                <p class="self-start text-xl">Active libraries</p>
+            <div class="">
+                <p class="self-start text-[25px]">Active libraries</p>
                 <div class="flex mt-4">
                     {#each libraries as library}
                         <div on:click={() => handleGetBooks(library)}>
@@ -89,21 +88,14 @@
                     {/each}
                 </div>
             </div>
-            <div class="md:w-1/2">
-                <p class="self-start text-xl mb-4">Edit your libraries</p>
-                <LibrarySettings></LibrarySettings>
-            </div>
         </div>
 
 
 
         <div class="items-center flex flex-col content-box p-4 mt-4 w-full">
-            {#if !!current_library}
-                <p class="self-start text-2xl mb-2">{current_library.name}</p>
-            {/if}
             {#await books}
                 <p>...loading</p>
-            {:then result}
+            {:then books}
                 <button class="secondary-button self-end" on:click={() => openDeleteAllModal()}>Delete all</button>
                 <table class="w-full border-separate border-spacing-[0]">
                     <thead>
@@ -116,7 +108,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {#each result as book, i (book.id)}
+                    {#each books as book, i (book.id)}
                         <tr>
                             <td class="text-left">{book.title}</td>
                             <td class="text-left">{book.author}</td>

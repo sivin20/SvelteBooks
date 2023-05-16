@@ -26,6 +26,7 @@ export const actions: Actions = {
 
         if (err) {
             if (err instanceof AuthApiError && err.status == 400) {
+                console.log("Error2", err)
                 return fail(400,{
                     error: 'Invalid email or password'
                 })
@@ -38,8 +39,9 @@ export const actions: Actions = {
         throw redirect(303, "/dashboard")
     },
 
-    register: async ({request, locals: {supabase}}) => {
+    register: async ({request, locals: {supabase, getSession}}) => {
         const body = Object.fromEntries(await request.formData())
+
 
         const { data, error: err } = await supabase.auth.signUp({
             email: body.email as string,
@@ -50,6 +52,40 @@ export const actions: Actions = {
                 }
             }
         })
+
+        if(!err) {
+            await supabase.auth.signInWithPassword({
+                email: body.email as string,
+                password: body.password as string
+            })
+
+            const session = await getSession()
+
+            if(!session) {
+                throw redirect(303, "/")
+            }
+
+            await supabase.from('libraries').insert({
+                id: crypto.randomUUID(),
+                name: 'BOOKS READ',
+                owner_id: session.user.id
+            })
+            await supabase.from('libraries').insert({
+                id: crypto.randomUUID(),
+                name: 'TBR',
+                owner_id: session.user.id
+            })
+            await supabase.from('libraries').insert({
+                id: crypto.randomUUID(),
+                name: 'IN PROGRESS',
+                owner_id: session.user.id
+            })
+            await supabase.from('libraries').insert({
+                id: crypto.randomUUID(),
+                name: 'WISHLIST',
+                owner_id: session.user.id
+            })
+        }
 
         if (err) {
             if (err instanceof AuthApiError && err.status == 400) {
@@ -62,6 +98,6 @@ export const actions: Actions = {
             })
         }
 
-        throw redirect(303, "/confirm")
-    }
+        throw redirect(303, "/dashboard")
+    },
 }

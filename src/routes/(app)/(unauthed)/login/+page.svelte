@@ -1,9 +1,20 @@
 <script>
     import {crossfade, fly} from "svelte/transition";
-    import {quintOut} from "svelte/easing";
-    import {flip} from "svelte/animate";
+    import toast, { Toaster } from "svelte-french-toast";
+    import ListErrors from "../../../../lib/components/ListError.svelte";
 
     let currentPageIsLogin = true
+
+    /** @type {import('./$types').ActionData} */
+    export let form;
+
+    $: form?.error && makeErrorToast()
+
+    function makeErrorToast() {
+        toast.error(`Error: ${form?.error}`, {
+            position: "top-right"
+        });
+    }
 
     function change() {
         console.log("current", currentPageIsLogin)
@@ -11,32 +22,14 @@
         currentPageIsLogin = currentPageIsLogin
     }
     $: currentPageIsLogin
-
-    const [send, receive] = crossfade({
-        duration: d => Math.sqrt(d * 200),
-
-        fallback(node, params) {
-            const style = getComputedStyle(node);
-            const transform = style.transform === 'none' ? '' : style.transform;
-
-            return {
-                duration: 600,
-                easing: quintOut,
-                css: t => `
-					transform: ${transform} scale(${t});
-					opacity: ${t}
-				`
-            };
-        }
-    });
 </script>
 
 <main class="h-screen items-start justify-center flex relative overflow-hidden">
     {#if !!currentPageIsLogin}
-        <section class="items-center justify-center flex h-5/6 absolute"
+        <section class="items-center justify-center flex h-full absolute"
                  in:fly={{ y: '100%', duration: 2000, opacity: 1}}
                  out:fly={{ y: '100%', duration: 2000, opacity: 1}}>
-            <div class="bg-[--primary] w-[125px] h-full flex flex-col justify-between">
+            <div class="bg-[--primary] w-[125px] h-full flex flex-col justify-between mb-[200px]">
                 <div class="mt-10 h-full flex items-center justify-center">
                     <a href="/">
                         <img src="src/lib/assets/siglib_blue_white.svg" alt="logo" class="h-[285px]">
@@ -44,7 +37,9 @@
                 </div>
                 <div class="arrow-up"></div>
             </div>
-            <div class="h-full relative ml-[100px] flex flex-col items-center justify-center w-[425px]">
+            <div class="h-full relative ml-[100px] flex flex-col items-center justify-center w-[425px]"
+                 in:fly={{ duration: 1000}}
+                 out:fly={{duration: 1000}}>
                     <!--        Login-->
                     <div class="flex flex-col items-center w-[425px]">
                         <h1 class="text-[50px] mb-10 text-[--secondary] font-bold">LOGIN</h1>
@@ -76,7 +71,9 @@
                     </a>
                 </div>
             </div>
-            <div class="h-full relative ml-[100px] flex flex-col items-center justify-center w-[425px]">
+            <div class="h-full relative ml-[100px] flex flex-col items-center justify-center w-[425px]"
+                 in:fly={{ duration: 1000}}
+                 out:fly={{duration: 1000}}>
                 <!--        Register-->
                 <div class="flex flex-col items-center w-[425px]"
                      >
@@ -105,6 +102,7 @@
             </div>
         </section>
     {/if}
+    <Toaster/>
 </main>
 
 <style>
