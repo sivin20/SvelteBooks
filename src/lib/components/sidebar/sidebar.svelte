@@ -1,9 +1,9 @@
 <script>
     import '../../../app.css';
     import Fa from 'svelte-fa'
-    import { faHome, faBookMedical, faRightFromBracket, faFolder } from '@fortawesome/free-solid-svg-icons'
+    import { faHome } from '@fortawesome/free-solid-svg-icons'
     import {page} from '$app/stores'
-    import { Logo } from '$lib/assets/siglib_blue_white.svg'
+    import logo from '../../assets/siglib_blue_white.svg'
 
     $: console.log($page.url.pathname)
 </script>
@@ -13,7 +13,7 @@
         <div class="flex flex-col justify-between h-full w-full items-center">
             <div class="flex items-center flex-col text-white w-full">
                 <a href="/dashboard" class="mt-10 mb-14">
-                    <img src="{Logo}" alt="logo">
+                    <img src="{logo}" alt="logo">
                 </a>
                 <a href="/dashboard" class="h-1/5 w-full flex flex-col justify-center items-center h-24">
                     <div class="flex justify-center items-center nav-item"

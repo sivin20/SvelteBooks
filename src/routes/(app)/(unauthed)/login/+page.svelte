@@ -1,7 +1,7 @@
 <script>
-    import {crossfade, fly} from "svelte/transition";
+    import {fly} from "svelte/transition";
     import toast, { Toaster } from "svelte-french-toast";
-    import ListErrors from "../../../../lib/components/ListError.svelte";
+    import logo from '../../../../lib/assets/siglib_blue_white.svg'
 
     let currentPageIsLogin = true
 
@@ -32,7 +32,7 @@
             <div class="bg-[--primary] w-[125px] h-full flex flex-col justify-between mb-[200px]">
                 <div class="mt-10 h-full flex items-center justify-center">
                     <a href="/">
-                        <img src="src/lib/assets/siglib_blue_white.svg" alt="logo" class="h-[285px]">
+                        <img src="{logo}" alt="logo" class="h-[285px]">
                     </a>
                 </div>
                 <div class="arrow-up"></div>
