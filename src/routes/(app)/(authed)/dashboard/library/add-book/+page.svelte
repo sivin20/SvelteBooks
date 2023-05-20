@@ -51,13 +51,19 @@
         <p class="text-3xl"><strong>Add books</strong></p>
     </div>
     <h1 class="text-xl">Search for books you wish to add to your library</h1>
-    <form class="flex bg-[--background-primary] w-full">
+    <form class="flex bg-[--background-primary] w-full mt-4">
         <div class="flex p-1 bg-[--input-field-color] rounded-[6px] w-full max-w-[650px] h-[52px] items-center mr-2">
             <Fa class="h-full mr-2 ml-2 text-[--secondary--accent-1]" icon="{faSearch}"></Fa>
             <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchParam} placeholder="Search">
         </div>
         <button type="submit" on:click={handleSearch} class="secondary-button">Search</button>
     </form>
+    <div class="flex items-center w-full justify-between max-w-[650px] mt-4">
+        <button id="top_results" class="button-pill" class:active={true}>TOP RESULTS</button>
+        <button id="title" class="button-pill bg-[--primary]">TITLE</button>
+        <button id="author" class="button-pill bg-[--primary]">AUTHOR</button>
+        <button id="isbn" class="button-pill bg-[--primary]">ISBN</button>
+    </div>
     <section class="mt-4 md:mt-0 flex flex-col items-center">
         <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6">
             {#await books}
@@ -86,5 +92,15 @@
     input:-webkit-autofill:focus,
     input:-webkit-autofill:active {
       transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .button-pill {
+      background-color: var(--primary-accent-1);
+      color: var(--primary)
+    }
+
+    .active {
+      background-color: var(--primary);
+      color: #FFF;
     }
 </style>

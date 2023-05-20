@@ -3,7 +3,7 @@
     import Fa from 'svelte-fa'
     import { faHome, faBookMedical, faRightFromBracket, faFolder } from '@fortawesome/free-solid-svg-icons'
     import {page} from '$app/stores'
-    import Logo from '$lib/assets/siglib_blue_white.svg'
+    import { Logo } from '$lib/assets/siglib_blue_white.svg'
 
     $: console.log($page.url.pathname)
 </script>
