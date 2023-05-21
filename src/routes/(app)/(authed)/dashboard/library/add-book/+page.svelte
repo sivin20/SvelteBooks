@@ -4,7 +4,7 @@
     import {BookService} from "../../../../../../lib/services/book.service";
     import toast, {Toaster} from "svelte-french-toast";
     import Fa from 'svelte-fa'
-    import {faSearch, faTrashCan, faPlus, faSquarePlus} from '@fortawesome/free-solid-svg-icons'
+    import {faSearch, faTrashCan, faPlus} from '@fortawesome/free-solid-svg-icons'
     import {SEARCH_TYPE} from "../../../../../../lib/models/SearchType";
 
     /** @type {import('.$types').PageData} */
@@ -35,8 +35,16 @@
             query = query + `+${searchType[i]}:${searchValue[i].replace(/ /g, '+')}`
         }
         console.log("q", query)
-        const books = await BookService.searchBook(query)
-        return books as Book[]
+        let bookData
+        try {
+            bookData = await BookService.searchBook(query)
+            return bookData as Book[]
+        } catch (e) {
+            toast.error(`${e}`, {
+                position: "top-right"
+            });
+            return []
+        }
     }
 
     function addSearchFilter() {
