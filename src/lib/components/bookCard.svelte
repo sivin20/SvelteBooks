@@ -10,7 +10,7 @@
 
     const dispatch = createEventDispatcher();
 
-    function sayHello() {
+    function emitBookAddedEvent() {
         bookAdded = true
         console.log("Book added", bookAdded)
         dispatch('message', {
@@ -18,27 +18,32 @@
         });
     }
 
-    function getBiggerImage() {
-        let imgLink = book.image_link.replace('zoom=1', 'zoom=1')
-        console.log(imgLink)
-        return imgLink
-    }
-
     $: bookAdded
 </script>
 
 <main class="h-full w-[540px]">
     <div class='card flex flex-row h-full p-4' class:open={active}>
-        <img src='{getBiggerImage()}' alt="Book Cover" class='book h-[254px] w-[165px]' >
-        <div class='flex flex-col justify-between h-full w-full'>
+        {#if book.image_link}
+            <img src='{book.image_link}' alt="Book Cover" class='book h-[254px] w-[165px]'>
+        {:else}
             <div>
-                <div class='text-[25px]'><strong>{book.title}</strong></div>
-                <p>{book.isbn_13}</p>
-                <p>{book.author}</p>
+                <div class='book h-[254px] w-[165px] bg-[--secondary--accent-2] flex items-center justify-center'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="49.18" height="56.19" viewBox="0 0 25.192 28.788">
+                        <path data-name="Path 4" d="M25.182,20.15V1.444A1.324,1.324,0,0,0,23.744,0H5.4A5.3,5.3,0,0,0,0,5.2c0,.067,0,.135,0,.2V23.388a5.3,5.3,0,0,0,5.2,5.4q.1,0,.2,0H23.744a1.418,1.418,0,0,0,1.439-1.4c0-.014,0-.028,0-.042v-.9a1.554,1.554,0,0,0-.54-1.079,15.921,15.921,0,0,1,0-4.137,1.088,1.088,0,0,0,.54-1.08ZM8.1,9.448A.45.45,0,0,1,8.544,9H11.7V5.85a.45.45,0,0,1,.45-.45h2.7a.45.45,0,0,1,.45.45V9h3.148a.45.45,0,0,1,.45.45v2.7a.45.45,0,0,1-.45.45H15.294v3.148a.45.45,0,0,1-.45.45h-2.7a.45.45,0,0,1-.45-.45V12.6H8.544a.45.45,0,0,1-.45-.45Zm15,15.739H5.4a1.7,1.7,0,0,1-1.8-1.8,1.8,1.8,0,0,1,1.8-1.8H23.1Z"
+                              transform="translate(0.001 0.001)"/>
+                    </svg>
+                </div>
+            </div>
+        {/if}
+        <div class='flex flex-col justify-between h-full w-full ml-5'>
+            <div>
+                <p class='text-[25px] trunc font-black'>{book.title}</p>
+                <p class="text-[18px] trunc">{book.author ? book.author : 'Unknown author'}</p>
+                <p class="text-[14px]"><i>ISBN-13: {book.isbn_13 ? book.isbn_13 : 'N/A'}</i></p>
             </div>
             <div>
-                <p><strong>Pages:</strong>{book.page_count}</p>
-                <div class="flex gap-8">
+                <p class="mb-2">Pages: <strong class="font-semibold">{book.page_count}</strong></p>
+                <div class="flex gap-6">
 
 <!--                BOOKS READ-->
                     <svg xmlns="http://www.w3.org/2000/svg" width="19.43" height="22.21" viewBox="0 0 19.433 22.207">
@@ -78,11 +83,28 @@
       border-radius: 10px;
       color: var(--secondary);
 
-      svg {
+      .trunc {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+
+      .book {
+        border-radius: 6px;
+
+        svg {
+          fill: var(--secondary--accent-1);
+        }
+      }
+
+      svg:not(.book svg) {
         fill: var(--primary-accent-1);
         cursor: pointer;
       }
-      svg:hover {
+      svg:not(.book svg):hover {
         fill: var(--primary);
       }
     }

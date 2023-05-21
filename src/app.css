@@ -62,17 +62,55 @@ input:-webkit-autofill:active {
     justify-content: center;
 }
 
-.button-pill {
+/*Select styling*/
+select {
     border-radius: 6px;
+    width: 149px;
     height: 32px;
-    width: 150px;
-    padding: 8px 19px;
-    font-weight: bold;
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding-left: 19px;
+    border: 0 !important;
+    background-color: var(--secondary--accent-1);
+    color:  #FFF;
+    cursor: pointer;
+
+    /* needed */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* SVG background image */
+    background-image: url("../src/lib/assets/_arrow_drop_down_icon.svg");
+    background-size: 25px;
+    background-position: calc(100% - 8px) center;
+    background-repeat: no-repeat;
 }
+
+select:disabled {
+    background-image: none;
+    background-color: var(--secondary--accent-1);
+    color:  #FFF;
+    cursor: default;
+    opacity: 1;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select:focus, select:active {
+    outline: none;
+    cursor: pointer;
+}
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active {
+    cursor: pointer;
+    outline: none;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+
 
 .input-text{
     display: flex;
@@ -106,7 +144,8 @@ input:-webkit-autofill:active {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 16px;
+    width: 10px;
+    border-radius: 6px;
 }
 
 /* Track */

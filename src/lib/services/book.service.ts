@@ -1,19 +1,18 @@
 import type {Book} from "../models/Book";
 import {supabase} from "../supabaseClient";
+import type {SEARCH_TYPE} from "../models/SearchType";
+
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
 
 export namespace BookService {
 
-    export async function searchBook(searchParam: string): Promise<Book[]> {
+    export async function searchBook(query: string): Promise<Book[]> {
         console.log("Searching for books..")
-        searchParam = searchParam.replace(/ /g, '+');
-        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchParam}&zoom=0&langRestrict=en&maxResults=12&projection=full&printType=books&key=${API_KEY}`);
+        const res = await fetch(`https://www.googleapis.com/books/v1/volumes?${query}&zoom=0&langRestrict=en&maxResults=12&projection=full&printType=books&key=${API_KEY}`);
         const responseData =  await res.json();
         const bookList: Book[] = []
-        console.log("response", responseData.items)
         for (let book of responseData.items) {
-            console.log("Booklist", bookList.length)
             bookList.push(
                 {
                     id: book.id,
