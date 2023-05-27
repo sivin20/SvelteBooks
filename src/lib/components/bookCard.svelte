@@ -2,7 +2,6 @@
     import type {Book} from "$lib/models/Book";
 
     export let book: Book
-    export let active
 
     import {createEventDispatcher} from 'svelte'
 
@@ -10,11 +9,12 @@
 
     const dispatch = createEventDispatcher();
 
-    function emitBookAddedEvent() {
+    function emitBookAddedEvent(libraryName: string) {
         bookAdded = true
         console.log("Book added", bookAdded)
         dispatch('message', {
-            text: book
+            book: book,
+            libraryName: libraryName
         });
     }
 
@@ -22,7 +22,7 @@
 </script>
 
 <main class="h-full w-[540px]">
-    <div class='card flex flex-row h-full p-4' class:open={active}>
+    <div class='card flex flex-row h-full p-4'>
         {#if book.image_link}
             <img src='{book.image_link}' alt="Book Cover" class='book h-[254px] w-[165px]'>
         {:else}
@@ -46,17 +46,17 @@
                 <div class="flex gap-6">
 
 <!--                BOOKS READ-->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="19.43" height="22.21" viewBox="0 0 19.433 22.207">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19.43" height="22.21" viewBox="0 0 19.433 22.207" on:click="{() => {emitBookAddedEvent('BOOKS READ')}}">
                         <path id="Path_5" data-name="Path 5" d="M132.01,19.568a12.282,12.282,0,0,1,0-3.191.839.839,0,0,0,.416-.833h0V1.114A1.022,1.022,0,0,0,131.316,0H117.164A4.087,4.087,0,0,0,113,4.011q0,.078,0,.156V18.041a4.087,4.087,0,0,0,4.008,4.164h14.308a1.094,1.094,0,0,0,1.11-1.078c0-.011,0-.022,0-.033V20.4a1.2,1.2,0,0,0-.416-.833M118.625,9.032h0l.685-.687a.484.484,0,0,1,.685,0h0l2.121,2.122,4.543-4.544a.485.485,0,0,1,.685,0h0l.685.686a.484.484,0,0,1,0,.685l-5.57,5.57a.485.485,0,0,1-.685,0h0l-3.148-3.148a.484.484,0,0,1,0-.685m12.19,10.4H117.164a1.311,1.311,0,0,1-1.388-1.388,1.388,1.388,0,0,1,1.388-1.388h13.651Z" transform="translate(-112.999 0.001)"/>
                     </svg>
 
 <!--                TBR-->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="23.01" height="22.01" viewBox="0 0 23.095 22.207">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23.01" height="22.01" viewBox="0 0 23.095 22.207" on:click="{() => {emitBookAddedEvent('TBR')}}">
                         <path id="Icon_ionic-ios-heart" data-name="Icon ionic-ios-heart" d="M20.252,3.938H20.2a6.317,6.317,0,0,0-5.274,2.887A6.317,6.317,0,0,0,9.648,3.938H9.593a6.277,6.277,0,0,0-6.218,6.273,13.514,13.514,0,0,0,2.654,7.367,46.505,46.505,0,0,0,8.894,8.566,46.505,46.505,0,0,0,8.894-8.566,13.514,13.514,0,0,0,2.654-7.367A6.277,6.277,0,0,0,20.252,3.938Z" transform="translate(-3.375 -3.938)"/>
                     </svg>
 
 <!--                IN PROGRESS-->
-                    <svg id="Group_4" data-name="Group 4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16.6" height="22.21" viewBox="0 0 16.598 22.207">
+                    <svg on:click="{() => {emitBookAddedEvent('IN PROGRESS')}}" id="Group_4" data-name="Group 4" xmlns="http://www.w3.org/2000/svg" width="16.6" height="22.21" viewBox="0 0 16.598 22.207">
                         <defs>
                             <clipPath id="clip-path">
                                 <rect id="Rectangle_11" data-name="Rectangle 11" width="16.598" height="22.207" fill="#fed9d9"/>
@@ -68,7 +68,7 @@
                     </svg>
 
 <!--                WISHLIST-->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="21.39" height="22.35" viewBox="0 0 22.346 21.388">
+                    <svg on:click="{() => {emitBookAddedEvent('WISHLIST')}}" xmlns="http://www.w3.org/2000/svg" width="21.39" height="22.35" viewBox="0 0 22.346 21.388">
                         <path id="Icon_awesome-star" data-name="Icon awesome-star" d="M11.416.743,8.688,6.273l-6.1.89a1.337,1.337,0,0,0-.739,2.281l4.415,4.3L5.217,19.823a1.336,1.336,0,0,0,1.938,1.408l5.459-2.87,5.459,2.87a1.337,1.337,0,0,0,1.938-1.408l-1.044-6.077,4.415-4.3a1.337,1.337,0,0,0-.739-2.281l-6.1-.89L13.813.743a1.338,1.338,0,0,0-2.4,0Z" transform="translate(-1.441 0.001)"/>
                     </svg>
                 </div>

@@ -1,6 +1,5 @@
 import type {Book} from "../models/Book";
 import {supabase} from "../supabaseClient";
-import type {SEARCH_TYPE} from "../models/SearchType";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
@@ -37,10 +36,10 @@ export namespace BookService {
         }
     }
 
-    export async function addBook(book: Book, library: string) {
+    export async function addBook(book: Book, libraryId: string) {
         const { data, error: err } = await supabase.from('books').insert({
             ...book,
-            library_id: library,
+            library_id: libraryId,
             author: book.author[0]
         })
 

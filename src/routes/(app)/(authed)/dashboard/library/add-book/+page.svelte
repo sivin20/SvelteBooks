@@ -12,29 +12,24 @@
     let searchParam = ''
 
     let searchType = [];
-    $: console.log("st", searchType)
+    $: searchType
     let searchValue = [];
-    $: console.log("sv", searchValue)
+    $: searchValue
 
     let searchTypeList: SEARCH_TYPE[] = [SEARCH_TYPE.intitle, SEARCH_TYPE.inauthor, SEARCH_TYPE.isbn]
 
     let activeFilters: string[] = []
-    $: console.log("af", activeFilters)
-
-    $: activeCard = 0
+    $: activeFilters
 
     const { libraries } = data
 
-    let library;
-    $: library
+    $: libraries
 
     const searchBooks = async () => {
-        console.log("searchType", searchType)
         let query = `q=${searchParam.replace(/ /g, '+')}`;
         for (let i = 0; i < searchType.length; i++) {
             query = query + `+${searchType[i]}:${searchValue[i].replace(/ /g, '+')}`
         }
-        console.log("q", query)
         let bookData
         try {
             bookData = await BookService.searchBook(query)
@@ -72,10 +67,17 @@
         books = await searchBooks() as Book[]
     }
 
+    function eachIndex(e){
+        console.log("Looping each index element ", e)
+        return e.name.includes(e)
+    }
+
     async function addBook(event) {
-        let book: Book = event.detail.text as Book
-        books = books.filter(b => b.id != book.id)
-        const error = await BookService.addBook(book, library)
+        let book: Book = event.detail.book as Book
+        let libraryName: string = event.detail.libraryName
+        // books = books.filter(b => b.id != book.id)
+        const libraryId = libraries.filter(item => item.name.includes(libraryName))[0].id;
+        const error = await BookService.addBook(book, libraryId)
 
         if(error) {
             toast.error(`Error: ${error.message}`, {
@@ -167,8 +169,8 @@
                 <p>...loading</p>
             {:then result}
                 {#each result as book, i (book.id)}
-                    <div on:mouseenter="{() => activeCard = i}" on:mouseleave="{() => activeCard = 999}">
-                        <BookCard on:message={addBook} active="{activeCard === i}" book="{book}"/>
+                    <div>
+                        <BookCard on:message={addBook} book="{book}" libaries="{libraries}"/>
                     </div>
                 {/each}
             {:catch error}

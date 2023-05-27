@@ -2,8 +2,7 @@
     import {BookService} from "../../../../../lib/services/book.service.js";
     import Modal from "../../../../../lib/components/modal.svelte";
     import type {Book} from "../../../../../lib/models/Book";
-    import Fa from "svelte-fa";
-    import {faTrashCan} from "@fortawesome/free-solid-svg-icons";
+    import BookCard from '$lib/components/bookCard.svelte'
     import type {Library} from "../../../../../lib/models/Library";
     import toast, {Toaster} from "svelte-french-toast";
     import {onMount} from "svelte";
@@ -90,39 +89,22 @@
             </div>
         </div>
 
-
-
-        <div class="items-center flex flex-col content-box p-4 mt-4 w-full">
-            {#await books}
-                <p>...loading</p>
-            {:then books}
-                <button class="secondary-button self-end" on:click={() => openDeleteAllModal()}>Delete all</button>
-                <table class="w-full border-separate border-spacing-[0]">
-                    <thead>
-                    <tr>
-                        <th class="text-left">Title</th>
-                        <th class="text-left">Authors</th>
-                        <th class="text-right">ISBN 13</th>
-                        <th class="text-right">Page Count</th>
-                        <th class="text-right"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {#each books as book, i (book.id)}
-                        <tr>
-                            <td class="text-left">{book.title}</td>
-                            <td class="text-left">{book.author}</td>
-                            <td class="text-right">{book.isbn_13}</td>
-                            <td class="text-right">{book.page_count}</td>
-                            <td class="text-right"><button on:click={() => openDeleteModal(book)}> <Fa icon={faTrashCan} color="--primary"/></button></td>
-                        </tr>
+        <section class="mt-4 md:mt-0 flex flex-col items-center">
+            <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6">
+                {#await books}
+                    <p>...loading</p>
+                {:then result}
+                    {#each result as book, i (book.id)}
+                        <div>
+                            <BookCard book="{book}"/>
+                        </div>
                     {/each}
-                    </tbody>
-                </table>
-            {:catch error}
-                <p>Error {error}</p>
-            {/await}
-        </div>
+                {:catch error}
+                    <p>Error {error}</p>
+                {/await}
+            </div>
+        </section>
+
         {#if showDeleteBookModal}
             <Modal showModal="{showDeleteBookModal}">
                 <h2 slot="header" class="text-[--primary]">Deleting</h2>
