@@ -119,6 +119,7 @@
                     <path id="Icon_awesome-angle-up" data-name="Icon awesome-angle-up" d="M6.357,10.987l4.886,4.886a.859.859,0,0,1,0,1.218l-.812.812a.859.859,0,0,1-1.218,0l-3.467-3.46L2.283,17.906a.859.859,0,0,1-1.218,0L.25,17.094a.859.859,0,0,1,0-1.218l4.886-4.886a.86.86,0,0,1,1.221,0Z" transform="translate(11.496 18.16) rotate(180)"/>
                 </svg>
             </div>
+            <div></div>
         </div>
 
         <section class="mt-4 md:mt-0 flex flex-col items-center w-full">
