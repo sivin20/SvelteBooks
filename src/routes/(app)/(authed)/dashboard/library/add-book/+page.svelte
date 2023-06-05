@@ -3,6 +3,7 @@
     import type {Book} from "../../../../../../lib/models/Book";
     import {BookService} from "../../../../../../lib/services/book.service";
     import toast, {Toaster} from "svelte-french-toast";
+    import Paginator from "$lib/components/paginator.svelte";
     import Fa from 'svelte-fa'
     import {faSearch, faTrashCan, faPlus} from '@fortawesome/free-solid-svg-icons'
     import {SEARCH_TYPE} from "../../../../../../lib/models/SearchType";
@@ -25,15 +26,25 @@
 
     $: libraries
 
+    let page = 0; //first page
+    let pageIndex = 0; //first row
+    let pageSize = 12; //optional, 10 by default
+    let bookCount = 12;
+
     const searchBooks = async () => {
         let query = `q=${searchParam.replace(/ /g, '+')}`;
         for (let i = 0; i < searchType.length; i++) {
-            query = query + `+${searchType[i]}:${searchValue[i].replace(/ /g, '+')}`
+            if(searchValue[i]) {
+                query = query + `+${searchType[i]}:${searchValue[i].replace(/ /g, '+')}`
+            }
         }
+        query = query + `&startIndex=${pageIndex}`
         let bookData
         try {
             bookData = await BookService.searchBook(query)
-            return bookData as Book[]
+            console.log("bookdata", bookData)
+            bookCount = bookData[1]
+            return bookData[0] as Book[]
         } catch (e) {
             toast.error(`${e}`, {
                 position: "top-right"
@@ -75,7 +86,6 @@
     async function addBook(event) {
         let book: Book = event.detail.book as Book
         let libraryName: string = event.detail.libraryName
-        // books = books.filter(b => b.id != book.id)
         const libraryId = libraries.filter(item => item.name.includes(libraryName))[0].id;
         const error = await BookService.addBook(book, libraryId)
 
@@ -88,6 +98,15 @@
                 position: "top-right"
             });
         }
+    }
+
+    async function onPageChange(event) {
+        page = event.detail.page
+        console.log("page", page)
+        console.log("pageIndex", event.detail.pageIndex)
+        console.log(event.detail)
+        pageIndex = event.detail.pageIndex
+        await handleSearch()
     }
 
 </script>
@@ -168,7 +187,7 @@
             {#await books}
                 <p>...loading</p>
             {:then result}
-                {#each result as book, i (book.id)}
+                {#each result as book}
                     <div>
                         <BookCard on:message={addBook} book="{book}" libaries="{libraries}"/>
                     </div>
@@ -178,6 +197,7 @@
             {/await}
         </div>
     </section>
+    <Paginator {page} {pageSize} {bookCount} on:pageChange={onPageChange} />
     <Toaster/>
 </main>
 

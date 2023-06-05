@@ -6,7 +6,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
 export namespace BookService {
 
-    export async function searchBook(query: string): Promise<Book[]> {
+    export async function searchBook(query: string): Promise<[Book[], number]> {
         console.log("Searching for books..")
         const res = await fetch(`https://www.googleapis.com/books/v1/volumes?${query}&zoom=0&langRestrict=en&maxResults=12&projection=full&printType=books&key=${API_KEY}`);
         const response = await res.json()
@@ -29,7 +29,7 @@ export namespace BookService {
                             description: book.volumeInfo.description ? book.volumeInfo.description : ''
                         }
                     )}
-                return bookList
+                return [bookList, responseData.totalItems]
             } else {
                 throw new Error('No books found')
             }
