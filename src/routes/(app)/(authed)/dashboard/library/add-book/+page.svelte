@@ -163,8 +163,8 @@
             </div>
         {/if}
     </div>
-    <section class="mt-4 md:mt-0 flex flex-col items-center">
-        <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6">
+    <section class="mt-4 md:mt-0 flex flex-col items-center w-full">
+        <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6 w-full">
             {#await books}
                 <p>...loading</p>
             {:then result}

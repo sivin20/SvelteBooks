@@ -27,8 +27,8 @@
 <main class="h-screen items-start justify-center flex relative overflow-hidden">
     {#if !!currentPageIsLogin}
         <section class="items-center justify-center flex h-full absolute"
-                 in:fly={{ y: '100%', duration: 2000, opacity: 1}}
-                 out:fly={{ y: '100%', duration: 2000, opacity: 1}}>
+                 in:fly={{ y: '100%', duration: 1000, opacity: 1}}
+                 out:fly={{ y: '100%', duration: 1000, opacity: 1}}>
             <div class="bg-[--primary] w-[125px] h-full flex flex-col justify-between mb-[200px]">
                 <div class="mt-10 h-full flex items-center justify-center">
                     <a href="/">
@@ -62,8 +62,8 @@
         </section>
     {:else}
         <section class="items-center justify-center flex h-full absolute"
-                 in:fly={{ y: '-100%', duration: 2000, opacity: 1}}
-                 out:fly={{ y: '-100%', duration: 2000, opacity: 1}}>
+                 in:fly={{ y: '-100%', duration: 1000, opacity: 1}}
+                 out:fly={{ y: '-100%', duration: 1000, opacity: 1}}>
             <div class="bg-[--primary] w-[125px] h-full flex flex-col justify-between">
                 <div class="mt-10 h-full flex items-center justify-center">
                     <a href="/">

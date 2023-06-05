@@ -7,6 +7,7 @@
     import toast, {Toaster} from "svelte-french-toast";
     import {onMount} from "svelte";
     import LibraryCard from '$lib/components/library/libraryCard.svelte'
+    import {SortService} from "$lib/services/sort.service";
 
     /** @type {import('.$types').PageData} */
     export let data
@@ -14,24 +15,37 @@
     const { libraries } = data
 
     let current_library: Library = Object.values(libraries)[0]
-    $: current_library
+
+    let showDeleteBookModal: boolean = false
+    let showDeleteAllModal: boolean = false
+    let bookToBeDeleted: Book;
+
+    let books: Book[] = [];
+
+    let sortParam
+    let sortAscending: boolean
 
     const getBooksFromLibrary = async () => {
         return BookService.getBooksFromLibrary(current_library.id)
     }
 
-    let books: Book[] = [];
-    $: books;
+    function sortBooks(sortArg) {
+        if(sortParam === sortArg) {
+            sortAscending = !sortAscending
+        } else {
+            sortAscending = true;
+        }
+        SortService.sort(books, sortAscending ? sortArg : `-${sortArg}`)
+        sortParam = sortArg
+        books = books
+    }
 
     async function handleGetBooks(library: Library) {
         current_library = library
         books = await getBooksFromLibrary() as Book[]
+        SortService.sort(books, sortParam)
         console.log(Array.isArray(books))
     }
-
-    let showDeleteBookModal = false
-    let showDeleteAllModal = false
-    let bookToBeDeleted: Book;
 
     function openDeleteModal(book: Book) {
         bookToBeDeleted = book
@@ -75,7 +89,6 @@
         <p class="text-[50px]"><strong>MY LIBRARIES</strong></p>
     </div>
     <div class="flex flex-col w-full items-center box-border">
-
         <div class="md:flex items-start justify-start w-full">
             <div class="">
                 <p class="self-start text-[25px]">Active libraries</p>
@@ -89,14 +102,34 @@
             </div>
         </div>
 
-        <section class="mt-4 md:mt-0 flex flex-col items-center">
-            <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6">
+        <div class="md:flex items-center w-full mt-4">
+            <div class="filter-button flex items-center mr-4 justify-between"
+                 on:click={() => {sortBooks('title')}}
+                 class:active={sortParam === 'title'}>
+                <p>A-Z</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="9.33" height="6.02" viewBox="0 0 11.5 7.425" class:flipped={sortAscending && sortParam === 'title'}>
+                    <path id="Icon_awesome-angle-up" data-name="Icon awesome-angle-up" d="M6.357,10.987l4.886,4.886a.859.859,0,0,1,0,1.218l-.812.812a.859.859,0,0,1-1.218,0l-3.467-3.46L2.283,17.906a.859.859,0,0,1-1.218,0L.25,17.094a.859.859,0,0,1,0-1.218l4.886-4.886a.86.86,0,0,1,1.221,0Z" transform="translate(11.496 18.16) rotate(180)"/>
+                </svg>
+            </div>
+            <div class="filter-button flex items-center mr-4 justify-between"
+                 on:click={() => {sortBooks('page_count')}}
+                 class:active={sortParam === 'page_count'}>
+                <p>Pages</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="9.33" height="6.02" viewBox="0 0 11.5 7.425" class:flipped={sortAscending && sortParam === 'page_count'}>
+                    <path id="Icon_awesome-angle-up" data-name="Icon awesome-angle-up" d="M6.357,10.987l4.886,4.886a.859.859,0,0,1,0,1.218l-.812.812a.859.859,0,0,1-1.218,0l-3.467-3.46L2.283,17.906a.859.859,0,0,1-1.218,0L.25,17.094a.859.859,0,0,1,0-1.218l4.886-4.886a.86.86,0,0,1,1.221,0Z" transform="translate(11.496 18.16) rotate(180)"/>
+                </svg>
+            </div>
+        </div>
+
+        <section class="mt-4 md:mt-0 flex flex-col items-center w-full">
+            <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6 w-full">
                 {#await books}
                     <p>...loading</p>
                 {:then result}
                     {#each result as book, i (book.id)}
                         <div>
                             <BookCard book="{book}"/>
+                            <button on:click={() => { openDeleteModal(book) }}>Delete</button>
                         </div>
                     {/each}
                 {:catch error}
@@ -140,5 +173,9 @@
 
     td {
         padding: 0.5rem;
+    }
+
+    .flipped {
+        transform: rotate(180deg);
     }
 </style>
