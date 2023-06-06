@@ -21,6 +21,7 @@
 
     let activeFilters: string[] = []
     $: activeFilters
+    let bookLoading = false
 
     const { libraries } = data
 
@@ -42,7 +43,6 @@
         let bookData
         try {
             bookData = await BookService.searchBook(query)
-            console.log("bookdata", bookData)
             bookCount = bookData[1]
             return bookData[0] as Book[]
         } catch (e) {
@@ -75,6 +75,7 @@
     $: books
 
     async function handleSearch(): Promise<void> {
+        bookLoading = true
         books = await searchBooks() as Book[]
     }
 
@@ -135,7 +136,7 @@
                     <input type="text" class="h-full w-full bg-transparent" bind:value={searchValue[0]}>
                 </div>
                 <div class="h-[32px] flex items-center justify-center cursor-pointer" on:click={() => {removeSearchFilter(0)}}>
-                    <Fa icon="{faTrashCan}" class=""></Fa>
+                    <Fa icon="{faTrashCan}" class="hover:text-red-600"></Fa>
                 </div>
             </div>
         {/if}
@@ -152,7 +153,7 @@
                     <input type="text" class="h-full w-full bg-transparent" bind:value={searchValue[1]}>
                 </div>
                 <div class="h-[32px] flex items-center justify-center cursor-pointer" on:click={() => {removeSearchFilter(1)}}>
-                    <Fa icon="{faTrashCan}" class=""></Fa>
+                    <Fa icon="{faTrashCan}" class="hover:text-red-600"></Fa>
                 </div>
             </div>
         {/if}
@@ -169,7 +170,7 @@
                     <input type="text" class="h-full w-full bg-transparent" bind:value={searchValue[2]}>
                 </div>
                 <div class="h-[32px] flex items-center justify-center cursor-pointer" on:click={() => {removeSearchFilter(2)}}>
-                    <Fa icon="{faTrashCan}"></Fa>
+                    <Fa icon="{faTrashCan}" class="hover:text-red-600"></Fa>
                 </div>
             </div>
         {/if}
@@ -197,10 +198,19 @@
             {/await}
         </div>
     </section>
-    <Paginator {page} {pageSize} {bookCount} on:pageChange={onPageChange} />
+    {#if books.length}
+        <div class="mt-4 p-4 pb-6 flex justify-end items-end w-full">
+            <div class=" p-4 my-shadow rounded-[6px]">
+                <Paginator {page} {pageSize} {bookCount} on:pageChange={onPageChange} />
+            </div>
+        </div>
+    {/if}
     <Toaster/>
 </main>
 
 <style lang="scss">
 
+    .my-shadow {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1607);
+    }
 </style>

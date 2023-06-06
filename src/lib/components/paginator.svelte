@@ -1,11 +1,3 @@
-<script context="module">
-    let globalLabels;
-
-    export function setLabels(labels) {
-        globalLabels = labels;
-    }
-</script>
-
 <script>
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
@@ -16,11 +8,10 @@
     export let pageSize;
 
     export let labels = {
-        first: "First",
-        last: "Last",
-        next: "Next",
-        previous: "Previous",
-        ...globalLabels
+        first: "FIRST",
+        last: "LAST",
+        next: "NEXT",
+        previous: "PREVIOUS",
     };
 
     $: pageCount = Math.floor(bookCount / pageSize);
@@ -36,46 +27,48 @@
     }
 </script>
 
-<ul>
-    <li>
-        <button disabled={page === 0} on:click={e => onChange(e, 0)}>
-            {labels.first}
-        </button>
-    </li>
-    <li>
-        <button disabled={page === 0} on:click={e => onChange(e, page - 1)}>
-            {labels.previous}
-        </button>
-    </li>
-    {#each buttons as button}
-        {#if page + button >= 0 && page + button <= pageCount}
-            <li>
-                <button
-                        class:active={page === page + button}
-                        on:click={e => onChange(e, page + button)}>
-                    {page + button + 1}
-                </button>
-            </li>
-        {/if}
-    {/each}
-    <li>
-        <button
-                disabled={page > pageCount - 1}
-                on:click={e => onChange(e, page + 1)}>
-            {labels.next}
-        </button>
-    </li>
-<!--    Last button temp unavailable due to error in google book api fetch-->
-<!--    <li>-->
-<!--        <button disabled={page >= pageCount} on:click={e => onChange(e, pageCount)}>-->
-<!--            {labels.last}-->
-<!--        </button>-->
-<!--    </li>-->
-</ul>
+<div>
+    <ul>
+        <li>
+            <button disabled={page === 0} on:click={e => onChange(e, 0)}>
+                {labels.first}
+            </button>
+        </li>
+        <li>
+            <button disabled={page === 0} on:click={e => onChange(e, page - 1)}>
+                {labels.previous}
+            </button>
+        </li>
+        {#each buttons as button}
+            {#if page + button >= 0 && page + button <= pageCount}
+                <li>
+                    <button
+                            class:active={page === page + button}
+                            on:click={e => onChange(e, page + button)}>
+                        {page + button + 1}
+                    </button>
+                </li>
+            {/if}
+        {/each}
+        <li>
+            <button
+                    disabled={page > pageCount - 1}
+                    on:click={e => onChange(e, page + 1)}>
+                {labels.next}
+            </button>
+        </li>
+        <!--    Last button temp unavailable due to error in google book api fetch-->
+        <!--    <li>-->
+        <!--        <button disabled={page >= pageCount} on:click={e => onChange(e, pageCount)}>-->
+        <!--            {labels.last}-->
+        <!--        </button>-->
+        <!--    </li>-->
+    </ul>
+</div>
 
 <style>
     .active {
-        background-color: rgb(150, 150, 235);
+        background-color: var(--primary);
         color: white;
     }
 
@@ -92,6 +85,7 @@
     button {
         background: transparent;
         border: 1px solid #ccc;
+        border-radius: 6px;
         padding: 5px 10px;
         margin-left: 3px;
         float: left;
