@@ -1,15 +1,16 @@
 <script lang="ts">
-    import {BookService} from "../../../../../lib/services/book.service.js";
+    import {BookService} from "$lib/services/book.service";
     import Modal from "../../../../../lib/components/modal.svelte";
-    import type {Book} from "../../../../../lib/models/Book";
+    import type {Book} from "$lib/models/Book";
     import BookCard from '$lib/components/bookCard.svelte'
-    import type {Library} from "../../../../../lib/models/Library";
+    import type {Library} from "$lib/models/Library";
     import toast, {Toaster} from "svelte-french-toast";
     import {onMount} from "svelte";
     import LibraryCard from '$lib/components/library/libraryCard.svelte'
     import {SortService} from "$lib/services/sort.service";
     import {faSearch, faXmark} from "@fortawesome/free-solid-svg-icons";
     import Fa from "svelte-fa";
+    import LoadingSpinner from "$lib/components/loadingSpinner.svelte";
 
     /** @type {import('.$types').PageData} */
     export let data
@@ -170,7 +171,7 @@
         <section class="mt-4 md:mt-0 flex flex-col items-center w-full">
             <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6 w-full">
                 {#await books}
-                    <p>...loading</p>
+                    <LoadingSpinner />
                 {:then result}
                     {#each result as book, i (book.id)}
                         <div>

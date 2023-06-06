@@ -1,12 +1,13 @@
 <script lang="ts">
     import BookCard from '$lib/components/bookCard.svelte'
-    import type {Book} from "../../../../../../lib/models/Book";
-    import {BookService} from "../../../../../../lib/services/book.service";
+    import type {Book} from "$lib/models/Book";
+    import {BookService} from "$lib/services/book.service";
     import toast, {Toaster} from "svelte-french-toast";
     import Paginator from "$lib/components/paginator.svelte";
+    import LoadingSpinner from "$lib/components/loadingSpinner.svelte"
     import Fa from 'svelte-fa'
     import {faSearch, faTrashCan, faPlus} from '@fortawesome/free-solid-svg-icons'
-    import {SEARCH_TYPE} from "../../../../../../lib/models/SearchType";
+    import {SEARCH_TYPE} from "$lib/models/SearchType";
 
     /** @type {import('.$types').PageData} */
     export let data;
@@ -21,7 +22,6 @@
 
     let activeFilters: string[] = []
     $: activeFilters
-    let bookLoading = false
 
     const { libraries } = data
 
@@ -32,7 +32,9 @@
     let pageSize = 12; //optional, 10 by default
     let bookCount = 12;
 
-    const searchBooks = async () => {
+    let showPagination: boolean = false
+
+   async function searchBooks() {
         let query = `q=${searchParam.replace(/ /g, '+')}`;
         for (let i = 0; i < searchType.length; i++) {
             if(searchValue[i]) {
@@ -44,6 +46,7 @@
         try {
             bookData = await BookService.searchBook(query)
             bookCount = bookData[1]
+            showPagination = true
             return bookData[0] as Book[]
         } catch (e) {
             toast.error(`${e}`, {
@@ -74,13 +77,12 @@
     let books: Book[] = [];
     $: books
 
-    async function handleSearch(): Promise<void> {
-        bookLoading = true
-        books = await searchBooks() as Book[]
+    async function handleSearch(): Promise<Book[]> {
+        books = searchBooks() as Book[]
+        console.log("b", books)
     }
 
     function eachIndex(e){
-        console.log("Looping each index element ", e)
         return e.name.includes(e)
     }
 
@@ -103,8 +105,6 @@
 
     async function onPageChange(event) {
         page = event.detail.page
-        console.log("page", page)
-        console.log("pageIndex", event.detail.pageIndex)
         console.log(event.detail)
         pageIndex = event.detail.pageIndex
         await handleSearch()
@@ -184,27 +184,30 @@
         {/if}
     </div>
     <section class="mt-4 md:mt-0 flex flex-col items-center w-full">
-        <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6 w-full">
+        <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6 w-full relative">
             {#await books}
-                <p>...loading</p>
+                <div class="h-64 w-full flex justify-center items-center absolute">
+                    <LoadingSpinner />
+                </div>
             {:then result}
-                {#each result as book}
+                {#each result as book, i}
                     <div>
                         <BookCard on:message={addBook} book="{book}" libaries="{libraries}"/>
                     </div>
                 {/each}
+
+                {#if showPagination}
+                    <div class="mt-4 pb-6 flex justify-start items-start w-full">
+                        <div class=" p-4 my-shadow rounded-[6px]">
+                            <Paginator {page} {pageSize} {bookCount} on:pageChange={onPageChange} />
+                        </div>
+                    </div>
+                {/if}
             {:catch error}
                 <p>Error {error}</p>
             {/await}
         </div>
     </section>
-    {#if books.length}
-        <div class="mt-4 p-4 pb-6 flex justify-end items-end w-full">
-            <div class=" p-4 my-shadow rounded-[6px]">
-                <Paginator {page} {pageSize} {bookCount} on:pageChange={onPageChange} />
-            </div>
-        </div>
-    {/if}
     <Toaster/>
 </main>
 

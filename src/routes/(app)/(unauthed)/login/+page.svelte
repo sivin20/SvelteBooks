@@ -67,7 +67,7 @@
             <div class="bg-[--primary] w-[125px] h-full flex flex-col justify-between">
                 <div class="mt-10 h-full flex items-center justify-center">
                     <a href="/">
-                        <img src="src/lib/assets/siglib_blue_white.svg" alt="logo" class="h-[285px]">
+                        <img src="{logo}" alt="logo" class="h-[285px]">
                     </a>
                 </div>
             </div>
