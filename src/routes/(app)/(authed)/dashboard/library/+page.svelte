@@ -75,8 +75,7 @@
     }
 
     function openDeleteModal(event) {
-        let book: Book = event.detail.book
-        bookToBeDeleted = book
+        bookToBeDeleted = event.detail.book
         showDeleteBookModal = true
     }
 
