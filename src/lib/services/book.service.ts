@@ -18,12 +18,18 @@ export namespace BookService {
             const bookList: Book[] = []
             if(!!responseData.items) {
                 for (let book of responseData.items) {
+                    let img: string = ''
+                    if(!!book.volumeInfo.imageLinks?.thumbnail) {
+                        img = book.volumeInfo.imageLinks?.thumbnail.replace('http', 'https')
+                        img = img.replace('zoom=1','zoom=2')
+                        console.log(img)
+                    }
                     bookList.push(
                         {
                             id: book.id,
                             title: book.volumeInfo.title ? book.volumeInfo.title : '',
                             author: book.volumeInfo.authors ? book.volumeInfo.authors : '',
-                            image_link: !!book.volumeInfo.imageLinks?.thumbnail ? book.volumeInfo.imageLinks?.thumbnail : null,
+                            image_link: img,
                             page_count: book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 0,
                             isbn_13: book.volumeInfo.industryIdentifiers ? book.volumeInfo.industryIdentifiers[0]?.identifier : '',
                             description: book.volumeInfo.description ? book.volumeInfo.description : ''

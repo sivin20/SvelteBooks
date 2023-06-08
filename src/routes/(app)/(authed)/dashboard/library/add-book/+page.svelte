@@ -45,6 +45,7 @@
         let bookData
         try {
             bookData = await BookService.searchBook(query)
+            console.log("data" ,bookData)
             bookCount = bookData[1]
             showPagination = true
             return bookData[0] as Book[]
