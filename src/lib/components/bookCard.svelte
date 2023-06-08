@@ -2,6 +2,7 @@
     import type {Book} from "$lib/models/Book";
 
     export let book: Book
+    export let isLibraryBook: boolean
 
     import {createEventDispatcher} from 'svelte'
 
@@ -18,16 +19,23 @@
         });
     }
 
+    function deleteBook() {
+        console.log("Book deleted")
+        dispatch('message', {
+            book: book,
+        });
+    }
+
     $: bookAdded
 </script>
 
 <main class="h-full w-[540px]">
     <div class='card flex flex-row h-full p-4'>
         {#if book.image_link}
-            <img src='{book.image_link}' alt="Book Cover" class='book h-[254px] w-[165px]'>
+            <img src='{book.image_link}' alt="Book Cover" class='book h-[192px] w-[128px]'>
         {:else}
             <div>
-                <div class='book h-[254px] w-[165px] bg-[--secondary--accent-2] flex items-center justify-center'>
+                <div class='book h-[192px] w-[128px] bg-[--secondary--accent-2] flex items-center justify-center'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="49.18" height="56.19" viewBox="0 0 25.192 28.788">
                         <path data-name="Path 4" d="M25.182,20.15V1.444A1.324,1.324,0,0,0,23.744,0H5.4A5.3,5.3,0,0,0,0,5.2c0,.067,0,.135,0,.2V23.388a5.3,5.3,0,0,0,5.2,5.4q.1,0,.2,0H23.744a1.418,1.418,0,0,0,1.439-1.4c0-.014,0-.028,0-.042v-.9a1.554,1.554,0,0,0-.54-1.079,15.921,15.921,0,0,1,0-4.137,1.088,1.088,0,0,0,.54-1.08ZM8.1,9.448A.45.45,0,0,1,8.544,9H11.7V5.85a.45.45,0,0,1,.45-.45h2.7a.45.45,0,0,1,.45.45V9h3.148a.45.45,0,0,1,.45.45v2.7a.45.45,0,0,1-.45.45H15.294v3.148a.45.45,0,0,1-.45.45h-2.7a.45.45,0,0,1-.45-.45V12.6H8.544a.45.45,0,0,1-.45-.45Zm15,15.739H5.4a1.7,1.7,0,0,1-1.8-1.8,1.8,1.8,0,0,1,1.8-1.8H23.1Z"
                               transform="translate(0.001 0.001)"/>
@@ -46,12 +54,12 @@
                 <div class="flex gap-6">
 
 <!--                BOOKS READ-->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="19.43" height="22.21" viewBox="0 0 19.433 22.207" on:click="{() => {emitBookAddedEvent('BOOKS READ')}}">
+                    <svg on:click="{() => {emitBookAddedEvent('BOOKS READ')}}" xmlns="http://www.w3.org/2000/svg" width="19.43" height="22.21" viewBox="0 0 19.433 22.207" >
                         <path id="Path_5" data-name="Path 5" d="M132.01,19.568a12.282,12.282,0,0,1,0-3.191.839.839,0,0,0,.416-.833h0V1.114A1.022,1.022,0,0,0,131.316,0H117.164A4.087,4.087,0,0,0,113,4.011q0,.078,0,.156V18.041a4.087,4.087,0,0,0,4.008,4.164h14.308a1.094,1.094,0,0,0,1.11-1.078c0-.011,0-.022,0-.033V20.4a1.2,1.2,0,0,0-.416-.833M118.625,9.032h0l.685-.687a.484.484,0,0,1,.685,0h0l2.121,2.122,4.543-4.544a.485.485,0,0,1,.685,0h0l.685.686a.484.484,0,0,1,0,.685l-5.57,5.57a.485.485,0,0,1-.685,0h0l-3.148-3.148a.484.484,0,0,1,0-.685m12.19,10.4H117.164a1.311,1.311,0,0,1-1.388-1.388,1.388,1.388,0,0,1,1.388-1.388h13.651Z" transform="translate(-112.999 0.001)"/>
                     </svg>
 
 <!--                TBR-->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="23.01" height="22.01" viewBox="0 0 23.095 22.207" on:click="{() => {emitBookAddedEvent('TBR')}}">
+                    <svg on:click="{() => {emitBookAddedEvent('TBR')}}" xmlns="http://www.w3.org/2000/svg" width="23.01" height="22.01" viewBox="0 0 23.095 22.207" >
                         <path id="Icon_ionic-ios-heart" data-name="Icon ionic-ios-heart" d="M20.252,3.938H20.2a6.317,6.317,0,0,0-5.274,2.887A6.317,6.317,0,0,0,9.648,3.938H9.593a6.277,6.277,0,0,0-6.218,6.273,13.514,13.514,0,0,0,2.654,7.367,46.505,46.505,0,0,0,8.894,8.566,46.505,46.505,0,0,0,8.894-8.566,13.514,13.514,0,0,0,2.654-7.367A6.277,6.277,0,0,0,20.252,3.938Z" transform="translate(-3.375 -3.938)"/>
                     </svg>
 
@@ -71,6 +79,9 @@
                     <svg on:click="{() => {emitBookAddedEvent('WISHLIST')}}" xmlns="http://www.w3.org/2000/svg" width="21.39" height="22.35" viewBox="0 0 22.346 21.388">
                         <path id="Icon_awesome-star" data-name="Icon awesome-star" d="M11.416.743,8.688,6.273l-6.1.89a1.337,1.337,0,0,0-.739,2.281l4.415,4.3L5.217,19.823a1.336,1.336,0,0,0,1.938,1.408l5.459-2.87,5.459,2.87a1.337,1.337,0,0,0,1.938-1.408l-1.044-6.077,4.415-4.3a1.337,1.337,0,0,0-.739-2.281l-6.1-.89L13.813.743a1.338,1.338,0,0,0-2.4,0Z" transform="translate(-1.441 0.001)"/>
                     </svg>
+                    {#if isLibraryBook}
+                        <button on:click={() => {deleteBook()}}>DELETE</button>
+                    {/if}
                 </div>
             </div>
         </div>

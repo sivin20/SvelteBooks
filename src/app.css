@@ -47,6 +47,20 @@ input:-webkit-autofill:active {
     justify-content: center;
 }
 
+.small-primary-button {
+    border-radius: 6px;
+    display: flex;
+    background-color: var(--primary);
+    color: #FFF;
+    font-size: 14px;
+    font-weight: bold;
+    height: 32px;
+    min-width: 84px;
+    padding: 0 1.5rem;
+    align-items: center;
+    justify-content: center;
+}
+
 .secondary-button {
     border-radius: 6px;
     display: flex;

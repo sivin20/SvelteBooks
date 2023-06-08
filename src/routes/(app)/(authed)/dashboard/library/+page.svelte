@@ -25,7 +25,6 @@
 
     let books: Book[] = [];
     let unfilteredBooks: Book[] = [];
-    $: console.log("Unf", unfilteredBooks)
 
     let sortParam: any = 'title'
     let sortAscending: boolean = true
@@ -75,7 +74,8 @@
         console.log(Array.isArray(books))
     }
 
-    function openDeleteModal(book: Book) {
+    function openDeleteModal(event) {
+        let book: Book = event.detail.book
         bookToBeDeleted = book
         showDeleteBookModal = true
     }
@@ -173,10 +173,10 @@
                 {#await books}
                     <LoadingSpinner />
                 {:then result}
+                    <button on:click={() => {openDeleteAllModal()}}>DELETE ALL BOOKS</button>
                     {#each result as book, i (book.id)}
-                        <div>
-                            <BookCard book="{book}"/>
-                            <button on:click={() => { openDeleteModal(book) }}>Delete</button>
+                        <div class="items-center flex justify-center">
+                            <BookCard book="{book}" on:message="{openDeleteModal}" isLibraryBook="{true}"/>
                         </div>
                     {/each}
                 {:catch error}
@@ -187,20 +187,20 @@
 
         {#if showDeleteBookModal}
             <Modal showModal="{showDeleteBookModal}">
-                <h2 slot="header" class="text-[--primary]">Deleting</h2>
+                <h2 slot="header" class="text-[--primary] text-2xl font-bold">Deleting</h2>
                 <div>
                     <p>Are you sure you want to remove {bookToBeDeleted.title} from this library?</p>
                 </div>
-                <button slot="yes-button" class="secondary-button" on:click={() => deleteBook()}>Yes</button>
+                <button slot="yes-button" class="small-secondary-button" on:click={() => deleteBook()}>Yes</button>
             </Modal>
         {/if}
         {#if showDeleteAllModal}
             <Modal showModal="{showDeleteAllModal}">
-                <h2 slot="header" class="text-[--primary]">Deleting</h2>
+                <h2 slot="header" class="text-[--primary] text-2xl font-bold">Deleting</h2>
                 <div>
-                    <p>Are you sure you want to remove EVERY book from this library?</p>
+                    <p>Are you sure you want to remove <u>EVERY</u> book from this library?</p>
                 </div>
-                <button slot="yes-button" class="secondary-button" on:click={() => deleteAllBooks()}>Yes</button>
+                <button slot="yes-button" class="small-secondary-button" on:click={() => deleteAllBooks()}>Yes</button>
             </Modal>
         {/if}
 

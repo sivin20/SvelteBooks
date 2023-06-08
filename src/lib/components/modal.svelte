@@ -14,18 +14,18 @@
         on:close={() => (showModal = false)}
         on:click|self={() => dialog.close()}
 >
-    <div class="p-4" on:click|stopPropagation>
+    <div class="p-4 w-[350px]" on:click|stopPropagation>
         <div class="flex items-center justify-center">
             <div class="flex-auto ">
                 <slot name="header"/>
             </div>
-            <button class="flex text-right" autofocus on:click={() => dialog.close()}><Fa icon="{faXmark}"/></button>
+            <button class="flex text-2xl text-right" autofocus on:click={() => dialog.close()}><Fa icon="{faXmark}"/></button>
         </div>
         <hr />
         <slot />
         <div class="flex items-center justify-center pt-4">
             <slot name="yes-button"></slot>
-            <button class="primary-button ml-2" on:click|self={() => dialog.close()}>No</button>
+            <button class="small-primary-button ml-2" on:click|self={() => dialog.close()}>No</button>
         </div>
     </div>
 </dialog>

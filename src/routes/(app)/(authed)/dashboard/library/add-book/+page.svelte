@@ -192,7 +192,7 @@
                 </div>
             {:then result}
                 {#each result as book, i}
-                    <div>
+                    <div class="items-center flex justify-center">
                         <BookCard on:message={addBook} book="{book}" libaries="{libraries}"/>
                     </div>
                 {/each}
