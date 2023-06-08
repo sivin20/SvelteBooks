@@ -168,11 +168,11 @@
         </div>
 
         <section class="mt-4 md:mt-0 flex flex-col items-center w-full">
+<!--            <button on:click={() => {openDeleteAllModal()}}>DELETE ALL BOOKS</button>-->
             <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6 w-full">
                 {#await books}
                     <LoadingSpinner />
                 {:then result}
-                    <button on:click={() => {openDeleteAllModal()}}>DELETE ALL BOOKS</button>
                     {#each result as book, i (book.id)}
                         <div class="items-center flex justify-center">
                             <BookCard book="{book}" on:message="{openDeleteModal}" isLibraryBook="{true}"/>
