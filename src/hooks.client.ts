@@ -1,8 +1,9 @@
 // src/hooks.+client.ts
 
 import type { Handle } from '@sveltejs/kit';
-import {redirect} from "@sveltejs/kit";
+import {fail, redirect} from "@sveltejs/kit";
 import {supabase} from "./lib/supabaseClient";
+import {AuthApiError} from "@supabase/supabase-js";
 
 export const handle: Handle = async ({ event, resolve }) => {
     event.locals.supabase = supabase
