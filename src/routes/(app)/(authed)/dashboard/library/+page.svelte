@@ -69,6 +69,7 @@
 
     async function handleGetBooks(library: Library) {
         current_library = library
+        console.log("current", current_library)
         books = await getBooksFromLibrary() as Book[]
         SortService.sort(books, sortParam)
         console.log(Array.isArray(books))

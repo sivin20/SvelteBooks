@@ -16,20 +16,19 @@ export const load: PageServerLoad = (async ({ locals: { getSession } }) => {
     let libraries: any[] = []
     for (let lib of data) {
         if (lib.name === 'BOOKS READ') {
-            console.log(lib)
             libraries[0] = lib
         }
         if (lib.name === 'TBR') {
-            console.log(lib)
             libraries[1] = lib
         }
         if (lib.name === 'IN PROGRESS') {
-            console.log(lib)
             libraries[2] = lib
-        } else {
+        }
+        if(lib.name == 'WISHLIST') {
             libraries[3] = lib
         }
     }
+    console.log("libraries", libraries)
 
 
     return {

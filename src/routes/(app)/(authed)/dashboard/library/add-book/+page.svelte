@@ -202,6 +202,8 @@
                         <div class=" p-4 my-shadow rounded-[6px]">
                             <Paginator {page} {pageSize} {bookCount} on:pageChange={onPageChange} />
                         </div>
+                        <div></div>
+                        <div></div>
                     </div>
                 {/if}
             {:catch error}

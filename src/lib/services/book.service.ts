@@ -1,5 +1,6 @@
 import type {Book} from "../models/Book";
 import {supabase} from "../supabaseClient";
+import {uuid} from "@supabase/supabase-js/dist/main/lib/helpers";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
@@ -42,14 +43,25 @@ export namespace BookService {
     }
 
     export async function addBook(book: Book, libraryId: string) {
-        const { data, error: err } = await supabase.from('books').insert({
+        const { data, error: err } = await supabase.from('books').upsert({
             ...book,
-            library_id: libraryId,
             author: book.author[0]
-        })
+        }, {onConflict: 'id'})
+
+        const { error: err2 } = await supabase.from('books_composite').upsert({
+            id: `${libraryId}_${book.id}`,
+            book_id: book.id,
+            library_id: libraryId
+        }, {onConflict: 'id'})
+
+        console.log("data", data)
 
         if (err) {
             return err
+        }
+
+        if (err2) {
+            return err2
         }
     }
 
@@ -72,7 +84,8 @@ export namespace BookService {
     }
 
     export async function getBooksFromLibrary(libraryId: string) {
-        const res  = await supabase.from("books").select().eq('library_id', libraryId);
+        const res =  await supabase.rpc('get_books_from_library', {lib_id: libraryId})
+        console.log("res", res)
         const data = res.data
         if(res.status === 200) {
             return data as Book[]
