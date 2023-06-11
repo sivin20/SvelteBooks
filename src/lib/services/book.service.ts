@@ -66,11 +66,18 @@ export namespace BookService {
     }
 
     export async function deleteBook(book:any) {
-        const res = await supabase.from('books').delete().eq('id', book.id)
-        if(res.status === 204) {
-            return "successful"
-        } else {
-            return new Error("Error here")
+        const { error: err } = await supabase.from('books').delete().eq('id', book.id)
+        console.log("res", err)
+        if(err) {
+            return err
+        }
+    }
+
+    export async function removeBookFromLibrary(book_id: string, library_id: string) {
+        const { error: err } = await supabase.from('books_composite').delete().eq('id', `${library_id}_${book_id}`)
+        console.log("res", err)
+        if(err) {
+            return err
         }
     }
 
@@ -85,7 +92,6 @@ export namespace BookService {
 
     export async function getBooksFromLibrary(libraryId: string) {
         const res =  await supabase.rpc('get_books_from_library', {lib_id: libraryId})
-        console.log("res", res)
         const data = res.data
         if(res.status === 200) {
             return data as Book[]

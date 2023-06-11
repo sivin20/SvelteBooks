@@ -5,10 +5,7 @@ import {
 } from '$env/static/public';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import type { Handle } from '@sveltejs/kit';
-import {fail, redirect} from "@sveltejs/kit";
-import {supabase} from "$lib/supabaseClient";
-import {AuthApiError} from "@supabase/supabase-js";
-import * as url from "url";
+import {redirect} from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
     event.locals.supabase = createSupabaseServerClient({

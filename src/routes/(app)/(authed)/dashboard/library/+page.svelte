@@ -12,6 +12,8 @@
     import Fa from "svelte-fa";
     import LoadingSpinner from "$lib/components/loadingSpinner.svelte";
 
+    import {booksReadStore} from "$lib/stores/bookStore";
+
     /** @type {import('.$types').PageData} */
     export let data
 
@@ -69,10 +71,8 @@
 
     async function handleGetBooks(library: Library) {
         current_library = library
-        console.log("current", current_library)
         books = await getBooksFromLibrary() as Book[]
         SortService.sort(books, sortParam)
-        console.log(Array.isArray(books))
     }
 
     function openDeleteModal(event) {
@@ -92,6 +92,7 @@
                 position: "top-right"
             })
             books = books.filter(b => b.id != bookToBeDeleted.id)
+
         })
     }
 
@@ -176,7 +177,7 @@
                 {:then result}
                     {#each result as book, i (book.id)}
                         <div class="items-center flex justify-center">
-                            <BookCard book="{book}" on:message="{openDeleteModal}" isLibraryBook="{true}"/>
+                            <BookCard book="{book}" on:message="{openDeleteModal}"/>
                         </div>
                     {/each}
                 {:catch error}
@@ -185,15 +186,7 @@
             </div>
         </section>
 
-        {#if showDeleteBookModal}
-            <Modal showModal="{showDeleteBookModal}">
-                <h2 slot="header" class="text-[--primary] text-2xl font-bold">Deleting</h2>
-                <div>
-                    <p>Are you sure you want to remove {bookToBeDeleted.title} from this library?</p>
-                </div>
-                <button slot="yes-button" class="small-secondary-button" on:click={() => deleteBook()}>Yes</button>
-            </Modal>
-        {/if}
+
         {#if showDeleteAllModal}
             <Modal showModal="{showDeleteAllModal}">
                 <h2 slot="header" class="text-[--primary] text-2xl font-bold">Deleting</h2>

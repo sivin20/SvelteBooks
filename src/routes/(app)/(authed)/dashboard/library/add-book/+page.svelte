@@ -83,27 +83,6 @@
         console.log("b", books)
     }
 
-    function eachIndex(e){
-        return e.name.includes(e)
-    }
-
-    async function addBook(event) {
-        let book: Book = event.detail.book as Book
-        let libraryName: string = event.detail.libraryName
-        const libraryId = libraries.filter(item => item.name.includes(libraryName))[0].id;
-        const error = await BookService.addBook(book, libraryId)
-
-        if(error) {
-            toast.error(`Error: ${error.message}`, {
-                position: "top-right"
-            });
-        } else {
-            toast.success(`Succesfully added ${book.title}`, {
-                position: "top-right"
-            });
-        }
-    }
-
     async function onPageChange(event) {
         page = event.detail.page
         console.log(event.detail)
@@ -193,7 +172,7 @@
             {:then result}
                 {#each result as book, i}
                     <div class="items-center flex justify-center">
-                        <BookCard on:message={addBook} book="{book}" libaries="{libraries}"/>
+                        <BookCard book="{book}"/>
                     </div>
                 {/each}
 
