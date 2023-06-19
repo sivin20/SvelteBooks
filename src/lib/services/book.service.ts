@@ -1,6 +1,7 @@
 import type {Book} from "../models/Book";
 import {supabase} from "../supabaseClient";
-import {uuid} from "@supabase/supabase-js/dist/main/lib/helpers";
+import {booksReadStore, tbrStore, inProgressStore, wishlistStore} from "$lib/stores/bookStore";
+import type {BookComposite} from "$lib/models/BookComposite";
 
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
 
@@ -43,7 +44,7 @@ export namespace BookService {
     }
 
     export async function addBook(book: Book, libraryId: string) {
-        const { data, error: err } = await supabase.from('books').upsert({
+        const { error: err } = await supabase.from('books').upsert({
             ...book,
             author: book.author[0]
         }, {onConflict: 'id'})
@@ -54,14 +55,36 @@ export namespace BookService {
             library_id: libraryId
         }, {onConflict: 'id'})
 
-        console.log("data", data)
-
         if (err) {
             return err
         }
 
         if (err2) {
             return err2
+        }
+    }
+
+    export function setBookStore(list: BookComposite[], bookComposite: BookComposite, removeFromStore?: boolean): void {
+        if(!removeFromStore) {
+            list.push(bookComposite)
+        } else {
+            const index: number = list.indexOf(bookComposite)
+            list.splice(index, 1)
+        }
+
+        switch (bookComposite.library_name) {
+            case "BOOKS READ":
+                booksReadStore.set(list)
+                break;
+            case "TBR":
+                tbrStore.set(list)
+                break;
+            case "IN PROGRESS":
+                inProgressStore.set(list)
+                break;
+            case "WISHLIST":
+                wishlistStore.set(list)
+                break;
         }
     }
 

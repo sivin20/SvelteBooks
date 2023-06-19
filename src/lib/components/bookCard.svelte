@@ -11,15 +11,22 @@
     let showDeleteBookModal: boolean = false
     let current_library_id: string
 
+    let currentBookComposite: BookComposite
+    let currentStoreList: BookComposite[]
+
     async function addOrDeleteBook(list: BookComposite[], libraryName: string) {
         console.log("lib id", list[0].library_id)
         current_library_id = list[0].library_id;
+        currentBookComposite = {
+            library_id: list[0].library_id,
+            library_name: libraryName,
+            book_id: book.id
+        }
+        currentStoreList = list
 
         if(checkIfAlreadyAdded(list, libraryName)) {
-            console.log("delete from" + libraryName)
             showDeleteBookModal = true
         } else {
-            console.log("add to booksReadSubList"+ libraryName)
             await addBook()
         }
     }
@@ -35,6 +42,7 @@
             toast.success(`Succesfully removed ${book.title}`, {
                 position: "top-right"
             });
+            BookService.setBookStore(currentStoreList, currentBookComposite, true)
         }
     }
 
@@ -49,13 +57,18 @@
             toast.success(`Succesfully added ${book.title}`, {
                 position: "top-right"
             });
+            BookService.setBookStore(currentStoreList, currentBookComposite)
         }
     }
 
     let booksReadSubList
+    $: booksReadSubList
     let wishlistSubList
+    $: wishlistSubList
     let tbrSubList
+    $: tbrSubList
     let inProgressSubList
+    $: inProgressSubList
 
     booksReadStore.subscribe(value => {
         console.log("booksread", value)
