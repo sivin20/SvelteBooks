@@ -15,22 +15,23 @@ export const load: LayoutLoad = async ({parent}) => {
         let tempInProgress: BookComposite[] = []
         let tempWishlist: BookComposite[] = []
         for(let bookComposite of res.data) {
-            if (bookComposite.library_name === 'BOOKS READ' && !!bookComposite.book_id) {
+            if (bookComposite.library_name === 'BOOKS READ') {
                 tempBooksRead.push(bookComposite)
             }
-            if (bookComposite.library_name === 'TBR' && !!bookComposite.book_id) {
+            if (bookComposite.library_name === 'TBR') {
                 tempTBR.push(bookComposite)
             }
-            if (bookComposite.library_name === 'IN PROGRESS' && !!bookComposite.book_id) {
+            if (bookComposite.library_name === 'IN PROGRESS') {
                 tempInProgress.push(bookComposite)
             }
-            if (bookComposite.library_name === 'WISHLIST' && !!bookComposite.book_id) {
+            if (bookComposite.library_name === 'WISHLIST') {
                 tempWishlist.push(bookComposite)
+                console.log("temp", tempWishlist)
             }
         }
-        booksReadStore.set(tempBooksRead)
-        tbrStore.set(tempTBR)
-        inProgressStore.set(tempInProgress)
-        wishlistStore.set(tempWishlist)
+        booksReadStore.set([...tempBooksRead, {book_id: '', library_name: tempBooksRead[0].library_name, library_id: tempBooksRead[0].library_id}])
+        tbrStore.set([...tempTBR, {book_id: '', library_name: tempTBR[0].library_name, library_id: tempTBR[0].library_id}])
+        inProgressStore.set([...tempInProgress, {book_id: '', library_name: tempInProgress[0].library_name, library_id: tempInProgress[0].library_id}])
+        wishlistStore.set([...tempWishlist, {book_id: '', library_name: tempWishlist[0].library_name, library_id: tempWishlist[0].library_id}])
     }
 }

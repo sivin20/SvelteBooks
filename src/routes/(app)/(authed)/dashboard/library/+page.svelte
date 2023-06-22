@@ -1,6 +1,5 @@
 <script lang="ts">
     import {BookService} from "$lib/services/book.service";
-    import Modal from "../../../../../lib/components/modal.svelte";
     import type {Book} from "$lib/models/Book";
     import BookCard from '$lib/components/bookCard.svelte'
     import type {Library} from "$lib/models/Library";
@@ -11,8 +10,6 @@
     import {faSearch, faXmark} from "@fortawesome/free-solid-svg-icons";
     import Fa from "svelte-fa";
     import LoadingSpinner from "$lib/components/loadingSpinner.svelte";
-
-    import {booksReadStore} from "$lib/stores/bookStore";
 
     /** @type {import('.$types').PageData} */
     export let data
@@ -75,36 +72,12 @@
         SortService.sort(books, sortParam)
     }
 
-    function openDeleteModal(event) {
+    function removeBookFromThisLibrary(event) {
         bookToBeDeleted = event.detail.book
-        showDeleteBookModal = true
-    }
-
-    function openDeleteAllModal() {
-        showDeleteAllModal = true
-    }
-
-    async function deleteBook() {
-        await BookService.deleteBook(bookToBeDeleted).then(() => {
-            showDeleteBookModal = false
-            toast.success(`Succesfully deleted ${bookToBeDeleted.title}`, {
-                duration: 5000,
-                position: "top-right"
-            })
+        const library_id = event.detail.library_id
+        if(library_id === current_library.id) {
             books = books.filter(b => b.id != bookToBeDeleted.id)
-
-        })
-    }
-
-    async function deleteAllBooks() {
-        await BookService.deleteAllBooks(current_library.id).then(() => {
-            showDeleteAllModal = false
-            toast.success(`Succesfully deleted all books`, {
-                duration: 5000,
-                position: "top-right"
-            })
-            books = []
-        })
+        }
     }
 
     onMount(async () => {
@@ -177,7 +150,7 @@
                 {:then result}
                     {#each result as book, i (book.id)}
                         <div class="items-center flex justify-center">
-                            <BookCard book="{book}" on:message="{openDeleteModal}"/>
+                            <BookCard book="{book}" on:message="{removeBookFromThisLibrary}"/>
                         </div>
                     {/each}
                 {:catch error}
@@ -185,18 +158,6 @@
                 {/await}
             </div>
         </section>
-
-
-        {#if showDeleteAllModal}
-            <Modal showModal="{showDeleteAllModal}">
-                <h2 slot="header" class="text-[--primary] text-2xl font-bold">Deleting</h2>
-                <div>
-                    <p>Are you sure you want to remove <u>EVERY</u> book from this library?</p>
-                </div>
-                <button slot="yes-button" class="small-secondary-button" on:click={() => deleteAllBooks()}>Yes</button>
-            </Modal>
-        {/if}
-
         <Toaster/>
     </div>
 </main>

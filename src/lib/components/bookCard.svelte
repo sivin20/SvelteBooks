@@ -3,11 +3,13 @@
     import Modal from '$lib/components/modal.svelte'
 
     export let book: Book
+    const dispatch = createEventDispatcher();
 
     import {booksReadStore, tbrStore, inProgressStore, wishlistStore} from "$lib/stores/bookStore";
     import type {BookComposite} from "$lib/models/BookComposite";
     import {BookService} from "$lib/services/book.service";
     import toast from "svelte-french-toast";
+    import {createEventDispatcher} from "svelte";
     let showDeleteBookModal: boolean = false
     let current_library_id: string
 
@@ -15,7 +17,6 @@
     let currentStoreList: BookComposite[]
 
     async function addOrDeleteBook(list: BookComposite[], libraryName: string) {
-        console.log("lib id", list[0].library_id)
         current_library_id = list[0].library_id;
         currentBookComposite = {
             library_id: list[0].library_id,
@@ -42,7 +43,15 @@
             toast.success(`Succesfully removed ${book.title}`, {
                 position: "top-right"
             });
-            BookService.setBookStore(currentStoreList, currentBookComposite, true)
+            const index: number = currentStoreList.findIndex(function(element) {
+                return element.book_id === currentBookComposite.book_id
+            })
+            currentStoreList.splice(index, 1)
+            BookService.setBookStore(currentStoreList, currentBookComposite.library_name)
+            dispatch("message", {
+                book: book,
+                library_id: current_library_id
+            });
         }
     }
 
@@ -57,42 +66,17 @@
             toast.success(`Succesfully added ${book.title}`, {
                 position: "top-right"
             });
-            BookService.setBookStore(currentStoreList, currentBookComposite)
+            currentStoreList.push(currentBookComposite)
+            BookService.setBookStore(currentStoreList, currentBookComposite.library_name)
         }
     }
 
-    let booksReadSubList
-    $: booksReadSubList
-    let wishlistSubList
-    $: wishlistSubList
-    let tbrSubList
-    $: tbrSubList
-    let inProgressSubList
-    $: inProgressSubList
 
-    booksReadStore.subscribe(value => {
-        console.log("booksread", value)
-        booksReadSubList = value
-    })
-
-    tbrStore.subscribe(value => {
-        console.log("tbrSubList", value)
-        tbrSubList = value
-    })
-    inProgressStore.subscribe(value => {
-        console.log("inProgressSubList", value)
-        inProgressSubList = value
-    })
-    wishlistStore.subscribe(value => {
-        console.log("wishlistSubList", value)
-        wishlistSubList = value
-    })
-
-    function checkIfAlreadyAdded(list: BookComposite[], libraryName: string) {
+    function checkIfAlreadyAdded(list: BookComposite[], libraryName) {
         const ele = list.filter(e => e.book_id === book.id && e.library_name === libraryName)
-        console.log("ele", ele)
         return ele.length !== 0;
     }
+
 </script>
 
 <main class="h-full w-[540px]">
@@ -118,19 +102,18 @@
             <div>
                 <p class="mb-2">Pages: <strong class="font-semibold">{book.page_count}</strong></p>
                 <div class="flex gap-6">
-
 <!--                BOOKS READ-->
-                    <svg class:active={checkIfAlreadyAdded(booksReadSubList, 'BOOKS READ')} on:click="{() => {addOrDeleteBook(booksReadSubList, 'BOOKS READ')}}" xmlns="http://www.w3.org/2000/svg" width="19.43" height="22.21" viewBox="0 0 19.433 22.207" >
+                    <svg class:active={checkIfAlreadyAdded($booksReadStore, 'BOOKS READ')} on:click="{() => {addOrDeleteBook($booksReadStore, 'BOOKS READ')}}" xmlns="http://www.w3.org/2000/svg" width="19.43" height="22.21" viewBox="0 0 19.433 22.207" >
                         <path id="Path_5" data-name="Path 5" d="M132.01,19.568a12.282,12.282,0,0,1,0-3.191.839.839,0,0,0,.416-.833h0V1.114A1.022,1.022,0,0,0,131.316,0H117.164A4.087,4.087,0,0,0,113,4.011q0,.078,0,.156V18.041a4.087,4.087,0,0,0,4.008,4.164h14.308a1.094,1.094,0,0,0,1.11-1.078c0-.011,0-.022,0-.033V20.4a1.2,1.2,0,0,0-.416-.833M118.625,9.032h0l.685-.687a.484.484,0,0,1,.685,0h0l2.121,2.122,4.543-4.544a.485.485,0,0,1,.685,0h0l.685.686a.484.484,0,0,1,0,.685l-5.57,5.57a.485.485,0,0,1-.685,0h0l-3.148-3.148a.484.484,0,0,1,0-.685m12.19,10.4H117.164a1.311,1.311,0,0,1-1.388-1.388,1.388,1.388,0,0,1,1.388-1.388h13.651Z" transform="translate(-112.999 0.001)"/>
                     </svg>
 
 <!--                TBR-->
-                    <svg class:active={checkIfAlreadyAdded(tbrSubList, 'TBR')} on:click="{() => {addOrDeleteBook(tbrSubList, 'TBR')}}" xmlns="http://www.w3.org/2000/svg" width="23.01" height="22.01" viewBox="0 0 23.095 22.207" >
+                    <svg class:active={checkIfAlreadyAdded($tbrStore, 'TBR')} on:click="{() => {addOrDeleteBook($tbrStore, 'TBR')}}" xmlns="http://www.w3.org/2000/svg" width="23.01" height="22.01" viewBox="0 0 23.095 22.207" >
                         <path id="Icon_ionic-ios-heart" data-name="Icon ionic-ios-heart" d="M20.252,3.938H20.2a6.317,6.317,0,0,0-5.274,2.887A6.317,6.317,0,0,0,9.648,3.938H9.593a6.277,6.277,0,0,0-6.218,6.273,13.514,13.514,0,0,0,2.654,7.367,46.505,46.505,0,0,0,8.894,8.566,46.505,46.505,0,0,0,8.894-8.566,13.514,13.514,0,0,0,2.654-7.367A6.277,6.277,0,0,0,20.252,3.938Z" transform="translate(-3.375 -3.938)"/>
                     </svg>
 
 <!--                IN PROGRESS-->
-                    <svg class:active={checkIfAlreadyAdded(inProgressSubList, 'IN PROGRESS')} on:click="{() => {addOrDeleteBook(inProgressSubList, 'IN PROGRESS')}}" id="Group_4" data-name="Group 4" xmlns="http://www.w3.org/2000/svg" width="16.6" height="22.21" viewBox="0 0 16.598 22.207">
+                    <svg class:active={checkIfAlreadyAdded($inProgressStore, 'IN PROGRESS')} on:click="{() => {addOrDeleteBook($inProgressStore, 'IN PROGRESS')}}" id="Group_4" data-name="Group 4" xmlns="http://www.w3.org/2000/svg" width="16.6" height="22.21" viewBox="0 0 16.598 22.207">
                         <defs>
                             <clipPath id="clip-path">
                                 <rect id="Rectangle_11" data-name="Rectangle 11" width="16.598" height="22.207" fill="#fed9d9"/>
@@ -142,7 +125,7 @@
                     </svg>
 
 <!--                WISHLIST-->
-                    <svg class:active={checkIfAlreadyAdded(wishlistSubList, 'WISHLIST')} on:click="{() => {addOrDeleteBook(wishlistSubList, 'WISHLIST')}}" xmlns="http://www.w3.org/2000/svg" width="21.39" height="22.35" viewBox="0 0 22.346 21.388">
+                    <svg class:active={checkIfAlreadyAdded($wishlistStore, 'WISHLIST')} on:click="{() => {addOrDeleteBook($wishlistStore, 'WISHLIST')}}" xmlns="http://www.w3.org/2000/svg" width="21.39" height="22.35" viewBox="0 0 22.346 21.388">
                         <path id="Icon_awesome-star" data-name="Icon awesome-star" d="M11.416.743,8.688,6.273l-6.1.89a1.337,1.337,0,0,0-.739,2.281l4.415,4.3L5.217,19.823a1.336,1.336,0,0,0,1.938,1.408l5.459-2.87,5.459,2.87a1.337,1.337,0,0,0,1.938-1.408l-1.044-6.077,4.415-4.3a1.337,1.337,0,0,0-.739-2.281l-6.1-.89L13.813.743a1.338,1.338,0,0,0-2.4,0Z" transform="translate(-1.441 0.001)"/>
                     </svg>
                 </div>

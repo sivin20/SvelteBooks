@@ -64,25 +64,22 @@ export namespace BookService {
         }
     }
 
-    export function setBookStore(list: BookComposite[], bookComposite: BookComposite, removeFromStore?: boolean): void {
-        if(!removeFromStore) {
-            list.push(bookComposite)
-        } else {
-            const index: number = list.indexOf(bookComposite)
-            list.splice(index, 1)
-        }
-
-        switch (bookComposite.library_name) {
+    export function setBookStore(list: BookComposite[], libraryName: string): void {
+        switch (libraryName) {
             case "BOOKS READ":
                 booksReadStore.set(list)
+                console.log("SET STORE BOOKS READ", list)
                 break;
             case "TBR":
+                console.log("SET STORE TBR", list)
                 tbrStore.set(list)
                 break;
             case "IN PROGRESS":
+                console.log("SET STORE INPROGS", list)
                 inProgressStore.set(list)
                 break;
             case "WISHLIST":
+                console.log("SET STORE WIHSLIST", list)
                 wishlistStore.set(list)
                 break;
         }
