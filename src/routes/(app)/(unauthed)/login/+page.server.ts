@@ -29,7 +29,7 @@ async function supabaseLogin(email: string, password: string, supabase: Supabase
 
     if (err) {
         if (err instanceof AuthApiError && err.status == 400) {
-            console.log("Error2", err)
+            console.log("Error", err)
             return fail(400,{
                 error: 'Invalid email or password'
             })
@@ -43,8 +43,11 @@ async function supabaseLogin(email: string, password: string, supabase: Supabase
 export const actions: Actions = {
     login: async ({request, locals: {supabase}}) => {
         const body = Object.fromEntries(await request.formData())
-        await supabaseLogin(body.email as string, body.password as string, supabase)
-        throw redirect(303, '/dashboard')
+        const error = await supabaseLogin(body.email as string, body.password as string, supabase)
+        if(!error) {
+            throw redirect(303, '/dashboard')
+        }
+        return error
     },
 
     register: async ({request, locals: {supabase, getSession}}) => {

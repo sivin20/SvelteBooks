@@ -50,7 +50,8 @@
             BookService.setBookStore(currentStoreList, currentBookComposite.library_name)
             dispatch("message", {
                 book: book,
-                library_id: current_library_id
+                library_id: current_library_id,
+                isDelete: true
             });
         }
     }
@@ -68,6 +69,11 @@
             });
             currentStoreList.push(currentBookComposite)
             BookService.setBookStore(currentStoreList, currentBookComposite.library_name)
+            dispatch("message", {
+                book: book,
+                library_id: current_library_id,
+                isDelete: false
+            });
         }
     }
 

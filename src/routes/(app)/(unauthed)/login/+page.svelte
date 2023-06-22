@@ -8,7 +8,9 @@
     /** @type {import('./$types').ActionData} */
     export let form;
 
-    $: form?.error && makeErrorToast()
+    $: if(form?.error) {
+        makeErrorToast()
+    }
 
     function makeErrorToast() {
         toast.error(`Error: ${form?.error}`, {

@@ -14,13 +14,9 @@
     /** @type {import('.$types').PageData} */
     export let data
 
-    const { libraries } = data
+    let { libraries } = data
 
-    let current_library: Library = Object.values(libraries)[0]
-
-    let showDeleteBookModal: boolean = false
-    let showDeleteAllModal: boolean = false
-    let bookToBeDeleted: Book;
+    let current_library: Library
 
     let books: Book[] = [];
     let unfilteredBooks: Book[] = [];
@@ -29,15 +25,20 @@
     let sortAscending: boolean = true
     let isbnSearch: string
 
+    onMount(() => {
+        current_library = Object.values(libraries)[0]
+    })
     const getBooksFromLibrary = async () => {
         return BookService.getBooksFromLibrary(current_library.id)
     }
 
-    function sortBooks(sortArg) {
-        if(sortParam === sortArg) {
-            sortAscending = !sortAscending
-        } else {
-            sortAscending = true;
+    function sortBooks(sortArg, skipFlip: boolean) {
+        if(!skipFlip) {
+            if(sortParam === sortArg) {
+                sortAscending = !sortAscending
+            } else {
+                sortAscending = true;
+            }
         }
         SortService.sort(books, sortAscending ? sortArg : `-${sortArg}`)
         sortParam = sortArg
@@ -69,15 +70,27 @@
     async function handleGetBooks(library: Library) {
         current_library = library
         books = await getBooksFromLibrary() as Book[]
-        SortService.sort(books, sortParam)
+        sortBooks(sortParam, true)
     }
 
-    function removeBookFromThisLibrary(event) {
-        bookToBeDeleted = event.detail.book
+    function updateLibraryInfo(event) {
+        const bookToBeDeleted = event.detail.book
         const library_id = event.detail.library_id
-        if(library_id === current_library.id) {
-            books = books.filter(b => b.id != bookToBeDeleted.id)
+        const isDeleteEvent = event.detail.isDelete
+        const index: number = libraries.findIndex(function(element) {
+            return element.id === event.detail.library_id
+        })
+        if(isDeleteEvent) {
+            if(library_id === current_library.id) {
+                books = books.filter(b => b.id != bookToBeDeleted.id)
+            }
+            libraries[index].books = libraries[index].books - 1
+            libraries[index].pages = libraries[index].pages - event.detail.book.page_count
+        } else {
+            libraries[index].books = libraries[index].books + 1
+            libraries[index].pages = libraries[index].pages + event.detail.book.page_count
         }
+        libraries = libraries
     }
 
     onMount(async () => {
@@ -150,7 +163,7 @@
                 {:then result}
                     {#each result as book, i (book.id)}
                         <div class="items-center flex justify-center">
-                            <BookCard book="{book}" on:message="{removeBookFromThisLibrary}"/>
+                            <BookCard book="{book}" on:message="{updateLibraryInfo}"/>
                         </div>
                     {/each}
                 {:catch error}
