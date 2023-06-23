@@ -86,7 +86,7 @@
 </script>
 
 <main class="h-full w-[540px]">
-    <div class='card flex flex-row h-full p-4'>
+    <div class='card flex h-full p-4 flex-row justify-start items-start'>
         {#if book.image_link}
             <img src='{book.image_link}' alt="Book Cover" class='book h-[192px] w-[128px]'>
         {:else}
@@ -99,15 +99,15 @@
                 </div>
             </div>
         {/if}
-        <div class='flex flex-col justify-between h-full w-full ml-5'>
-            <div>
-                <p class='text-[25px] trunc font-black'>{book.title}</p>
-                <p class="text-[18px] trunc">{book.author ? book.author : 'Unknown author'}</p>
-                <p class="text-[14px]"><i>ISBN-13: {book.isbn_13 ? book.isbn_13 : 'N/A'}</i></p>
+        <div class='flex flex-col justify-between h-full w-auto ml-5'>
+            <div class="flex flex-col justify-start items-start">
+                <p class='text-[16px] sm:text-[25px] trunc font-black'>{book.title}</p>
+                <p class="text-[14px] sm:text-[18px] trunc">{book.author ? book.author : 'Unknown author'}</p>
+                <p class="text-[14px] sm:text-[14px]"><i>ISBN-13: {book.isbn_13 ? book.isbn_13 : 'N/A'}</i></p>
             </div>
-            <div>
-                <p class="mb-2">Pages: <strong class="font-semibold">{book.page_count}</strong></p>
-                <div class="flex gap-6">
+            <div class="flex flex-col justify-start items-start">
+                <p class="mb-2 text-[15px] sm:text-[18px]">Pages: <strong class="font-semibold">{book.page_count}</strong></p>
+                <div class="flex w-full items-center mt-4 justify-between sm:gap-6 sm:items-start sm:w-auto sm:mt-0">
 <!--                BOOKS READ-->
                     <svg class:active={checkIfAlreadyAdded($booksReadStore, 'BOOKS READ')} on:click="{() => {addOrDeleteBook($booksReadStore, 'BOOKS READ')}}" xmlns="http://www.w3.org/2000/svg" width="19.43" height="22.21" viewBox="0 0 19.433 22.207" >
                         <path id="Path_5" data-name="Path 5" d="M132.01,19.568a12.282,12.282,0,0,1,0-3.191.839.839,0,0,0,.416-.833h0V1.114A1.022,1.022,0,0,0,131.316,0H117.164A4.087,4.087,0,0,0,113,4.011q0,.078,0,.156V18.041a4.087,4.087,0,0,0,4.008,4.164h14.308a1.094,1.094,0,0,0,1.11-1.078c0-.011,0-.022,0-.033V20.4a1.2,1.2,0,0,0-.416-.833M118.625,9.032h0l.685-.687a.484.484,0,0,1,.685,0h0l2.121,2.122,4.543-4.544a.485.485,0,0,1,.685,0h0l.685.686a.484.484,0,0,1,0,.685l-5.57,5.57a.485.485,0,0,1-.685,0h0l-3.148-3.148a.484.484,0,0,1,0-.685m12.19,10.4H117.164a1.311,1.311,0,0,1-1.388-1.388,1.388,1.388,0,0,1,1.388-1.388h13.651Z" transform="translate(-112.999 0.001)"/>

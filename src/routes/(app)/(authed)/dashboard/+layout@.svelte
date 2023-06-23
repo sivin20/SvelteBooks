@@ -1,5 +1,6 @@
 <script lang="ts">
     import '../../../../app.css'
+    import Header from '$lib/components/header.svelte'
     import Sidebar from '$lib/components/sidebar/sidebar.svelte'
     import Fa from 'svelte-fa'
     import { faUser } from '@fortawesome/free-solid-svg-icons'
@@ -9,12 +10,15 @@
 
     // let toggleSidebar = true
     let showUserInfoBox = false
+
 </script>
 
-
+<div class="w-full mb-4 relative absolute block sm:hidden">
+    <Header/>
+</div>
 <main class="flex w-screen h-screen">
     <!--{#if toggleSidebar}-->
-    <div class="w-32 mb-4 relative hidden md:block">
+    <div class="w-32 mb-4 relative hidden sm:block">
         <Sidebar/>
     </div>
 <!--        <button class="self-start flex m-5" on:click={() => {toggleSidebar = !toggleSidebar}}>-->
@@ -28,8 +32,8 @@
 <!--        </button>-->
 <!--    {/if}-->
     <div class="flex-auto flex justify-center">
-        <div class="w-full mt-10 px-4 relative">
-            <div class="absolute fixed top-4 right-10 rounded-xl" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
+        <div class="w-full mt-10 px-0 sm:px-4 relative max-w-[1500px]">
+            <div class="absolute fixed top-4 right-10 rounded-xl hidden sm:block" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
                 {#if showUserInfoBox}
                     <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
                         <div class="flex">
@@ -45,7 +49,7 @@
                     </div>
                 {/if}
             </div>
-            <div class="overflow-y-auto h-full p-4">
+            <div class="overflow-y-auto h-full p-4 overflow-x-hidden">
                 <slot></slot>
             </div>
         </div>

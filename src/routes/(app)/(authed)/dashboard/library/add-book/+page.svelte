@@ -38,7 +38,11 @@
         let query = `q=${searchParam.replace(/ /g, '+')}`;
         for (let i = 0; i < searchType.length; i++) {
             if(searchValue[i]) {
-                query = query + `+${searchType[i]}:${searchValue[i].replace(/ /g, '+')}`
+                if(searchType[i] === SEARCH_TYPE.inauthor || searchType[i] === SEARCH_TYPE.intitle) {
+                    query = query + `+in${searchType[i].toLowerCase()}:${searchValue[i].replace(/ /g, '+')}`
+                } else {
+                    query = query + `+${searchType[i].toLowerCase()}:${searchValue[i].replace(/ /g, '+')}`
+                }
             }
         }
         query = query + `&startIndex=${pageIndex}`

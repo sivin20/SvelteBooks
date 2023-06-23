@@ -103,13 +103,14 @@
     <div class="mb-2">
         <p class="text-[50px]"><strong>MY LIBRARIES</strong></p>
     </div>
-    <div class="flex flex-col w-full items-center box-border">
-        <div class="md:flex items-start justify-start w-full">
-            <div class="">
+    <div class="flex flex-col w-full items-start box-border">
+<!--        Library cards-->
+        <div class="flex items-start justify-start w-full">
+            <div >
                 <p class="self-start text-[25px]">Active libraries</p>
-                <div class="flex mt-4">
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {#each libraries as library}
-                        <div on:click={() => handleGetBooks(library)}>
+                        <div class="mb-5" on:click={() => handleGetBooks(library)}>
                             <LibraryCard active="{current_library === library}" library="{library}"></LibraryCard>
                         </div>
                     {/each}
@@ -117,8 +118,9 @@
             </div>
         </div>
 
+<!--        Library filtering-->
         <div class="md:flex items-center w-full mt-4">
-            <div class="filter-button flex items-center mr-4 justify-between"
+            <div class="filter-button flex items-center mr-4 justify-between mb-4 md:mb-0"
                  on:click={() => {sortBooks('title')}}
                  class:active={sortParam === 'title'}>
                 <p>A-Z</p>
@@ -126,7 +128,7 @@
                     <path id="Icon_awesome-angle-up" data-name="Icon awesome-angle-up" d="M6.357,10.987l4.886,4.886a.859.859,0,0,1,0,1.218l-.812.812a.859.859,0,0,1-1.218,0l-3.467-3.46L2.283,17.906a.859.859,0,0,1-1.218,0L.25,17.094a.859.859,0,0,1,0-1.218l4.886-4.886a.86.86,0,0,1,1.221,0Z" transform="translate(11.496 18.16) rotate(180)"/>
                 </svg>
             </div>
-            <div class="filter-button flex items-center mr-4 justify-between"
+            <div class="filter-button flex items-center mr-4 justify-between mb-4 md:mb-0"
                  on:click={() => {sortBooks('page_count')}}
                  class:active={sortParam === 'page_count'}>
                 <p>PAGES</p>
@@ -134,7 +136,7 @@
                     <path id="Icon_awesome-angle-up" data-name="Icon awesome-angle-up" d="M6.357,10.987l4.886,4.886a.859.859,0,0,1,0,1.218l-.812.812a.859.859,0,0,1-1.218,0l-3.467-3.46L2.283,17.906a.859.859,0,0,1-1.218,0L.25,17.094a.859.859,0,0,1,0-1.218l4.886-4.886a.86.86,0,0,1,1.221,0Z" transform="translate(11.496 18.16) rotate(180)"/>
                 </svg>
             </div>
-            <div class="flex justify-center items-center">
+            <div class="flex justify-center items-center mb-4 md:mb-0">
                 <div class="flex p-1 bg-[--input-field-color] rounded-s-[6px] w-full max-w-[650px] h-[32px] items-center">
                     <Fa class="h-full mr-2 ml-2 text-[--secondary--accent-1]" icon="{faSearch}"></Fa>
                     <input class="h-full w-full bg-transparent" type="text" id="bookSearch"
@@ -147,7 +149,7 @@
                         disabled="{unfilteredBooks.length}">SEARCH</button>
             </div>
             {#if unfilteredBooks.length}
-                <div class="ml-4 flex justify-center items-center border-2 border-[--secondary--accent-2] rounded-2xl p-1 cursor-pointer"
+                <div class="ml-4 flex justify-center items-center border-2 border-[--secondary--accent-2] rounded-2xl p-1 cursor-pointer mb-4 md:mb-0"
                      on:click={() => {resetBookFilters()}}>
                     <p class="mr-2 p-0">{isbnSearch}</p>
                     <Fa color="red" icon="{faXmark}"></Fa>
@@ -155,7 +157,8 @@
             {/if}
         </div>
 
-        <section class="mt-4 md:mt-0 flex flex-col items-center w-full">
+<!--        Library books-->
+        <section class="mt-0 flex flex-col items-center w-full">
 <!--            <button on:click={() => {openDeleteAllModal()}}>DELETE ALL BOOKS</button>-->
             <div class="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 mt-6 w-full">
                 {#await books}
