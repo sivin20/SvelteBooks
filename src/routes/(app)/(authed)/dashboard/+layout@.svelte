@@ -1,6 +1,6 @@
 <script lang="ts">
     import '../../../../app.css'
-    import Header from '$lib/components/header.svelte'
+    import Header from '$lib/components/navbar/navbar.svelte'
     import Sidebar from '$lib/components/sidebar/sidebar.svelte'
     import Fa from 'svelte-fa'
     import { faUser } from '@fortawesome/free-solid-svg-icons'

@@ -29,7 +29,7 @@ export namespace BookService {
                         {
                             id: book.id,
                             title: book.volumeInfo.title ? book.volumeInfo.title : '',
-                            author: book.volumeInfo.authors ? book.volumeInfo.authors : '',
+                            author: book.volumeInfo.authors ? book.volumeInfo.authors[0] : '',
                             image_link: img,
                             page_count: book.volumeInfo.pageCount ? book.volumeInfo.pageCount : 0,
                             isbn_13: book.volumeInfo.industryIdentifiers ? book.volumeInfo.industryIdentifiers[0]?.identifier : '',
@@ -46,7 +46,7 @@ export namespace BookService {
     export async function addBook(book: Book, libraryId: string) {
         const { error: err } = await supabase.from('books').upsert({
             ...book,
-            author: book.author[0]
+            author: book.author
         }, {onConflict: 'id'})
 
         const { error: err2 } = await supabase.from('books_composite').upsert({

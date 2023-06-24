@@ -1,5 +1,5 @@
 <script>
-    import Header from '$lib/components/header.svelte'
+    import Header from '$lib/components/navbar/navbar.svelte'
 </script>
 
 <main class="h-screen flex flex-col">
