@@ -110,8 +110,11 @@ export namespace BookService {
         }
     }
 
-    export async function getBooksFromLibrary(libraryId: string) {
-        const res =  await supabase.rpc('get_books_from_library', {lib_id: libraryId})
+    export async function getBooksFromLibrary(libraryId: string, limit?: number) {
+        if(!limit) {
+            limit = 999
+        }
+        const res =  await supabase.rpc('get_books_from_library', {lib_id: libraryId}).range(0,limit)
         const data = res.data
         if(res.status === 200) {
             return data as Book[]

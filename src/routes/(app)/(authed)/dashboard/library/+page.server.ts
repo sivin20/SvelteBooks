@@ -30,8 +30,6 @@ export const load: PageServerLoad = (async ({ locals: { getSession } }) => {
             libraries[3] = lib
         }
     }
-    console.log("libraries", libraries)
-
 
     return {
         libraries: libraries ?? []

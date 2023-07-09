@@ -2,10 +2,30 @@
 <script lang="ts">
     import BarChart from "$lib/components/barChart.svelte"
     import DrawnArrow from "$lib/assets/drawn_arrow_up.svg"
+    import type {Book} from "$lib/models/Book";
 
 
     /** @type {import('.$types').PageData} */
     export let data;
+
+    const { booksRead, tbrs, inProgress }: Book[] = data
+
+    $: totalBooksRead = () => {
+        let result: number = 0
+        for (let book: Book in booksRead) {
+            result += 1
+        }
+        return result
+    }
+
+    $: totalPagesRead = () => {
+        let result: number = 0
+        for (let book: Book of booksRead) {
+            console.log("result", book)
+            result += book.page_count
+        }
+        return result
+    }
 
     let d = [
         { pages: '<300', books: 30 },
@@ -37,17 +57,24 @@
         <div class="flex-auto xl:mr-4">
             <div class="flex justify-between items-center mb-4">
                 <p class="text-xl"><strong>TBR Pile</strong></p>
-                <button class="small-primary-button">See full list</button>
+                <a href="/dashboard/library" class="small-primary-button">See full list</a>
             </div>
             <div class="flex justify-center items-center flex-wrap gap-2">
-                {#each {length: 5} as _, i}
-                    <div class="book h-[192px] w-[128px] bg-[--secondary--accent-2] flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="49.18" height="56.19" viewBox="0 0 25.192 28.788">
-                            <path data-name="Path 4" d="M25.182,20.15V1.444A1.324,1.324,0,0,0,23.744,0H5.4A5.3,5.3,0,0,0,0,5.2c0,.067,0,.135,0,.2V23.388a5.3,5.3,0,0,0,5.2,5.4q.1,0,.2,0H23.744a1.418,1.418,0,0,0,1.439-1.4c0-.014,0-.028,0-.042v-.9a1.554,1.554,0,0,0-.54-1.079,15.921,15.921,0,0,1,0-4.137,1.088,1.088,0,0,0,.54-1.08ZM8.1,9.448A.45.45,0,0,1,8.544,9H11.7V5.85a.45.45,0,0,1,.45-.45h2.7a.45.45,0,0,1,.45.45V9h3.148a.45.45,0,0,1,.45.45v2.7a.45.45,0,0,1-.45.45H15.294v3.148a.45.45,0,0,1-.45.45h-2.7a.45.45,0,0,1-.45-.45V12.6H8.544a.45.45,0,0,1-.45-.45Zm15,15.739H5.4a1.7,1.7,0,0,1-1.8-1.8,1.8,1.8,0,0,1,1.8-1.8H23.1Z"
-                                  transform="translate(0.001 0.001)"/>
-                        </svg>
-                    </div>
-                {/each}
+                {#if tbrs}
+                    {#each tbrs as book, i}
+                        <!--                    <div class="book h-[192px] w-[128px] bg-[&#45;&#45;secondary&#45;&#45;accent-2] flex items-center justify-center">-->
+                        <!--                        <svg xmlns="http://www.w3.org/2000/svg" width="49.18" height="56.19" viewBox="0 0 25.192 28.788">-->
+                        <!--                            <path data-name="Path 4" d="M25.182,20.15V1.444A1.324,1.324,0,0,0,23.744,0H5.4A5.3,5.3,0,0,0,0,5.2c0,.067,0,.135,0,.2V23.388a5.3,5.3,0,0,0,5.2,5.4q.1,0,.2,0H23.744a1.418,1.418,0,0,0,1.439-1.4c0-.014,0-.028,0-.042v-.9a1.554,1.554,0,0,0-.54-1.079,15.921,15.921,0,0,1,0-4.137,1.088,1.088,0,0,0,.54-1.08ZM8.1,9.448A.45.45,0,0,1,8.544,9H11.7V5.85a.45.45,0,0,1,.45-.45h2.7a.45.45,0,0,1,.45.45V9h3.148a.45.45,0,0,1,.45.45v2.7a.45.45,0,0,1-.45.45H15.294v3.148a.45.45,0,0,1-.45.45h-2.7a.45.45,0,0,1-.45-.45V12.6H8.544a.45.45,0,0,1-.45-.45Zm15,15.739H5.4a1.7,1.7,0,0,1-1.8-1.8,1.8,1.8,0,0,1,1.8-1.8H23.1Z"-->
+                        <!--                                  transform="translate(0.001 0.001)"/>-->
+                        <!--                        </svg>-->
+                        <!--                    </div>-->
+                        <div class="book h-[192px] w-[128px] bg-[--secondary--accent-2] flex items-center justify-center">
+                            <img src="{book.image_link}" alt="Book images">
+                        </div>
+                    {/each}
+                {:else}
+                    <p>You have no books in your tbr pile yet, go add some <a href="/dashboard/library/add-book">here</a></p>
+                {/if}
             </div>
         </div>
         <!--        Currently reading -->
@@ -58,12 +85,16 @@
                 <button class="small-primary-button" style="background-color: #cccccc !important">See full list</button>
             </div>
             <ul>
-                {#each {length: 3} as _}
-                    <li class="mb-2">
-                        <p><strong>Rhythm of War</strong></p>
-                        <p class="text-sm"><i>Brandon Sanderson</i></p>
-                    </li>
-                {/each}
+                {#if inProgress}
+                    {#each inProgress as book}
+                        <li class="mb-2">
+                            <p><strong>{book.title}</strong></p>
+                            <p class="text-sm"><i>{book.author}</i></p>
+                        </li>
+                    {/each}
+                {:else}
+                    <p>You do not have any books in progress</p>
+                {/if}
             </ul>
         </div>
     </section>
@@ -74,14 +105,14 @@
     <section class="flex flex-wrap items-center justify-center py-8">
         <div class="flex flex-col justify-center w-full max-w-4xl">
             <div class="flex items-start max-w-2xl">
-                <div class="text-6xl mr-6"><strong>32</strong></div>
+                <div class="text-6xl mr-6"><strong>{totalBooksRead()}</strong></div>
                 <div class="w-[350px]">
                     <p><strong>Books read</strong></p>
                     <p class="text-[14px]">You've read this many books</p>
                 </div>
             </div>
             <div class="flex items-start self-end max-w-2xl mt-6">
-                <div class="text-6xl mr-6"><strong>17.252</strong></div>
+                <div class="text-6xl mr-6"><strong>{totalPagesRead()}</strong></div>
                 <div class="max-w-[350px]">
                     <p><strong>Pages read</strong></p>
                     <p class="text-[14px]">You've read this many pages, which makes the average book have a page count of 345</p>
