@@ -10,12 +10,25 @@
 
 <main class="h-screen flex flex-col">
     <Header/>
-    <div class="flex flex-col align-center justify-center h-full w-full">
-        <p>Please login</p>
-        <a href="/login">Login</a>
-        <a href="/login">Register</a>
+    <div class="w-full mt-10 px-4 relative max-w-[1400px]">
+        <p>Please login or register</p>
+        <div>
+            <a href="/login">Login</a>
+        </div>
+        <div>
+            <a href="/login">Register</a>
+        </div>
     </div>
-</main>
-<main>
-
+    <div>
+        Track your books
+        https://www.candlapp.com/
+    </div>
+    <div>
+        Ready for your phone
+        show phone images
+    </div>
+    <div>
+        What our amazing users say
+        4 blocks of fake quotes
+    </div>
 </main>

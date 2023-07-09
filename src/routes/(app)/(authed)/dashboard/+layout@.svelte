@@ -32,15 +32,17 @@
 <!--        </button>-->
 <!--    {/if}-->
     <div class="flex-auto flex justify-center">
-        <div class="w-full mt-10 px-0 sm:px-4 relative max-w-[1500px]">
-            <div class="absolute fixed top-4 right-10 rounded-xl hidden sm:block" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
+        <div class="w-full mt-10 px-0 sm:px-4 relative max-w-[1400px]">
+            <div class="absolute fixed top-4 right-10 rounded-xl hidden sm:block z-10" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
                 {#if showUserInfoBox}
                     <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
                         <div class="flex">
                             <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
                             <Fa icon={faUser} color="var(--primary)"/>
                         </div>
-                        <p><u>logout</u></p>
+                        <form action="/logout" method="POST">
+                            <button type="submit">Logout</button>
+                        </form>
                     </div>
                 {:else}
                     <div class="flex border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>

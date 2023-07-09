@@ -161,7 +161,7 @@ input:-webkit-autofill:active {
 /*Select styling*/
 select {
     border-radius: 6px;
-    width: 149px;
+    min-width: 149px;
     height: 32px;
     font-size: 14px;
     padding-left: 19px;
