@@ -1,7 +1,6 @@
 <script>
     export let library
     export let active
-    export let icon
 </script>
 
 <main>

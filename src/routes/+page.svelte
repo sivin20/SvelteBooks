@@ -29,6 +29,6 @@
     </div>
     <div>
         What our amazing users say
-        4 blocks of fake quotes
+        4 blocks of fake quotes || many cards in a row that you can hover over to show
     </div>
 </main>

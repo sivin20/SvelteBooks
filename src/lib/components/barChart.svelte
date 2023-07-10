@@ -18,19 +18,35 @@
     // Sort data by default, ascending, or descending
     export let data;
     let sortedData = data;
-    $: reactiveShowSort = (input) => {
-        if (input === 1) {
-            return (sortedData = data.sort(
-                (a, b) => a[x].charCodeAt(0) - b[x].charCodeAt(0)
-            ));
-        }
-        if (input === 2) {
+    function handleReactiveShowSort(input) {
+        console.log("input", input)
+        if (input === 0) {
             return (sortedData = data.sort((a, b) => a[y] - b[y]));
         }
-        if (input === 3) {
+        if (input === 1) {
             return (sortedData = data.sort((a, b) => b[y] - a[y]));
         }
-    };
+        if (input === 2) {
+            const first = data.filter((item) => {return item.pages === '<300'})
+            const second = data.filter((item) => {return item.pages === '300-500'})
+            const third = data.filter((item) => {return item.pages === '500<'})
+            return (sortedData = [first[0], second[0], third[0]]);
+        }
+        if (input === 3) {
+            const first = data.filter((item) => {return item.pages === '500<'})
+            const second = data.filter((item) => {return item.pages === '300-500'})
+            const third = data.filter((item) => {return item.pages === '<300'})
+            return (sortedData = [first[0], second[0], third[0]]);
+        }
+    }
+
+    $: reactiveShowSort = (input) => {
+        handleReactiveShowSort(input)
+    }
+
+    onMount(() => {
+        handleReactiveShowSort(0)
+    })
 
     // Compute values X and Y value of Arrays
     const x = Object.keys(data[0])[0]; // given d in data, returns the (ordinal) x-value
@@ -55,14 +71,14 @@
 <div class="chart-container" dir="auto">
     <div class="mb-2">
         <select class="dropdown w-[200px]" on:change={reactiveShowSort(this.selectedIndex)}>
-            <option disabled selected value> ---Sorting Method--- </option>
-            <option value="1">Default</option>
-            <option value="2">{y}, Ascending</option>
-            <option value="3">{y}, Descending</option>
+            <option selected>{y} &#8593;</option>
+            <option>{y} &#8595;</option>
+            <option>{x} &#8593;</option>
+            <option>{x} &#8595;</option>
         </select>
     </div>
 
-    <svg {width} {height} viewBox="0 0 {width} {height}">
+    <svg {width} {height} viewBox="0 0 {width} {height}" >
         <g class="x-axis" transform="translate(0,{height - marginBottom})">
             <path class="domain" stroke="black" d="M{marginLeft}, 0.5 H{width}" />
             {#each reactiveXVals as xVal, i}
@@ -108,6 +124,14 @@
     svg {
         max-width: 100%;
         max-height: 100%;
+    }
+
+    .bars rect {
+        fill: var(--primary-accent-1);
+    }
+
+    .bars rect:hover {
+        fill: var(--primary);
     }
 
     .y-axis {

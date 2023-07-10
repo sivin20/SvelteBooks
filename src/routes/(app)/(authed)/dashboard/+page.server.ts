@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({url, locals: { getSession }}) => {
 
     const libData = await supabase.from('libraries').select('name, id').eq('owner_id', session.user.id)
     const libraries: Library[] | null = libData.data
-    console.log("libraries", libraries)
+    // console.log("libraries", libraries)
 
     let booksRead: Book[] = []
     let tbrs: Book [] = []
