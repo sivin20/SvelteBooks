@@ -14,17 +14,13 @@ jobs:
       - name: Run a cron script
         run: echo "Hello from the cron job!"
 
-  push_job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run push script
-        run: echo "Hello from the push job!"
-        # Add more steps as needed for the push job
-
   login_to_webpage:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: List directory contents
+        run: ls -la
       - name: Run loginscript
         run: |
           echo "Hello, world!"
-          ./login.sh  # Execute the script directly
+          ./login.sh
