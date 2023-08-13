@@ -23,9 +23,9 @@ name: Push job
 
 on: push
   jobs:
-  login to webpage:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run loginscript
-        run echo "Hello,world!"
-        run: ./login.ssh
+    login to webpage:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Run loginscript
+          run: echo "Hello,world!"
+          run: ./login.ssh
