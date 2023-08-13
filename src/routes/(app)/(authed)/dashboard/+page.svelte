@@ -4,6 +4,7 @@
     import DrawnArrow from "$lib/assets/drawn_arrow_up.svg"
     import type {Book} from "$lib/models/Book";
     import LoadingSpinner from "$lib/components/loadingSpinner.svelte";
+    import Countup from "svelte-countup";
 
 
     /** @type {import('.$types').PageData} */
@@ -137,35 +138,63 @@
 <!--    Read-->
 
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
-    <section class="flex flex-wrap items-center justify-center py-8">
-        <div class="flex flex-col justify-center w-full max-w-4xl">
-            <div class="flex items-start max-w-2xl">
-                <div class="text-6xl mr-6"><strong>{totalBooksRead()}</strong></div>
-                <div class="w-[350px]">
-                    <p><strong>Books read</strong></p>
-                    <p class="text-[14px]">You've read this many books</p>
-                </div>
-            </div>
-            <div class="flex items-start self-end max-w-2xl mt-6">
-                <div class="text-6xl mr-6"><strong>{totalPagesRead()}</strong></div>
-                <div class="max-w-[350px]">
-                    <p><strong>Pages read</strong></p>
-                    <p class="text-[14px]">You've read this many pages, which makes the average book have a page count of 345</p>
-                </div>
-            </div>
-            <div class="flex items-start mt-6 max-w-2xl">
-                <div class="text-6xl mr-6"><strong>{totalHoursSpend()}</strong></div>
-                <div class="w-[350px]">
-                    <p><strong>Hours spend</strong></p>
-                    <p class="text-[14px]">You've spend this many hours based on the average word count of a book and your reading speed of {readingSpeed} wpm</p>
-                </div>
-            </div>
+    <section class="flex flex-wrap items-center justify-center my-8 w-full h-[380px] rounded-2xl">
+        <table class="h-full w-2/6 text-white p-4 bg-[--secondary] rounded-s-2xl rounded-br-2xl">
+            <tr class="flex flex-col items-start ml-10 justify-center h-1/3">
+                <td>
+                    <p class="text-sm mb-1"><strong>Books read</strong></p>
+                    <p class="text-5xl">
+                        <strong>
+                            <Countup value={totalBooksRead()}
+                                     initial={0}
+                                     duration={1500}
+                                     step={1}
+                                     roundto={1}
+                                     format={true}/>
+                        </strong>
+                    </p>
+                </td>
+            </tr>
+            <tr class="flex flex-col items-start ml-10 justify-center h-1/3">
+                <td>
+                    <p class="text-sm mb-1"><strong>Pages read</strong></p>
+                    <p class="text-5xl">
+                        <strong>
+                            <Countup value={totalPagesRead()}
+                                     initial={0}
+                                     duration={1500}
+                                     step={1}
+                                     roundto={1}
+                                     format={true}/>
+                        </strong>
+                    </p>
+                </td>
+            </tr>
+            <tr class="flex flex-col items-start ml-10 justify-center h-1/3">
+                <td>
+                    <p class="text-sm mb-1"><strong>Hours spend</strong></p>
+                    <p class="text-5xl">
+                        <strong>
+                            <Countup value={totalHoursSpend()}
+                                     initial={0}
+                                     duration={1500}
+                                     step={1}
+                                     roundto={1}
+                                     format={true}/>
+                        </strong>
+                    </p>
+
+                </td>
+            </tr>
+        </table>
+        <div class="w-4/6">
+            <BarChart data="{booksWithPageCount()}"/>
         </div>
     </section>
 
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
     <section class="flex justify-center py-8">
-        <BarChart data="{booksWithPageCount()}"/>
+
     </section>
 <!--    <div class="flex flex-col w-1/3 justify-center mr-10 xl:border-r-2 xl:border-[&#45;&#45;secondary]">-->
 <!--        <div class="py-4">-->

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { scaleLinear, scaleBand } from 'd3';
     import { flip } from 'svelte/animate';
     import {onMount} from "svelte";
@@ -40,7 +40,7 @@
         }
     }
 
-    $: reactiveShowSort = (input) => {
+    $: reactiveShowSort = (input): void => {
         handleReactiveShowSort(input)
     }
 
@@ -48,6 +48,18 @@
         handleReactiveShowSort(0)
     })
 
+    let showTooltip: boolean = false
+
+    function handleShowToolTip(bookNumber: number, show: boolean) {
+        if(show) {
+            showTooltip = true
+            console.log("showing")
+            console.log("idx", bookNumber)
+        } else {
+            showTooltip = false
+            console.log("not showing")
+        }
+    }
     // Compute values X and Y value of Arrays
     const x = Object.keys(data[0])[0]; // given d in data, returns the (ordinal) x-value
     const y = Object.keys(data[0])[1]; // given d in data, returns the (quantitative) y-value
@@ -68,9 +80,9 @@
     $: reactiveYTicksFormatted = reactiveYTicks.map((el) => el.toLocaleString("en-US"));
 </script>
 
-<div class="chart-container" dir="auto">
-    <div class="mb-2">
-        <select class="dropdown w-[200px]" on:change={reactiveShowSort(this.selectedIndex)}>
+<div class="chart-container bg-white p-4 rounded-2xl" dir="auto">
+    <div class="mb-2 text-right">
+        <select class="dropdown" on:change={reactiveShowSort(this.selectedIndex)}>
             <option selected>{y} &#8593;</option>
             <option>{y} &#8595;</option>
             <option>{x} &#8593;</option>
@@ -78,46 +90,48 @@
         </select>
     </div>
 
-    <svg {width} {height} viewBox="0 0 {width} {height}" >
-        <g class="x-axis" transform="translate(0,{height - marginBottom})">
-            <path class="domain" stroke="black" d="M{marginLeft}, 0.5 H{width}" />
-            {#each reactiveXVals as xVal, i}
-                <g class="tick" opacity="1" transform="translate({reactiveXScale(xVal)},0)">
-                    <line
-                            x1={reactiveXScale.bandwidth() / 2}
-                            x2={reactiveXScale.bandwidth() / 2}
-                            stroke="black"
-                            y2="6"
+    <div class="w-full flex flex-col items-center">
+        <svg {width} {height} viewBox="0 0 {width} {height}">
+            <g class="x-axis" transform="translate(0,{height - marginBottom})">
+                <path class="domain" stroke="black" d="M{marginLeft}, 0.5 H{width}" />
+                {#each reactiveXVals as xVal, i}
+                    <g class="tick" opacity="1" transform="translate({reactiveXScale(xVal)},0)">
+                        <line
+                                x1={reactiveXScale.bandwidth() / 2}
+                                x2={reactiveXScale.bandwidth() / 2}
+                                stroke="black"
+                                y2="6"
+                        />
+                        <text y={marginBottom} dx={reactiveXScale.bandwidth() / 4}>{xVal}</text>
+                    </g>
+                {/each}
+            </g>
+
+            <g class="y-axis" transform="translate({marginLeft}, 0)">
+                {#each reactiveYTicks as tick, i}
+                    <g class="tick" opacity="1" transform="translate(0, {reactiveYScale(tick)})">
+                        <line class="tick-start" stroke="black" stroke-opacity="1" x2="-6" />
+                        <line class="tick-grid" x2={width - marginLeft - marginRight} />
+                        <text x={-marginLeft} y="5">{yFormat === "%" ? reactiveYTicksFormatted[i] * 100 + yFormat : reactiveYTicksFormatted[i] + ' ' + yFormat}</text>
+                    </g>
+                {/each}
+                <text x="{45}" y={marginTop}>{yLabel}</text>
+            </g>
+
+            <g class="bars">
+                {#each reactiveYVals as bar, i (bar)}
+                    <rect on:mouseenter={() => {handleShowToolTip(reactiveYVals[i], true)}} on:mouseleave={() => {handleShowToolTip(reactiveYVals[i], false)}}
+                          x={reactiveXScale(reactiveXVals[i])}
+                          y={reactiveYScale(reactiveYVals[i])}
+                          width={reactiveXScale.bandwidth()}
+                          height={reactiveYScale(0) - reactiveYScale(bar)}
+                          fill={color}
+                          animate:flip="{{duration: 1000}}"
                     />
-                    <text y={marginBottom} dx={reactiveXScale.bandwidth() / 4}>{xVal}</text>
-                </g>
-            {/each}
-        </g>
-
-        <g class="y-axis" transform="translate({marginLeft}, 0)">
-            {#each reactiveYTicks as tick, i}
-                <g class="tick" opacity="1" transform="translate(0, {reactiveYScale(tick)})">
-                    <line class="tick-start" stroke="black" stroke-opacity="1" x2="-6" />
-                    <line class="tick-grid" x2={width - marginLeft - marginRight} />
-                    <text x={-marginLeft} y="5">{yFormat === "%" ? reactiveYTicksFormatted[i] * 100 + yFormat : reactiveYTicksFormatted[i] + ' ' + yFormat}</text>
-                </g>
-            {/each}
-            <text x="{45}" y={marginTop}>{yLabel}</text>
-        </g>
-
-        <g class="bars">
-            {#each reactiveYVals as bar, i (bar)}
-                <rect
-                        x={reactiveXScale(reactiveXVals[i])}
-                        y={reactiveYScale(reactiveYVals[i])}
-                        width={reactiveXScale.bandwidth()}
-                        height={reactiveYScale(0) - reactiveYScale(bar)}
-                        fill={color}
-                        animate:flip="{{duration: 1000}}"
-                />
-            {/each}
-        </g>
-    </svg>
+                {/each}
+            </g>
+        </svg>
+    </div>
 </div>
 
 <style>
@@ -127,11 +141,11 @@
     }
 
     .bars rect {
-        fill: var(--primary-accent-1);
+        fill: var(--secondary);
     }
 
     .bars rect:hover {
-        fill: var(--primary);
+        fill: var(--secondary--accent-2);
     }
 
     .y-axis {

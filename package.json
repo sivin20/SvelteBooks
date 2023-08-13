@@ -43,6 +43,7 @@
 		"d3": "^7.8.5",
 		"dotenv": "^16.0.3",
 		"flowbite-svelte": "^0.37.4",
+		"svelte-countup": "^0.2.6",
 		"svelte-fa": "^3.0.3",
 		"svelte-french-toast": "^1.0.4-beta.0"
 	}
