@@ -1,31 +1,31 @@
-name: First Cron Job
+name: Cron and Push Jobs
 
-       # Controls when the workflow will run
 on:
-  # Triggers the workflow every 5 minutes
   schedule:
     - cron: "*/15 * * * *"
+  push:
+    branches:
+      - main  # Replace with your branch name if needed
 
-     # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "cron"
-  cron:
-    # The type of runner that the job will run on
+  cron_job:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo "Hello, world!"
+      - name: Run a cron script
+        run: echo "Hello from the cron job!"
 
-name: Push job
+  push_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run push script
+        run: echo "Hello from the push job!"
+        # Add more steps as needed for the push job
 
-on: push
-  jobs:
-    login to webpage:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Run loginscript
-          run: echo "Hello,world!"
-          run: ./login.ssh
+  login_to_webpage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run loginscript
+        run: |
+          chmod +x login.ssh
+          echo "Hello, world!"
+          ./login.sh  # Corrected the filename and use proper script execution
