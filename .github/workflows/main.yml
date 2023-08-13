@@ -2,7 +2,7 @@ name: Cron and Push Jobs
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "* */48 * * *"
   push:
     branches:
       - main  # Replace with your branch name if needed
@@ -14,4 +14,3 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run a cron script
         run: ./login.sh
-          
