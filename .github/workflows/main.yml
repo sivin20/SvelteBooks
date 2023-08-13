@@ -26,6 +26,5 @@ jobs:
     steps:
       - name: Run loginscript
         run: |
-          chmod +x login.sh
           echo "Hello, world!"
-          ./login.sh  # Corrected the filename and use proper script execution
+          ./login.sh  # Execute the script directly
