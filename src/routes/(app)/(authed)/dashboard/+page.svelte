@@ -5,6 +5,7 @@
     import type {Book} from "$lib/models/Book";
     import LoadingSpinner from "$lib/components/loadingSpinner.svelte";
     import Countup from "svelte-countup";
+    import {SortService} from "$lib/services/sort.service";
 
 
     /** @type {import('.$types').PageData} */
@@ -56,11 +57,33 @@
             { pages: '500<', books: highCount }];
     }
 
-    let d = [
-        { pages: '<300', books: 30 },
-        { pages: '300-500', books: 35 },
-        { pages: '500<', books: 12 },
-    ];
+    type AuthorFrequency = {author: string, count: number}
+
+    $: getMostPopularAuthors = (): AuthorFrequency[] => {
+        let authormap: AuthorFrequency[] = [];
+
+        for (let book of booksRead) {
+            let existingAuthor = authormap.find(author => author.author === book.author);
+            if (existingAuthor) {
+                existingAuthor.count++;
+            } else {
+                authormap.push({ author: book.author, count: 1 });
+            }
+        }
+
+        authormap.sort((a, b) => b.count - a.count);
+
+        return authormap.slice(0, 5);
+    }
+
+    $: getLongestBooks = (): Book[] => {
+        return booksRead.sort((a,b) => b.page_count - a.page_count).slice(0, 5)
+    }
+
+    $: getShortestBooks = (): Book[] => {
+        return booksRead.sort((a,b) => a.page_count - b.page_count).slice(0, 5)
+    }
+
 </script>
 
 <main class="content-box rounded-lg overflow-x-hidden">
@@ -217,8 +240,13 @@
                 <p class="text-white">Most Read Authors</p>
             </div>
             <ol type="1" class="list-inside list-decimal p-4 border-b-2 border-x-2 border-[--input-field-color] rounded-b-xl">
-                {#each {length: 5} as _, i}
-                    <li>Brandon Sanderson</li>
+                {#each getMostPopularAuthors() as authorFrequency, i}
+                    <li class="flex items-center">
+                        <div class="flex flex-row justify-between w-full">
+                            <p class="overflow-hidden text-ellipsis whitespace-nowrap">{authorFrequency.author}</p>
+                            <p>({authorFrequency.count})</p>
+                        </div>
+                    </li>
                 {/each}
             </ol>
         </div>
@@ -227,8 +255,13 @@
                 <p class="text-white">Longest Books</p>
             </div>
             <ol type="1" class="list-inside list-decimal p-4 border-b-2 border-x-2 border-[--input-field-color] rounded-b-xl">
-                {#each {length: 5} as _, i}
-                    <li>Don Quixote</li>
+                {#each getLongestBooks() as book, i}
+                    <li class="flex items-center">
+                        <div class="flex flex-row justify-between w-full">
+                            <p class="overflow-hidden text-ellipsis whitespace-nowrap">{book.title}</p>
+                            <p>({book.page_count})</p>
+                        </div>
+                    </li>
                 {/each}
             </ol>
         </div>
@@ -237,8 +270,13 @@
                 <p class="text-white">Shortest Books</p>
             </div>
             <ol type="1" class="list-inside list-decimal p-4 border-b-2 border-x-2 border-[--input-field-color] rounded-b-xl">
-                {#each {length: 5} as _, i}
-                    <li>Hitchhiker's guide to the galaxy</li>
+                {#each getShortestBooks() as book, i}
+                    <li class="flex items-center">
+                        <div class="flex flex-row justify-between w-full">
+                            <p class="overflow-hidden text-ellipsis whitespace-nowrap">{book.title}</p>
+                            <p>({book.page_count})</p>
+                        </div>
+                    </li>
                 {/each}
             </ol>
         </div>
