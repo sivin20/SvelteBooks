@@ -36,6 +36,7 @@
 		"@fortawesome/fontawesome-svg-core": "^6.4.0",
 		"@fortawesome/free-brands-svg-icons": "^6.4.0",
 		"@fortawesome/free-solid-svg-icons": "^6.4.0",
+		"@google-cloud/storage": "^7.0.1",
 		"@popperjs/core": "^2.11.8",
 		"@supabase/auth-helpers-sveltekit": "^0.9.1",
 		"@supabase/supabase-js": "^2.14.0",
@@ -43,6 +44,7 @@
 		"d3": "^7.8.5",
 		"dotenv": "^16.0.3",
 		"flowbite-svelte": "^0.37.4",
+		"sharp": "^0.32.5",
 		"svelte-countup": "^0.2.6",
 		"svelte-fa": "^3.0.3",
 		"svelte-french-toast": "^1.0.4-beta.0"

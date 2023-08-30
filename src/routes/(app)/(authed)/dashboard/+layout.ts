@@ -26,7 +26,6 @@ export const load: LayoutLoad = async ({parent}) => {
             }
             if (bookComposite.library_name === 'WISHLIST') {
                 tempWishlist.push(bookComposite)
-                console.log("temp", tempWishlist)
             }
         }
         booksReadStore.set([...tempBooksRead, {book_id: '', library_name: tempBooksRead[0].library_name, library_id: tempBooksRead[0].library_id}])

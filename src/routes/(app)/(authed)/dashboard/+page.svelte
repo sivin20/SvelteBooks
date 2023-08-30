@@ -144,15 +144,15 @@
     </section>
 <!--    Read-->
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
-    <section class="py-8 w-1/2">
+    <section class="py-8 md:w-1/2 w-full">
         <p class="text-[25px]">Monitor your reading</p>
         <p class="pt-2">Track your book count, pages read, and time spent immersed in your reads.
             Time calculations are based on an average of 300 words per page and a default reading speed set at 250 words per minute,
             which can be customized to reflect your own pace.</p>
     </section>
 
-    <section class="flex flex-wrap items-center justify-center my-8 w-full h-[380px] rounded-2xl">
-        <table class="h-full w-2/6 text-white p-4 bg-[--secondary] rounded-s-2xl rounded-br-2xl">
+    <section class="flex flex-wrap items-center justify-center my-8 w-full md:h-[380px] rounded-2xl">
+        <table class="h-full w-full md:w-2/6 text-white p-4 bg-[--secondary] rounded-s-2xl rounded-br-2xl">
             <tr class="flex flex-col items-start ml-10 justify-center h-1/3">
                 <td>
                     <p class="text-sm mb-1"><strong>Books read</strong></p>
@@ -200,14 +200,14 @@
                 </td>
             </tr>
         </table>
-        <div class="w-4/6">
+        <div class="md:w-4/6 w-full">
             <BarChart data="{booksWithPageCount()}"/>
         </div>
     </section>
 
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
     <section class="flex py-8">
-        <div class="w-1/2">
+        <div class="md:w-1/2 w-full">
             <p class="text-[25px]">Explore Your Reading Trends</p>
             <p> Here, we spotlight the authors you frequent the most, as well as the longest and shortest books that you've read.
                 Gain valuable insights into your reading preferences, discovering the writers and book lengths that have truly captivated your interest.</p>

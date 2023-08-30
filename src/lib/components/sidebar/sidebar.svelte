@@ -48,9 +48,9 @@
                         </svg>
                     </div>
                 </a>
-                <a href="#" class="h-1/5 w-full flex flex-col justify-center items-center h-24">
+                <a href="/dashboard/user" class="h-1/5 w-full flex flex-col justify-center items-center h-24">
                     <div class="flex justify-center items-center nav-item"
-                         class:active={$page.url.pathname === '#'}>
+                         class:active={$page.url.pathname === '/dashboard/user'}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="36.06" height="36.06" viewBox="0 0 36.06 36.06">
                             <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M18.03.562a18.03,18.03,0,1,0,18.03,18.03A18.027,18.027,0,0,0,18.03.562Zm0,6.979a6.4,6.4,0,1,1-6.4,6.4A6.4,6.4,0,0,1,18.03,7.542Zm0,25.009A13.932,13.932,0,0,1,7.379,27.593a8.106,8.106,0,0,1,7.161-4.348,1.779,1.779,0,0,1,.516.08,9.626,9.626,0,0,0,2.973.5,9.589,9.589,0,0,0,2.973-.5,1.779,1.779,0,0,1,.516-.08,8.106,8.106,0,0,1,7.161,4.348A13.932,13.932,0,0,1,18.03,32.551Z" transform="translate(0 -0.563)"/>
                         </svg>
