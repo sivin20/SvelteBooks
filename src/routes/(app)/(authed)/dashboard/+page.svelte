@@ -88,19 +88,10 @@
 
 <main class="content-box rounded-lg overflow-x-hidden">
     <section>
-        <p class="text-[50px]"><strong>DASHBOARD</strong></p>
-
-        <div class="flex justify-between gap-8">
-            <div>
-                <p>Welcome, {data.session.user.user_metadata.first_name}</p>
-                <p class="max-w-xl">View statistics about your reading, including how many books you've read, how many pages that amounts to
-                    and how many minutes you have spend reading based on your words read per minute</p>
-            </div>
-            <div class="flex items-start relative h-[20px] z-0 hidden md:block">
-                <img class="absolute bottom-5 left-5" src="{DrawnArrow}" alt="Arrow point towards account details">
-                <p>View your account details</p>
-            </div>
-        </div>
+        <p class="text-[50px] mb-2"><strong>DASHBOARD</strong></p>
+        <p class="text-[25px]">Welcome, {data.session.user.user_metadata.first_name}</p>
+        <p class="max-w-xl pt-2">View statistics about your reading, including how many books you've read, how many pages that amounts to
+            and how many hours you have spend reading based on your words read per minute</p>
     </section>
 
     <section class="w-full block xl:flex justify-center xl:border-t-2 xl:border-[--input-field-color] py-8 xl:mt-4">
@@ -117,12 +108,6 @@
                 {:then tbrs}
                     {#if tbrs.length}
                         {#each tbrs as book, i}
-                            <!--                    <div class="book h-[192px] w-[128px] bg-[&#45;&#45;secondary&#45;&#45;accent-2] flex items-center justify-center">-->
-                            <!--                        <svg xmlns="http://www.w3.org/2000/svg" width="49.18" height="56.19" viewBox="0 0 25.192 28.788">-->
-                            <!--                            <path data-name="Path 4" d="M25.182,20.15V1.444A1.324,1.324,0,0,0,23.744,0H5.4A5.3,5.3,0,0,0,0,5.2c0,.067,0,.135,0,.2V23.388a5.3,5.3,0,0,0,5.2,5.4q.1,0,.2,0H23.744a1.418,1.418,0,0,0,1.439-1.4c0-.014,0-.028,0-.042v-.9a1.554,1.554,0,0,0-.54-1.079,15.921,15.921,0,0,1,0-4.137,1.088,1.088,0,0,0,.54-1.08ZM8.1,9.448A.45.45,0,0,1,8.544,9H11.7V5.85a.45.45,0,0,1,.45-.45h2.7a.45.45,0,0,1,.45.45V9h3.148a.45.45,0,0,1,.45.45v2.7a.45.45,0,0,1-.45.45H15.294v3.148a.45.45,0,0,1-.45.45h-2.7a.45.45,0,0,1-.45-.45V12.6H8.544a.45.45,0,0,1-.45-.45Zm15,15.739H5.4a1.7,1.7,0,0,1-1.8-1.8,1.8,1.8,0,0,1,1.8-1.8H23.1Z"-->
-                            <!--                                  transform="translate(0.001 0.001)"/>-->
-                            <!--                        </svg>-->
-                            <!--                    </div>-->
                             <div class="book h-[192px] w-[128px] bg-[--secondary--accent-2] flex items-center justify-center">
                                 <img class='book h-[192px] w-[128px]' src="{book.image_link}" alt="Book images">
                             </div>
@@ -157,10 +142,15 @@
             </ul>
         </div>
     </section>
-<!--    <p class="text-[32px]"><strong>Welcome, {data.session.user.user_metadata.first_name}</strong></p>-->
 <!--    Read-->
-
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
+    <section class="py-8 w-1/2">
+        <p class="text-[25px]">Monitor your reading</p>
+        <p class="pt-2">Track your book count, pages read, and time spent immersed in your reads.
+            Time calculations are based on an average of 300 words per page and a default reading speed set at 250 words per minute,
+            which can be customized to reflect your own pace.</p>
+    </section>
+
     <section class="flex flex-wrap items-center justify-center my-8 w-full h-[380px] rounded-2xl">
         <table class="h-full w-2/6 text-white p-4 bg-[--secondary] rounded-s-2xl rounded-br-2xl">
             <tr class="flex flex-col items-start ml-10 justify-center h-1/3">
@@ -216,26 +206,16 @@
     </section>
 
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
-    <section class="flex justify-center py-8">
-
+    <section class="flex py-8">
+        <div class="w-1/2">
+            <p class="text-[25px]">Explore Your Reading Trends</p>
+            <p> Here, we spotlight the authors you frequent the most, as well as the longest and shortest books that you've read.
+                Gain valuable insights into your reading preferences, discovering the writers and book lengths that have truly captivated your interest.</p>
+        </div>
     </section>
-<!--    <div class="flex flex-col w-1/3 justify-center mr-10 xl:border-r-2 xl:border-[&#45;&#45;secondary]">-->
-<!--        <div class="py-4">-->
-<!--            <p><strong>Most Read Author</strong></p>-->
-<!--            <p class="text-[14px]">Brandon Sanderson</p>-->
-<!--        </div>-->
-<!--        <div class="py-4">-->
-<!--            <p><strong>Longest Book</strong></p>-->
-<!--            <p class="text-[14px]">Rhythm of War</p>-->
-<!--        </div>-->
-<!--        <div class="py-4">-->
-<!--            <p><strong>Shortest book</strong></p>-->
-<!--            <p class="text-[14px]">Hitchhiker's guide to the galaxy</p>-->
-<!--        </div>-->
-<!--    </div>-->
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
     <section class="flex justify-center flex-wrap py-8 gap-4">
-        <div class=" w-[300px] flex flex-col self-end">
+        <div class="w-[300px] flex flex-col self-end">
             <div class="w-full rounded-t-xl bg-[--primary] p-4 text-center">
                 <p class="text-white">Most Read Authors</p>
             </div>
@@ -281,8 +261,6 @@
             </ol>
         </div>
     </section>
-
-    <div class="xl:h-1 xl:border-t-2 xl:border-[--input-field-color]"></div>
 </main>
 
 <style lang="scss">

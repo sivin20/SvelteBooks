@@ -42,7 +42,7 @@
 <!--        </button>-->
 <!--    {/if}-->
     <div class="flex-auto flex justify-center relative">
-        <div class='w-full px-4 absolute'>
+        <div class='w-full px-4 absolute max-w-[1400px]'>
             <div class="w-full h-[8px] bg-[#ccc]">
                 <div class="h-[8px] bg-[--primary]" bind:this={scrollBar}></div>
             </div>
