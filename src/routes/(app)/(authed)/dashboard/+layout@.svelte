@@ -8,7 +8,17 @@
     /** @type {import('.$types').PageData} */
     export let data;
 
-    // let toggleSidebar = true
+    let pageContent
+    let scrollBar
+    let yScroll = 0
+    let pct = 0
+
+    function handleScrollProgress() {
+        yScroll=pageContent.scrollTop
+        pct = pageContent.scrollTop / (pageContent.scrollHeight - pageContent.offsetHeight) * 100
+        scrollBar.style.width = pct + "%";
+    }
+
     let showUserInfoBox = false
 
 </script>
@@ -31,8 +41,13 @@
 <!--            <Fa class="ml-1" icon="{faCaretRight}"/>-->
 <!--        </button>-->
 <!--    {/if}-->
-    <div class="flex-auto flex justify-center">
-        <div class="w-full mt-10 px-0 sm:px-4 relative max-w-[1400px]">
+    <div class="flex-auto flex justify-center relative">
+        <div class='w-full px-4 absolute'>
+            <div class="w-full h-[8px] bg-[#ccc]">
+                <div class="h-[8px] bg-[--primary]" bind:this={scrollBar}></div>
+            </div>
+        </div>
+        <div class="w-full pt-10 px-0 sm:px-4 relative max-w-[1400px] overflow-y-auto">
             <div class="absolute fixed top-4 right-10 rounded-xl hidden sm:block z-10" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
                 {#if showUserInfoBox}
                     <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
@@ -51,7 +66,7 @@
                     </div>
                 {/if}
             </div>
-            <div class="overflow-y-auto h-full p-4 overflow-x-hidden">
+            <div class="h-full p-4 overflow-x-hidden" bind:this={pageContent} on:scroll={handleScrollProgress}>
                 <slot></slot>
             </div>
         </div>
