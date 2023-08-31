@@ -10,32 +10,26 @@ export const actions: Actions = {
         if (!session) {
             throw redirect(303, '/login');
         }
-        const data = await request.formData();
-        const imageFile = data.get('avatar')
+        const data: FormData = await request.formData();
+        const imageFile: Blob = data.get('avatar') as Blob
         if(imageFile instanceof File) {
             console.log("imagefile", imageFile);
         }
-        const imageBuffer = await imageFile.arrayBuffer();
-        const temporaryFilePath = `${ process.cwd()}/static/${session.user.id}`;
-        const resizedImageBuffer = await sharp(Buffer.from(imageBuffer))
+        const imageBuffer: ArrayBuffer = await imageFile.arrayBuffer();
+        const resizedImageBuffer: Buffer = await sharp(Buffer.from(imageBuffer))
             .resize(100, 100)
             .jpeg({ quality: 80 }) // Adjust compression quality as needed
             .toBuffer();
 
-        await fs.writeFile(temporaryFilePath, Buffer.from(resizedImageBuffer));
 
-        const storageService = new GoogleCloudStorageService();
+        const storageService: GoogleCloudStorageService = new GoogleCloudStorageService();
 
         // Sending the upload request using the service
         try {
-            const file = await storageService.uploadImage(temporaryFilePath, session.user.id)
-                .finally(() => {
-                    fs.unlink(temporaryFilePath);
-                });
+           await storageService.uploadImage(resizedImageBuffer, session.user.id)
             console.log(`Image uploaded to ${storageService.bucketName}.`);
-
         } catch (err) {
-            console.error(`Error uploading image image_to_upload.jpeg: ${err}`);
+            console.error(`Error uploading image: ${err}`);
         }
 
     },

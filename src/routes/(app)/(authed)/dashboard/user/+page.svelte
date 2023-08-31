@@ -1,10 +1,10 @@
 
 
 <script lang="ts">
-    const authorizedExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+    const authorizedExtensions = ['.jpg', '.jpeg', '.png'];
 </script>
 
 <form action="?/avatar" method="post" enctype="multipart/form-data">
-    <input type="file" name="avatar" placeholder="avatar" />
+    <input accept="{authorizedExtensions.join(',')}" type="file" name="avatar" placeholder="avatar" />
     <button type="submit">upload</button>
 </form>

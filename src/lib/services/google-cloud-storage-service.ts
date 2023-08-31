@@ -1,11 +1,11 @@
-import {Bucket, Storage} from '@google-cloud/storage';
+import {Bucket, File, Storage} from '@google-cloud/storage';
 const VITE_STORAGE_CREDENTIALS = import.meta.env.VITE_STORAGE_CREDENTIALS
 
 const credentials = JSON.parse(VITE_STORAGE_CREDENTIALS);
 
 class GoogleCloudStorageService {
     private storage: Storage;
-    private bucketName: string;
+    public bucketName: string;
     private bucket: Bucket;
 
     constructor() {
@@ -17,15 +17,26 @@ class GoogleCloudStorageService {
         this.bucket = this.storage.bucket(this.bucketName);
     }
 
-    async uploadImage(imageFile: string, destination: string): Promise<File> {
+    async uploadImage(imageBuffer: ArrayBuffer, destination: string): Promise<File> {
         return new Promise<File>((resolve, reject) => {
-            this.bucket.upload(imageFile, { destination }, (err, file) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(file);
-                }
+            const blob: File = this.bucket.file(destination);
+            const blobStream = blob.createWriteStream({
+                metadata: {
+                    contentType: 'image/jpeg', // Change the content type if needed
+                },
             });
+
+            const buffer = Buffer.from(imageBuffer);
+
+            blobStream.on('error', (err) => {
+                reject(err);
+            });
+
+            blobStream.on('finish', () => {
+                resolve(blob);
+            });
+
+            blobStream.end(buffer);
         });
     }
 }
