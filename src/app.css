@@ -47,10 +47,6 @@ input:-webkit-autofill:active {
     justify-content: center;
 }
 
-.primary-button:disabled {
-    opacity: 50%;
-}
-
 .small-primary-button {
     border-radius: 6px;
     display: flex;
@@ -63,6 +59,10 @@ input:-webkit-autofill:active {
     padding: 0 1.5rem;
     align-items: center;
     justify-content: center;
+}
+
+button:disabled {
+    opacity: 20%;
 }
 
 .secondary-button {
