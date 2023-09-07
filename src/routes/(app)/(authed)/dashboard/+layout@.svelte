@@ -51,26 +51,21 @@
             </div>
         </div>
         <div class="w-full pt-10 px-0 sm:px-4 relative max-w-[1400px] overflow-y-auto">
-            <div class="absolute fixed top-4 right-10 rounded-xl hidden sm:block z-10" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
-                {#if showUserInfoBox}
-                    <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
-                        <div class="flex">
-                            <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
-                            <Fa icon={faUser} color="var(--primary)"/>
-                        </div>
+            <!--
+            <div class="absolute fixed top-12 right-10 rounded-xl hidden sm:block z-10" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
+                <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
+                    <div class="flex border-slate-100 bg-gray-100 items-center relative" style='width: max-content'>
+                        <img class="h-[50px] w-[50px] rounded-full absolute left-[-25px]" src="{avatar}" alt="profile image">
+                        <p class="ml-6 p-2">{data.session.user.user_metadata.first_name}</p>
+                    </div>
+                    {#if showUserInfoBox}
                         <form action="/logout" method="POST">
                             <button type="submit">Logout</button>
                         </form>
-                    </div>
-                {:else}
-                    <div class="flex border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
-                        <p class="mr-2">{data.session.user.user_metadata.first_name}</p>
-                        <Fa icon={faUser} color="var(--primary)"/>
-                    </div>
-                {/if}
+                    {/if}
+                </div>
             </div>
-            <img class="h-[50px] w-[50px]" src="{avatar}" alt="">
-
+            -->
             <div class="h-full p-4 overflow-x-hidden" bind:this={pageContent} on:scroll={handleScrollProgress}>
                 <slot></slot>
             </div>

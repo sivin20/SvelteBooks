@@ -47,6 +47,10 @@ input:-webkit-autofill:active {
     justify-content: center;
 }
 
+.primary-button:disabled {
+    opacity: 50%;
+}
+
 .small-primary-button {
     border-radius: 6px;
     display: flex;
