@@ -1,4 +1,5 @@
 <script lang="ts">
+    import toast, {Toaster} from "svelte-french-toast";
     import {enhance} from "$app/forms";
     import {faCircleXmark} from "@fortawesome/free-solid-svg-icons";
     import Fa from "svelte-fa";
@@ -51,6 +52,9 @@
             await getImageFromCloud();
             formLoading = false;
             avatar = null;
+            toast.success(`Succesfully changed avatar`, {
+                position: "top-right"
+            })
             update();
         };
     }
@@ -105,6 +109,7 @@
             </button>
         </div>
     </div>
+    <Toaster/>
 </div>
 
 
