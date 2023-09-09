@@ -19,7 +19,6 @@
     export let data;
     let sortedData = data;
     function handleReactiveShowSort(input) {
-        console.log("input", input)
         if (input === 0) {
             return (sortedData = data.sort((a, b) => a[y] - b[y]));
         }
@@ -119,7 +118,7 @@
             </g>
 
             <g class="bars">
-                {#each reactiveYVals as bar, i (bar)}
+                {#each reactiveYVals as bar, i (`${i}-${bar}`)}
                     <rect on:mouseenter={() => {handleShowToolTip(reactiveYVals[i], true)}} on:mouseleave={() => {handleShowToolTip(reactiveYVals[i], false)}}
                           x={reactiveXScale(reactiveXVals[i])}
                           y={reactiveYScale(reactiveYVals[i])}
