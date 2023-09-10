@@ -139,12 +139,12 @@
         </div>
     </div>
     {#if showDeleteBookModal}
-        <Modal showModal="{showDeleteBookModal}">
+        <Modal showModal="{showDeleteBookModal}" on:close={() => {showDeleteBookModal = false}}>
             <h2 slot="header" class="text-[--primary] text-2xl font-bold">Deleting</h2>
             <div>
-                <p>Are you sure you want to remove {book.title} from this library?</p>
+                <p>Are you sure you want to remove <strong>{book.title}</strong> from this library?</p>
             </div>
-            <button slot="yes-button" class="small-secondary-button" on:click={() => removeBookFromLibrary()}>Yes</button>
+            <button slot="yes-button" class="small-primary-button" on:click={() => removeBookFromLibrary()}>Yes</button>
         </Modal>
     {/if}
 </main>

@@ -2,6 +2,8 @@
     import UserProfileChanger from "$lib/components/user/userProfileChanger.svelte";
     import { userProfilePicture, getImageFromCloud } from "$lib/stores/userStore";
     import {onMount} from "svelte";
+    import Modal from '$lib/components/modal.svelte'
+
     export let data
     const imageId = data.session.user.id;
     let userFirstName: string = data.session.user.user_metadata.first_name
@@ -12,6 +14,8 @@
     let userNameHasBeenChanged: boolean = false
     let readingSpeedHasBeenChanged: boolean = false
     let emailHasBeenChanged: boolean = false
+
+    let showDeleteModal: boolean = false
 
     function resetNameField() {
         userNameHasBeenChanged = false
@@ -43,7 +47,7 @@
 
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
 
-    <div class="grid grid-cols-7 gap-6 mt-6">
+    <div class="grid grid-cols-7 gap-6 mt-6 mb-[200px]">
 <!--    Sidepanel-->
         <div class="col-span-2">
             <div class="sticky top-0">
@@ -154,6 +158,48 @@
 <!--            Change user Profile Image-->
                 <div class="w-full">
                     <UserProfileChanger imageId={imageId}/>
+                </div>
+<!--            Delete account-->
+                <div class="border-2 rounded-xl border-[--primary-accent-1] w-full">
+                    <div class="p-4">
+                        <div class="col-span-2">
+                            <p class="text-xl font-semibold">Delete Account</p>
+                            <p class="pt-2">Permanently remove your Account and all of its contents from Siglib.
+                                This action is not reversible, so please continue with caution</p>
+
+                        </div>
+                    </div>
+                    <div class="border-t-2 border-[--primary-accent-1] grid grid-cols-3 items-center p-4 bg-[--primary-accent-1]">
+                        <p class="col-span-2">We'll send you an email to verify the change</p>
+                        <div class="w-[100px] flex justify-center col-span-1 justify-self-end relative">
+                            <button class="small-primary-button" on:click|preventDefault={() => {showDeleteModal = true}}>DELETE</button>
+                        </div>
+                            <Modal showModal="{showDeleteModal}" on:close={() => {showDeleteModal = false}}>
+                                <h2 slot="header" class="text-[--primary] text-2xl font-bold">Delete Account</h2>
+                                <div class="mt-2">
+                                    <p>Siglib will <strong>delete all</strong> of your libraries, along with the list of books read,
+                                        books to be read, books in progress and books on wishlist,
+                                        user information, reading speed, profile picture,
+                                        and all other resources belonging to your Account.</p>
+                                </div>
+
+                                <div class="h-1 border-t-2 border-[--input-field-color] my-4 "></div>
+
+                                <form action="?/deleteUser" method="POST" id="deleteUser" class="flex flex-col gap-4">
+                                    <div>
+                                        <label for="firstname">Enter your email <strong>{userEmail}</strong> to continue</label>
+                                        <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
+                                               type="text" id="confirm_email" name="confirm_email">
+                                    </div>
+                                    <div>
+                                        <label for="verify" >To verify, type <strong>delete my account</strong> to continue</label>
+                                        <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
+                                               type="text" id="verify" name="verify">
+                                    </div>
+                                </form>
+                                <button slot="yes-button" type="submit" form="deleteUser" class="small-primary-button" on:click={() => console.log('DELETE')}>Yes</button>
+                            </Modal>
+                    </div>
                 </div>
             </section>
         </div>

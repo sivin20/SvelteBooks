@@ -1,9 +1,19 @@
 <script>
+    import {createEventDispatcher} from "svelte";
+
     export let showModal; // boolean
     import Fa from "svelte-fa";
     import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
+    const dispatch = createEventDispatcher()
+
     let dialog; // HTMLDialogElement
+
+    function closeDialog() {
+        showModal = false
+        dispatch("close", {});
+        dialog.close()
+    }
 
     $: if (dialog && showModal) dialog.showModal();
 </script>
@@ -11,21 +21,26 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
         bind:this={dialog}
-        on:close={() => (showModal = false)}
-        on:click|self={() => dialog.close()}
+        on:close={() => closeDialog()}
+        on:click|self={() => closeDialog()}
 >
-    <div class="p-4 w-[350px]" on:click|stopPropagation>
-        <div class="flex items-center justify-center">
+    <div class="p-6 w-[500px]" on:click|stopPropagation>
+        <div class="flex items-center justify-center mb-4">
             <div class="flex-auto ">
                 <slot name="header"/>
             </div>
-            <button class="flex text-2xl text-right" autofocus on:click={() => dialog.close()}><Fa icon="{faXmark}"/></button>
+            <button class="flex text-2xl text-right" autofocus on:click={() => closeDialog()}><Fa icon="{faXmark}"/></button>
         </div>
-        <hr />
-        <slot />
-        <div class="flex items-center justify-center pt-4">
-            <slot name="yes-button"></slot>
-            <button class="small-primary-button ml-2" on:click|self={() => dialog.close()}>No</button>
+        <hr/>
+        <div class="">
+            <div class="my-4">
+                <slot />
+            </div>
+            <hr/>
+            <div class="flex items-center justify-between pt-4">
+                <button class="cancel-button" on:click|self={() => closeDialog()}>No</button>
+                <slot name="yes-button"></slot>
+            </div>
         </div>
     </div>
 </dialog>

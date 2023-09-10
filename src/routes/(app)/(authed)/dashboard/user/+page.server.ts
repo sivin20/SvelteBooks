@@ -29,11 +29,21 @@ export const actions: Actions = {
         }
 
     },
+
     user: async ({request, url, locals: {getSession} }) => {
         const session = await getSession();
         if (!session) {
             throw redirect(303, '/login');
         }
         const data: FormData = await request.formData();
+    },
+
+    deleteUser: async ({request, url, locals: {getSession} }) => {
+        const session = await getSession();
+        if (!session) {
+            throw redirect(303, '/login');
+        }
+        const data: FormData = await request.formData();
+        console.log("deletUser data", data)
     }
 }
