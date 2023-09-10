@@ -79,7 +79,7 @@
     $: reactiveYTicksFormatted = reactiveYTicks.map((el) => el.toLocaleString("en-US"));
 </script>
 
-<div class="chart-container bg-white p-4 rounded-2xl" dir="auto">
+<div class="chart-container bg-white p-4 rounded-2xl relative" dir="auto">
     <div class="mb-2 text-right">
         <select class="dropdown" on:change={reactiveShowSort(this.selectedIndex)}>
             <option selected>{y} &#8593;</option>
@@ -119,7 +119,8 @@
 
             <g class="bars">
                 {#each reactiveYVals as bar, i (`${i}-${bar}`)}
-                    <rect on:mouseenter={() => {handleShowToolTip(reactiveYVals[i], true)}} on:mouseleave={() => {handleShowToolTip(reactiveYVals[i], false)}}
+                    <rect on:mouseenter={() => {handleShowToolTip(reactiveYVals[i], true)}}
+                          on:mouseleave={() => {handleShowToolTip(reactiveYVals[i], false)}}
                           x={reactiveXScale(reactiveXVals[i])}
                           y={reactiveYScale(reactiveYVals[i])}
                           width={reactiveXScale.bandwidth()}
@@ -129,7 +130,11 @@
                     />
                 {/each}
             </g>
+
         </svg>
+        {#if showTooltip}
+            <div class="absolute p-6 bg-red-600">TOOLTIP</div>
+        {/if}
     </div>
 </div>
 

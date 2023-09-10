@@ -1,38 +1,161 @@
-
-
-<script lang="ts">
+<script lang="ts" xmlns="http://www.w3.org/1999/html">
     import UserProfileChanger from "$lib/components/user/userProfileChanger.svelte";
+    import { userProfilePicture, getImageFromCloud } from "$lib/stores/userStore";
+    import {onMount} from "svelte";
     export let data
     const imageId = data.session.user.id;
+    let userFirstName: string = data.session.user.user_metadata.first_name
+    let userLastName: string = data.session.user.user_metadata.last_name
+    let userReadingSpeed: number = 250
+    let userEmail: string = data.session.user.email
+
+    let userNameHasBeenChanged: boolean = false
+    let readingSpeedHasBeenChanged: boolean = false
+    let emailHasBeenChanged: boolean = false
+
+    function resetNameField() {
+        userNameHasBeenChanged = false
+        userFirstName = data.session.user.user_metadata.first_name
+        userLastName = data.session.user.user_metadata.last_name
+    }
+
+    function resetReadingSpeed() {
+        readingSpeedHasBeenChanged = false
+        userReadingSpeed = 250
+    }
+
+    function resetEmailField() {
+        emailHasBeenChanged = false
+        userEmail = data.session.user.email
+    }
+
+
+    onMount(async () => {
+        await getImageFromCloud(imageId)
+    });
 
 </script>
 
 <main>
-    <div class="mb-2">
+    <div class="mb-6">
         <p class="text-[50px]"><strong>USER SETTINGS</strong></p>
     </div>
 
-    <section class="flex flex-col xl:flex-row flex-wrap">
-        <div class="w-full xl:w-1/2">
-            <UserProfileChanger imageId={imageId}/>
-        </div>
-        <div class="ml-6 border-l-2 border-[--input-field-color] p-4">
-            <p>Change user settings</p>
-            <form action="?/user" method="POST" class="flex flex-col items-center w-full">
-                <div class="input-text">
-                    <label for="email">Email</label>
-                    <input type="text" id="email" name="email">
+    <div class="h-1 border-t-2 border-[--input-field-color]"></div>
+
+    <div class="grid grid-cols-7 gap-6 mt-6">
+<!--    Sidepanel-->
+        <div class="col-span-2">
+            <div class="sticky top-0">
+                <div class="flex items-center gap-4">
+                    <p class="font-bold">{data.session.user.user_metadata.first_name}</p>
+                    {#if $userProfilePicture}
+                        <img class="h-[50px] w-[50px] rounded-full" src="{$userProfilePicture}"
+                             alt="User avatar"/>
+                    {:else}
+                        <img class="h-[50px] w-[50px]" src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
+                             alt="User avatar"/>
+                    {/if}
                 </div>
-
-                <button type="submit" class="secondary-button mt-5">SAVE</button>
-            </form>
+                <p class="italic mt-2">{data.session.user.email}</p>
+                <form action="/logout" method="POST" class="mt-2">
+                    <button class="cancel-button" type="submit">Logout</button>
+                </form>
+            </div>
         </div>
-    </section>
+<!--    Main content-->
+        <div class="col-span-5">
+            <section class="gap-6 flex items-center flex-col">
+<!--            Change user name-->
+                <div class="border-2 rounded-xl border-[--input-field-color] w-full">
+                    <div class="p-4">
+                        <div class="col-span-2">
+                            <p class="text-xl font-bold">Your name</p>
+                            <p class="pt-2">Please enter your full name, or a display name you are comfortable with.</p>
+                            <form action="?/user" method="POST" class="flex items-center gap-4 mt-2">
+                                <div>
+                                    <label for="firstname" class="font-semibold">First name</label>
+                                    <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
+                                           type="text" id="firstname" name="firstname"
+                                           bind:value={userFirstName} on:input={() => { userNameHasBeenChanged = true }}>
+                                </div>
 
-    <div class="h-1 border-t-2 border-[--input-field-color] my-4 "></div>
-
-    <form action="/logout" method="POST">
-        <button type="submit">Logout</button>
-    </form>
-
+                                <div>
+                                    <label for="firstname" class="font-semibold">Last name</label>
+                                    <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
+                                           type="text" id="lastname" name="lastname"
+                                           bind:value={userLastName} on:input={() => { userNameHasBeenChanged = true }}>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="border-t-2 border-[--input-field-color] grid grid-cols-3 items-center p-4 bg-[--input-field-color]">
+                        <p class="col-span-2">Please use 20 characters maximum pr. field</p>
+                        <div class="w-[100px] flex justify-center col-span-1 justify-self-end relative">
+                            {#if userNameHasBeenChanged}
+                                <div class="absolute right-[100px]">
+                                    <button class="cancel-button" on:click|preventDefault={() => {resetNameField()}}>CANCEL</button>
+                                </div>
+                            {/if}
+                            <button class="small-primary-button" disabled="{!userNameHasBeenChanged}" type="submit">SAVE</button>
+                        </div>
+                    </div>
+                </div>
+<!--            Change user Reading speed    -->
+                <div class="border-2 rounded-xl border-[--input-field-color] w-full">
+                    <div class="p-4">
+                        <div class="col-span-2">
+                            <p class="text-xl font-bold">Your reading speed</p>
+                            <p class="pt-2">Please enter your reading speed in Words pr. Minute (WPM)</p>
+                            <form action="?/readingspeed" method="POST" class="flex flex-col w-1/2 xl:w-2/3 mt-2">
+                                <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
+                                       type="number" id="readingSpeed" name="readingSpeed"
+                                       bind:value={userReadingSpeed} on:input={() => { readingSpeedHasBeenChanged = true }}>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="border-t-2 border-[--input-field-color] grid grid-cols-3 items-center p-4 bg-[--input-field-color]">
+                        <p class="col-span-2">We'll send you an email to verify the change</p>
+                        <div class="w-[100px] flex justify-center col-span-1 justify-self-end relative">
+                            {#if readingSpeedHasBeenChanged}
+                                <div class="absolute right-[100px]">
+                                    <button class="cancel-button" on:click|preventDefault={() => {resetReadingSpeed()}}>CANCEL</button>
+                                </div>
+                            {/if}
+                            <button class="small-primary-button" disabled="{!readingSpeedHasBeenChanged}" type="submit">SAVE</button>
+                        </div>
+                    </div>
+                </div>
+<!--            Change user email-->
+                <div class="border-2 rounded-xl border-[--input-field-color] w-full">
+                    <div class="p-4">
+                        <div class="col-span-2">
+                            <p class="text-xl font-semibold">Your Email</p>
+                            <p class="pt-2">Please enter the email address you want to log in with Vercel</p>
+                            <form action="?/user" method="POST" class="flex flex-col w-1/2 xl:w-2/3 mt-2">
+                                <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
+                                       type="text" id="email" name="email"
+                                       bind:value={userEmail} on:input={() => { emailHasBeenChanged = true }}>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="border-t-2 border-[--input-field-color] grid grid-cols-3 items-center p-4 bg-[--input-field-color]">
+                        <p class="col-span-2">We'll send you an email to verify the change</p>
+                        <div class="w-[100px] flex justify-center col-span-1 justify-self-end relative">
+                            {#if emailHasBeenChanged}
+                                <div class="absolute right-[100px]">
+                                    <button class="cancel-button" on:click|preventDefault={() => {resetEmailField()}}>CANCEL</button>
+                                </div>
+                            {/if}
+                            <button class="small-primary-button" disabled="{!emailHasBeenChanged}" type="submit">SAVE</button>
+                        </div>
+                    </div>
+                </div>
+<!--            Change user Profile Image-->
+                <div class="w-full">
+                    <UserProfileChanger imageId={imageId}/>
+                </div>
+            </section>
+        </div>
+    </div>
 </main>

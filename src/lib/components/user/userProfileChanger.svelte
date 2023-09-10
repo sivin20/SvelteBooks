@@ -3,6 +3,7 @@
     import {enhance} from "$app/forms";
     import {faCircleXmark} from "@fortawesome/free-solid-svg-icons";
     import Fa from "svelte-fa";
+    import {userProfilePicture, getImageFromCloud} from "$lib/stores/userStore";
 
     import {onMount} from "svelte";
 
@@ -10,27 +11,12 @@
 
     export let imageId
 
-    let imageSrc = '';
-
     let formLoading: boolean = false;
 
     onMount(async () => {
-        await getImageFromCloud()
+        await getImageFromCloud(imageId)
     });
 
-    async function getImageFromCloud() {
-        try {
-            const response = await fetch(`/api/${imageId}`);
-            if (response.ok) {
-                imageSrc = URL.createObjectURL(await response.blob());
-            } else {
-                // Handle the case where the image retrieval failed
-                console.error('Failed to load image:', response.status);
-            }
-        } catch (error) {
-            console.error('Error loading image:', error);
-        }
-    }
 
     const onFileSelected = (e:any)=>{
         let image = e.target.files[0];
@@ -49,7 +35,7 @@
     function enhanceForm() {
         formLoading = true;
         return async ({ update }) => {
-            await getImageFromCloud();
+            await getImageFromCloud(imageId);
             formLoading = false;
             avatar = null;
             toast.success(`Succesfully changed avatar`, {
@@ -63,24 +49,25 @@
 </script>
 
 
-<div class="border-2 border-[--input-field-color]">
+<div class="border-2 border-[--input-field-color] rounded-xl">
     <div class="p-4 grid grid-cols-3">
         <div class="col-span-2">
-            <p class="text-xl font-semibold">Change user profile image</p>
+            <p class="text-xl font-bold">Change user profile image</p>
             <p class="pt-2">This is your avatar</p>
             <p class="pt-2">Click on the avatar to upload a custom one from your files.</p>
         </div>
         <div class="relative col-span-1 justify-self-end self-center relative">
             <form action="?/avatar" method="post" enctype="multipart/form-data"
                   id="avatarform" use:enhance={enhanceForm}>
-                {#if avatar || imageSrc}
-                    {#if imageSrc && (!avatar || avatar === 'empty')}
-                        <img class="h-[100px] w-[100px] rounded-full cursor-pointer border-2 border-[--input-field-color]" src="{imageSrc}"
+                {#if avatar || $userProfilePicture}
+                    {#if $userProfilePicture && (!avatar || avatar === 'empty')}
+                        <img class="h-[100px] w-[100px] rounded-full cursor-pointer border-2 border-[--input-field-color]" src="{$userProfilePicture}"
                              alt="User avatar" on:click|preventDefault={()=>{fileinput.click();}}/>
                     {:else if avatar !=='empty'}
                         <img class="h-[100px] w-[100px] rounded-full cursor-pointer border-2 border-[--input-field-color]" src="{avatar}"
                              alt="User avatar" on:click|preventDefault={()=>{fileinput.click();}}/>
-                        <button on:click|preventDefault={() => {clearInputFile()}} class="cursor-pointer absolute right-0 top-0">
+                        <button class="cursor-pointer absolute right-0 top-0"
+                                on:click|preventDefault={() => {clearInputFile()}} disabled={!avatar || avatar === 'empty' || formLoading}>
                             <Fa color="red" icon="{faCircleXmark}"/>
                         </button>
                     {/if}
@@ -110,9 +97,4 @@
         </div>
     </div>
     <Toaster/>
-</div>
-
-
-<div>
-
 </div>

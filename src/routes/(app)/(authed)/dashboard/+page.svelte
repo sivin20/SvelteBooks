@@ -1,11 +1,9 @@
 
 <script lang="ts">
     import BarChart from "$lib/components/barChart.svelte"
-    import DrawnArrow from "$lib/assets/drawn_arrow_up.svg"
     import type {Book} from "$lib/models/Book";
     import LoadingSpinner from "$lib/components/loadingSpinner.svelte";
     import Countup from "svelte-countup";
-    import {SortService} from "$lib/services/sort.service";
 
 
     /** @type {import('.$types').PageData} */
@@ -51,10 +49,11 @@
                 highCount++
             }
         }
-        return [
-            { pages: '<300', books: lowCount },
-            { pages: '300-500', books: midCount },
-            { pages: '500<', books: highCount }];
+        const list = [
+            { pages: '<300', books: lowCount, id: 1 },
+            { pages: '300-500', books: midCount, id: 2 },
+            { pages: '500<', books: highCount, id:3 }]
+        return list;
     }
 
     type AuthorFrequency = {author: string, count: number}
