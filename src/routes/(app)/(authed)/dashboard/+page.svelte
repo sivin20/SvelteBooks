@@ -5,6 +5,7 @@
     import LoadingSpinner from "$lib/components/loadingSpinner.svelte";
     import CountupBar from "$lib/components/dashboard/countupBar.svelte";
     import WelcomeSection from "$lib/components/dashboard/welcomeSection.svelte";
+    import BookChartMonitor from "$lib/components/dashboard/bookChartMonitor.svelte";
     import TbrPile from "$lib/components/dashboard/tbrPile.svelte";
     import {getImageFromCloud, userProfilePicture} from "$lib/stores/userStore";
     import {onMount} from "svelte";
@@ -104,26 +105,17 @@
     <section>
         <CountupBar
                 totalBooksRead="{totalBooksRead()}"
-                totalHoursSpend="{totalHoursSpend()}"
-                totalPagesRead="{totalPagesRead()}"/>
+                totalPagesRead="{totalPagesRead()}"
+                totalHoursSpend="{totalHoursSpend()}"/>
     </section>
 
     <section>
         <TbrPile tbrs="{tbrs}"/>
     </section>
 <!--    Read-->
-    <div class="h-1 border-t-2 border-[--input-field-color]"></div>
-    <section class="py-8 md:w-1/2 w-full">
-        <p class="text-[25px]">Monitor your reading</p>
-        <p class="pt-2">Track your book count, pages read, and time spent immersed in your reads.
-            Time calculations are based on an average of 300 words per page and a default reading speed set at 250 words per minute,
-            which can be customized to reflect your own pace.</p>
-    </section>
-
-    <section class="flex flex-wrap items-center justify-center my-8 w-full md:h-[380px] rounded-2xl">
-        <div class="md:w-4/6 w-full">
-            <BarChart data="{booksWithPageCount()}"/>
-        </div>
+<!--    <div class="h-1 border-t-2 border-[&#45;&#45;input-field-color]"></div>-->
+    <section>
+        <BarChart data="{booksWithPageCount()}"/>
     </section>
 
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>

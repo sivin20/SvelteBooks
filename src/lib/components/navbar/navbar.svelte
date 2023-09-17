@@ -1,10 +1,14 @@
 
 <script lang="ts">
-    import Fa from 'svelte-fa'
-    import { faBookBookmark } from '@fortawesome/free-solid-svg-icons'
     import Burger from '$lib/components/navbar/burger.svelte'
     import {slide} from "svelte/transition";
     let burgerOpen: boolean = false
+
+    function openBurger() {
+        burgerOpen = !burgerOpen;
+        burgerOpen = burgerOpen;
+        console.log("burger", burgerOpen)
+    }
 </script>
 
 <div class="relative">
@@ -15,17 +19,17 @@
         <!--    <nav class="text-xl ml-10">-->
         <!--        <a class="block hover:bg-purple-400 pd-4" href="/dashboard/library">Library</a>-->
         <!--    </nav>-->
-        <div on:click={() => {burgerOpen = !burgerOpen; burgerOpen = burgerOpen; console.log("buger", burgerOpen)}}>
+        <div on:click={() => {openBurger()}}>
             <Burger burgerOpen="{burgerOpen}"/>
         </div>
     </div>
     {#if burgerOpen}
         <div class="bg-[--secondary] text-white absolute w-full p-5 z-10"
-                in:slide={{duration: 1000}}
-                out:slide={{duration: 1000}}>
-            <a href="/dashboard"><p class="mb-2">Dashboard</p></a>
-            <a href="/dashboard/library"><p class="mb-2">Library</p></a>
-            <a href="/dashboard/library/add-book"><p>Add books</p></a>
+                in:slide={{duration: 400}}
+                out:slide={{duration: 400}}>
+            <a href="/dashboard" on:click={() => {openBurger()}}><p class="mb-2">Dashboard</p></a>
+            <a href="/dashboard/library" on:click={() => {openBurger()}}><p class="mb-2">Library</p></a>
+            <a href="/dashboard/library/add-book" on:click={() => {openBurger()}}><p>Add books</p></a>
         </div>
     {/if}
 </div>

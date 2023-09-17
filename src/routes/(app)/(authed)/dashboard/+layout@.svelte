@@ -26,12 +26,12 @@
 
 </script>
 
-<div class="w-full mb-4 relative absolute block md:hidden">
+<div class="w-full mb-4 relative absolute block lg:hidden">
     <Header/>
 </div>
 <main class="flex w-screen h-screen">
     <!--{#if toggleSidebar}-->
-    <div class="w-32 mb-4 relative hidden md:block">
+    <div class="w-32 mb-4 relative hidden lg:block">
         <Sidebar/>
     </div>
 <!--        <button class="self-start flex m-5" on:click={() => {toggleSidebar = !toggleSidebar}}>-->
@@ -50,7 +50,7 @@
                 <div class="h-[8px] bg-[--primary]" bind:this={scrollBar}></div>
             </div>
         </div>
-        <div class="w-full pt-10 px-0 sm:px-4 relative max-w-[1400px] overflow-y-auto">
+        <div class="w-full pt-10 px-0 md:px-4 relative max-w-[1400px] overflow-y-auto">
             <!--
             <div class="absolute fixed top-12 right-10 rounded-xl hidden sm:block z-10" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
                 <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
