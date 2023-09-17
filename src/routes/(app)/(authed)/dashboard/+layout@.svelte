@@ -26,12 +26,12 @@
 
 </script>
 
-<div class="w-full mb-4 relative absolute block sm:hidden">
+<div class="w-full mb-4 relative absolute block md:hidden">
     <Header/>
 </div>
 <main class="flex w-screen h-screen">
     <!--{#if toggleSidebar}-->
-    <div class="w-32 mb-4 relative hidden sm:block">
+    <div class="w-32 mb-4 relative hidden md:block">
         <Sidebar/>
     </div>
 <!--        <button class="self-start flex m-5" on:click={() => {toggleSidebar = !toggleSidebar}}>-->

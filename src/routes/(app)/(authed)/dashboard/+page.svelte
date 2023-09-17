@@ -3,7 +3,11 @@
     import BarChart from "$lib/components/barChart.svelte"
     import type {Book} from "$lib/models/Book";
     import LoadingSpinner from "$lib/components/loadingSpinner.svelte";
-    import Countup from "svelte-countup";
+    import CountupBar from "$lib/components/dashboard/countupBar.svelte";
+    import WelcomeSection from "$lib/components/dashboard/welcomeSection.svelte";
+    import TbrPile from "$lib/components/dashboard/tbrPile.svelte";
+    import {getImageFromCloud, userProfilePicture} from "$lib/stores/userStore";
+    import {onMount} from "svelte";
 
 
     /** @type {import('.$types').PageData} */
@@ -13,6 +17,7 @@
 
     const readingSpeed: number = 238
     const avgWordsPerPage: number = 300
+    const imageId = data.session.user.id;
 
     $: totalBooksRead = () => {
         let result: number = 0
@@ -83,63 +88,28 @@
         return booksRead.sort((a,b) => a.page_count - b.page_count).slice(0, 5)
     }
 
+    onMount(async () => {
+        await getImageFromCloud(imageId)
+    });
+
 </script>
 
-<main class="content-box rounded-lg overflow-x-hidden">
+<main class="content-box rounded-lg flex flex-col gap-[42px]">
     <section>
-        <p class="text-[50px] mb-2"><strong>DASHBOARD</strong></p>
-        <p class="text-[25px]">Welcome, {data.session.user.user_metadata.first_name}</p>
-        <p class="max-w-xl pt-2">View statistics about your reading, including how many books you've read, how many pages that amounts to
-            and how many hours you have spend reading based on your words read per minute</p>
+        <WelcomeSection
+                first_name="{data.session.user.user_metadata.first_name}"
+                userProfilePicture="{$userProfilePicture}"/>
     </section>
 
-    <section class="w-full block xl:flex justify-center xl:border-t-2 xl:border-[--input-field-color] py-8 xl:mt-4">
-        <!--        TBR PILE-->
-        <div class="h-1 border-t-2 border-[--input-field-color] my-4 "></div>
-        <div class="flex-auto xl:mr-4">
-            <div class="flex justify-between items-center mb-4">
-                <p class="text-xl"><strong>TBR Pile</strong></p>
-                <a href="/dashboard/library" class="small-primary-button">See full list</a>
-            </div>
-            <div class="flex justify-center items-center flex-wrap gap-2">
-                {#await tbrs}
-                    <LoadingSpinner />
-                {:then tbrs}
-                    {#if tbrs.length}
-                        {#each tbrs as book, i}
-                            <div class="book h-[192px] w-[128px] bg-[--secondary--accent-2] flex items-center justify-center">
-                                <img class='book h-[192px] w-[128px]' src="{book.image_link}" alt="Book images">
-                            </div>
-                        {/each}
-                    {:else}
-                        <div class="book h-[192px] w-full bg-[--input-field-color] flex items-center justify-center">
-                            <p>You have no books in your TBR pile yet, go add some <a href="/dashboard/library/add-book"><u><strong>here</strong></u></a></p>
-                        </div>
+    <section>
+        <CountupBar
+                totalBooksRead="{totalBooksRead()}"
+                totalHoursSpend="{totalHoursSpend()}"
+                totalPagesRead="{totalPagesRead()}"/>
+    </section>
 
-                    {/if}
-                {/await}
-            </div>
-        </div>
-        <!--        Currently reading -->
-        <div class="h-1 border-t-2 border-[--input-field-color] my-4 "></div>
-        <div class="xl:border-l-2 xl:border-[--secondary] xl:ps-4 w-full xl:w-1/3">
-            <div class="flex justify-between items-center mb-4">
-                <p class="text-xl"><strong>Books In Progress</strong></p>
-                <button class="small-primary-button" style="background-color: #cccccc !important">See full list</button>
-            </div>
-            <ul>
-                {#if inProgress}
-                    {#each inProgress as book}
-                        <li class="mb-2">
-                            <p><strong>{book.title}</strong></p>
-                            <p class="text-sm"><i>{book.author}</i></p>
-                        </li>
-                    {/each}
-                {:else}
-                    <p>You do not have any books in progress</p>
-                {/if}
-            </ul>
-        </div>
+    <section>
+        <TbrPile tbrs="{tbrs}"/>
     </section>
 <!--    Read-->
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
@@ -151,54 +121,6 @@
     </section>
 
     <section class="flex flex-wrap items-center justify-center my-8 w-full md:h-[380px] rounded-2xl">
-        <table class="h-full w-full md:w-2/6 text-white p-4 bg-[--secondary] rounded-s-2xl rounded-br-2xl">
-            <tr class="flex flex-col items-start ml-10 justify-center h-1/3">
-                <td>
-                    <p class="text-sm mb-1"><strong>Books read</strong></p>
-                    <p class="text-5xl">
-                        <strong>
-                            <Countup value={totalBooksRead()}
-                                     initial={0}
-                                     duration={1500}
-                                     step={1}
-                                     roundto={1}
-                                     format={true}/>
-                        </strong>
-                    </p>
-                </td>
-            </tr>
-            <tr class="flex flex-col items-start ml-10 justify-center h-1/3">
-                <td>
-                    <p class="text-sm mb-1"><strong>Pages read</strong></p>
-                    <p class="text-5xl">
-                        <strong>
-                            <Countup value={totalPagesRead()}
-                                     initial={0}
-                                     duration={1500}
-                                     step={1}
-                                     roundto={1}
-                                     format={true}/>
-                        </strong>
-                    </p>
-                </td>
-            </tr>
-            <tr class="flex flex-col items-start ml-10 justify-center h-1/3">
-                <td>
-                    <p class="text-sm mb-1"><strong>Hours spend</strong></p>
-                    <p class="text-5xl">
-                        <strong>
-                            <Countup value={totalHoursSpend()}
-                                     initial={0}
-                                     duration={1500}
-                                     step={1}
-                                     roundto={1}
-                                     format={true}/>
-                        </strong>
-                    </p>
-
-                </td>
-            </tr>
-        </table>
         <div class="md:w-4/6 w-full">
             <BarChart data="{booksWithPageCount()}"/>
         </div>
@@ -212,6 +134,27 @@
                 Gain valuable insights into your reading preferences, discovering the writers and book lengths that have truly captivated your interest.</p>
         </div>
     </section>
+
+
+    <div class="xl:border-l-2 xl:border-[--secondary] xl:ps-4 w-full xl:w-1/3">
+        <div class="flex justify-between items-center mb-4">
+            <p class="text-xl"><strong>Books In Progress</strong></p>
+            <button class="small-primary-button" style="background-color: #cccccc !important">See full list</button>
+        </div>
+        <ul>
+            {#if inProgress}
+                {#each inProgress as book}
+                    <li class="mb-2">
+                        <p><strong>{book.title}</strong></p>
+                        <p class="text-sm"><i>{book.author}</i></p>
+                    </li>
+                {/each}
+            {:else}
+                <p>You do not have any books in progress</p>
+            {/if}
+        </ul>
+    </div>
+
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
     <section class="flex justify-center flex-wrap py-8 gap-4">
         <div class="w-[300px] flex flex-col self-end">
@@ -263,11 +206,5 @@
 </main>
 
 <style lang="scss">
-    .book {
-        border-radius: 6px;
 
-        svg {
-            fill: var(--secondary--accent-1);
-        }
-    }
 </style>
