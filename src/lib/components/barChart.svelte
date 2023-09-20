@@ -80,8 +80,8 @@
 
 <div class="items-center chart-grid">
     <div class="chart-container bg-transparent rounded-2xl relative w-full z-10" dir="auto">
-        <div class="w-full flex flex-col items-center">
-            <svg {width} {height} viewBox="0 0 {width} {height}">
+        <div class="w-full flex flex-col items-center mt-6">
+            <svg {width} viewBox="0 0 {width} {height}">
                 <g class="x-axis" transform="translate(0,{height - marginBottom})">
                     <path class="domain" stroke="black" d="M{marginLeft}, 0.5 H{width}" />
                     {#each reactiveXVals as xVal, i}
@@ -124,7 +124,7 @@
 
             </svg>
             {#if showTooltip}
-                <div class="absolute top-0 bg-[--secondary--accent-2] p-4">{tooltipValue}</div>
+                <div class="absolute top-0 bg-[--secondary--accent-2] px-2 rounded-md font-bold">{tooltipValue}</div>
             {/if}
         </div>
     </div>
@@ -133,7 +133,7 @@
             <div class="bg-[--secondary--accent-2] h-[42px] w-full flex items-center justify-center rounded-[6px]">
                 <p class="text-[25px] font-bold">Monitor your reading</p>
             </div>
-            <p class="pt-2 text-center w-5/6">Track your book count, pages read, and time spent immersed in your reads.
+            <p class="pt-4 text-center w-5/6">Track your book count, pages read, and time spent immersed in your reads.
                 Time calculations are based on an average of 300 words per page and a default reading speed set at 250 words per minute,
                 which can be customized to reflect your own pace.</p>
         </div>

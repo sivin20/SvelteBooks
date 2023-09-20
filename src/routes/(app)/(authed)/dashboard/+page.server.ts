@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({url, locals: { getSession }}) => {
     if (libraries) {
         booksRead = await BookService.getBooksFromLibrary(libraries[0].id)
         tbrs = await BookService.getBooksFromLibrary(libraries[1].id, 4)
-        inProgress = await BookService.getBooksFromLibrary(libraries[2].id)
+        inProgress = await BookService.getBooksFromLibrary(libraries[2].id, 2)
     }
 
     return {
