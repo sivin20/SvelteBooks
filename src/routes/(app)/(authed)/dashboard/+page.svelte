@@ -8,8 +8,9 @@
     import BooksInProgress from "$lib/components/dashboard/booksInProgress.svelte";
     import BookCarousel from "$lib/components/dashboard/bookCarousel.svelte";
     import TbrPile from "$lib/components/dashboard/tbrPile.svelte";
-    import {getImageFromCloud, userProfilePicture} from "$lib/stores/userStore";
+    import {getImageFromCloud, getUserFromId, userProfilePicture} from "$lib/stores/userStore";
     import {onMount} from "svelte";
+    import type {BookListItemForBarChart} from "$lib/models/BookListItemForBarChart";
 
 
     /** @type {import('.$types').PageData} */
@@ -56,7 +57,7 @@
                 highCount++
             }
         }
-        const list = [
+        const list: BookListItemForBarChart[] = [
             { pages: '<300', books: lowCount, id: 1 },
             { pages: '300-500', books: midCount, id: 2 },
             { pages: '500<', books: highCount, id:3 }]
@@ -92,6 +93,7 @@
 
     onMount(async () => {
         await getImageFromCloud(imageId)
+        await getUserFromId(data.session.user.id)
     });
 
 </script>
@@ -115,7 +117,7 @@
     </section>
 
     <section>
-        <BarChart data="{booksWithPageCount()}"/>
+        <BarChart bookListForBarChart="{booksWithPageCount()}"/>
     </section>
 
     <section>

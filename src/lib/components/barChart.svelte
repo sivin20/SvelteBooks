@@ -2,6 +2,7 @@
     import { scaleLinear, scaleBand } from 'd3';
     import { flip } from 'svelte/animate';
     import {onMount} from "svelte";
+    import type {BookListItemForBarChart} from "$lib/models/BookListItemForBarChart";
 
     const marginTop = 20; // top margin, in pixels
     const marginRight = 0; // right margin, in pixels
@@ -16,25 +17,25 @@
     const yScalefactor = 6; // number of ticks on y-yaxis
 
     // Sort data by default, ascending, or descending
-    export let data;
-    let sortedData = data;
+    export let bookListForBarChart: BookListItemForBarChart[];
+    let sortedData = bookListForBarChart;
     function handleReactiveShowSort(input) {
         if (input === 0) {
-            return (sortedData = data.sort((a, b) => a[y] - b[y]));
+            return (sortedData = bookListForBarChart.sort((a, b) => a[y] - b[y]));
         }
         if (input === 1) {
-            return (sortedData = data.sort((a, b) => b[y] - a[y]));
+            return (sortedData = bookListForBarChart.sort((a, b) => b[y] - a[y]));
         }
         if (input === 2) {
-            const first = data.filter((item) => {return item.pages === '<300'})
-            const second = data.filter((item) => {return item.pages === '300-500'})
-            const third = data.filter((item) => {return item.pages === '500<'})
+            const first = bookListForBarChart.filter((item) => {return item.pages === '<300'})
+            const second = bookListForBarChart.filter((item) => {return item.pages === '300-500'})
+            const third = bookListForBarChart.filter((item) => {return item.pages === '500<'})
             return (sortedData = [first[0], second[0], third[0]]);
         }
         if (input === 3) {
-            const first = data.filter((item) => {return item.pages === '500<'})
-            const second = data.filter((item) => {return item.pages === '300-500'})
-            const third = data.filter((item) => {return item.pages === '<300'})
+            const first = bookListForBarChart.filter((item) => {return item.pages === '500<'})
+            const second = bookListForBarChart.filter((item) => {return item.pages === '300-500'})
+            const third = bookListForBarChart.filter((item) => {return item.pages === '<300'})
             return (sortedData = [first[0], second[0], third[0]]);
         }
     }
@@ -59,8 +60,8 @@
         }
     }
     // Compute values X and Y value of Arrays
-    const x = Object.keys(data[0])[0]; // given d in data, returns the (ordinal) x-value
-    const y = Object.keys(data[0])[1]; // given d in data, returns the (quantitative) y-value
+    const x = Object.keys(bookListForBarChart[0])[0]; // given d in data, returns the (ordinal) x-value
+    const y = Object.keys(bookListForBarChart[0])[1]; // given d in data, returns the (quantitative) y-value
     $: reactiveXVals = sortedData.map((el) => el[x]);
     $: reactiveYVals = sortedData.map((el) => el[y]);
 
@@ -81,51 +82,56 @@
 <div class="items-center chart-grid">
     <div class="chart-container bg-transparent rounded-2xl relative w-full z-10" dir="auto">
         <div class="w-full flex flex-col items-center mt-6">
-            <svg {width} viewBox="0 0 {width} {height}">
-                <g class="x-axis" transform="translate(0,{height - marginBottom})">
-                    <path class="domain" stroke="black" d="M{marginLeft}, 0.5 H{width}" />
-                    {#each reactiveXVals as xVal, i}
-                        <g class="tick" opacity="1" transform="translate({reactiveXScale(xVal)},0)">
-                            <line
-                                    x1={reactiveXScale.bandwidth() / 2}
-                                    x2={reactiveXScale.bandwidth() / 2}
-                                    stroke="black"
-                                    y2="6"
+            {#if !!bookListForBarChart[0].books || !!bookListForBarChart[1].books || !!bookListForBarChart[2].books}
+                <svg {width} viewBox="0 0 {width} {height}">
+                    <g class="x-axis" transform="translate(0,{height - marginBottom})">
+                        <path class="domain" stroke="black" d="M{marginLeft}, 0.5 H{width}" />
+                        {#each reactiveXVals as xVal, i}
+                            <g class="tick" opacity="1" transform="translate({reactiveXScale(xVal)},0)">
+                                <line
+                                        x1={reactiveXScale.bandwidth() / 2}
+                                        x2={reactiveXScale.bandwidth() / 2}
+                                        stroke="black"
+                                        y2="6"
+                                />
+                                <text y={marginBottom} dx={reactiveXScale.bandwidth() / 4}>{xVal}</text>
+                            </g>
+                        {/each}
+                    </g>
+
+                    <g class="y-axis" transform="translate({marginLeft}, 0)">
+                        {#each reactiveYTicks as tick, i}
+                            <g class="tick" opacity="1" transform="translate(0, {reactiveYScale(tick)})">
+                                <line class="tick-start" stroke="black" stroke-opacity="1" x2="-6" />
+                                <line class="tick-grid" x2={width - marginLeft - marginRight} />
+                                <text x={-marginLeft} y="5">{yFormat === "%" ? reactiveYTicksFormatted[i] * 100 + yFormat : reactiveYTicksFormatted[i] + ' ' + yFormat}</text>
+                            </g>
+                        {/each}
+                        <text x="{45}" y={marginTop}>{yLabel}</text>
+                    </g>
+
+                    <g class="bars">
+                        {#each reactiveYVals as bar, i (`${i}-${bar}`)}
+                            <rect on:mouseenter={() => {handleShowToolTip(reactiveYVals[i], true)}}
+                                  on:mouseleave={() => {handleShowToolTip(reactiveYVals[i], false)}}
+                                  x={reactiveXScale(reactiveXVals[i])}
+                                  y={reactiveYScale(reactiveYVals[i])}
+                                  width={reactiveXScale.bandwidth()}
+                                  height={reactiveYScale(0) - reactiveYScale(bar)}
+                                  fill={color}
+                                  animate:flip="{{duration: 1000}}"
                             />
-                            <text y={marginBottom} dx={reactiveXScale.bandwidth() / 4}>{xVal}</text>
-                        </g>
-                    {/each}
-                </g>
+                        {/each}
+                    </g>
 
-                <g class="y-axis" transform="translate({marginLeft}, 0)">
-                    {#each reactiveYTicks as tick, i}
-                        <g class="tick" opacity="1" transform="translate(0, {reactiveYScale(tick)})">
-                            <line class="tick-start" stroke="black" stroke-opacity="1" x2="-6" />
-                            <line class="tick-grid" x2={width - marginLeft - marginRight} />
-                            <text x={-marginLeft} y="5">{yFormat === "%" ? reactiveYTicksFormatted[i] * 100 + yFormat : reactiveYTicksFormatted[i] + ' ' + yFormat}</text>
-                        </g>
-                    {/each}
-                    <text x="{45}" y={marginTop}>{yLabel}</text>
-                </g>
-
-                <g class="bars">
-                    {#each reactiveYVals as bar, i (`${i}-${bar}`)}
-                        <rect on:mouseenter={() => {handleShowToolTip(reactiveYVals[i], true)}}
-                              on:mouseleave={() => {handleShowToolTip(reactiveYVals[i], false)}}
-                              x={reactiveXScale(reactiveXVals[i])}
-                              y={reactiveYScale(reactiveYVals[i])}
-                              width={reactiveXScale.bandwidth()}
-                              height={reactiveYScale(0) - reactiveYScale(bar)}
-                              fill={color}
-                              animate:flip="{{duration: 1000}}"
-                        />
-                    {/each}
-                </g>
-
-            </svg>
-            {#if showTooltip}
-                <div class="absolute top-0 bg-[--secondary--accent-2] px-2 rounded-md font-bold">{tooltipValue}</div>
+                </svg>
+                {#if showTooltip}
+                    <div class="absolute top-0 bg-[--secondary--accent-2] px-2 rounded-md font-bold">{tooltipValue}</div>
+                {/if}
+            {:else}
+                <p>No books read yet :(</p>
             {/if}
+
         </div>
     </div>
     <div class="w-full z-10 xl:h-[300px] flex flex-col justify-between items-center p-0 xl:p-4 grid-text gap-4">
@@ -137,14 +143,16 @@
                 Time calculations are based on an average of 300 words per page and a default reading speed set at 250 words per minute,
                 which can be customized to reflect your own pace.</p>
         </div>
-        <div class="self-end xl:self-start">
-            <select class="dropdown" on:change={reactiveShowSort(this.selectedIndex)}>
-                <option selected>{y} &#8593;</option>
-                <option>{y} &#8595;</option>
-                <option>{x} &#8593;</option>
-                <option>{x} &#8595;</option>
-            </select>
-        </div>
+        {#if  !!bookListForBarChart[0].books && !!bookListForBarChart[1].books && !!bookListForBarChart[2].books}
+            <div class="self-end xl:self-start">
+                <select class="dropdown" on:change={reactiveShowSort(this.selectedIndex)}>
+                    <option selected>{y} &#8593;</option>
+                    <option>{y} &#8595;</option>
+                    <option>{x} &#8593;</option>
+                    <option>{x} &#8595;</option>
+                </select>
+            </div>
+        {/if}
     </div>
 </div>
 

@@ -1,14 +1,14 @@
 <script lang="ts" xmlns="http://www.w3.org/1999/html">
     import UserProfileChanger from "$lib/components/user/userProfileChanger.svelte";
-    import { userProfilePicture, getImageFromCloud } from "$lib/stores/userStore";
+    import {userProfilePicture, getImageFromCloud, loggedInUser, getUserFromId} from "$lib/stores/userStore";
     import {onMount} from "svelte";
     import Modal from '$lib/components/modal.svelte'
 
     export let data
     const imageId = data.session.user.id;
-    let userFirstName: string = data.session.user.user_metadata.first_name
-    let userLastName: string = data.session.user.user_metadata.last_name
-    let userReadingSpeed: number = 250
+    let userFirstName: string = $loggedInUser.first_name
+    let userLastName: string = $loggedInUser.last_name
+    let userReadingSpeed: number = $loggedInUser.reading_speed
     let userEmail: string = data.session.user.email
 
     let userNameHasBeenChanged: boolean = false
@@ -19,8 +19,8 @@
 
     function resetNameField() {
         userNameHasBeenChanged = false
-        userFirstName = data.session.user.user_metadata.first_name
-        userLastName = data.session.user.user_metadata.last_name
+        userFirstName = $loggedInUser.first_name
+        userLastName = $loggedInUser.last_name
     }
 
     function resetReadingSpeed() {
@@ -36,6 +36,7 @@
 
     onMount(async () => {
         await getImageFromCloud(imageId)
+        await getUserFromId(imageId)
     });
 
 </script>
@@ -44,7 +45,6 @@
     <div class="mb-6">
         <p class="text-[50px]"><strong>USER SETTINGS</strong></p>
     </div>
-
     <div class="h-1 border-t-2 border-[--input-field-color]"></div>
 
     <div class="grid grid-cols-7 gap-6 mt-6 mb-[200px]">
@@ -52,7 +52,7 @@
         <div class="col-span-2">
             <div class="sticky top-0">
                 <div class="flex items-center gap-4">
-                    <p class="font-bold">{data.session.user.user_metadata.first_name}</p>
+                    <p class="font-bold">{$loggedInUser.first_name}</p>
                     {#if $userProfilePicture}
                         <img class="h-[50px] w-[50px] rounded-full" src="{$userProfilePicture}"
                              alt="User avatar"/>

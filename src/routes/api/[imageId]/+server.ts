@@ -4,7 +4,6 @@ export async function GET({ params } :any ): Promise<Response> {
     const imageId: string = params.imageId as string;
     const storageService: GoogleCloudStorageService = new GoogleCloudStorageService();
     const image: Blob | null = await storageService.getImage(imageId);
-
     if (image) {
         const imageBuffer: ArrayBuffer = await image.arrayBuffer(); // Convert image to ArrayBuffer
         const fileType: string = getFileTypeFromBlob(image);

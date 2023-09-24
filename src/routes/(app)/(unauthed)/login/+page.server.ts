@@ -76,6 +76,13 @@ export const actions: Actions = {
                 throw redirect(303, "/")
             }
 
+            await supabase.from('users').insert({
+                id: session.user.id,
+                first_name: body.first_name as string,
+                last_name: body.last_name as string,
+                reading_speed: 250
+            })
+
             await supabase.from('libraries').insert({
                 id: crypto.randomUUID(),
                 name: 'BOOKS READ',

@@ -8,9 +8,6 @@
     /** @type {import('.$types').PageData} */
     export let data;
 
-    const userId = data.session.user.id
-    const avatar = 'https://storage.cloud.google.com/siglib_bucket/' + userId
-
     let pageContent
     let scrollBar
     let yScroll = 0

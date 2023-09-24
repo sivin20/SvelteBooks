@@ -82,8 +82,13 @@
                     <h1 class="text-[50px] mb-10 text-[--secondary] font-bold">REGISTER</h1>
                     <form action="?/register" method="POST" class="flex flex-col items-center w-full">
                         <div class="input-text">
-                            <label for="registerName">Name</label>
-                            <input type="text" id="registerName" name="name" >
+                            <label for="first_name">First name</label>
+                            <input type="text" id="first_name" name="first_name" >
+                        </div>
+
+                        <div class="input-text mt-3">
+                            <label for="last_name">Last name</label>
+                            <input type="text" id="last_name" name="last_name" >
                         </div>
 
                         <div class="input-text mt-3">
@@ -96,7 +101,7 @@
                             <input type="password" id="registerPassword" name="password">
                         </div>
 
-                        <button type="submit" class="secondary-button mt-4">Login</button>
+                        <button type="submit" class="secondary-button mt-4">CREATE</button>
                     </form>
                     <p class="mt-5 font-bold cursor-pointer"><u>Forgot password?</u></p>
                     <p class="mt-5 font-bold cursor-pointer" on:click={() => {change()}}><u>Already have an account?</u></p>
