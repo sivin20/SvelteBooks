@@ -6,9 +6,9 @@
 
     export let data
     const imageId = data.session.user.id;
-    let userFirstName: string = $loggedInUser.first_name
-    let userLastName: string = $loggedInUser.last_name
-    let userReadingSpeed: number = $loggedInUser.reading_speed
+    let userFirstName: string
+    let userLastName: string
+    let userReadingSpeed: number
     let userEmail: string = data.session.user.email
 
     let userNameHasBeenChanged: boolean = false
@@ -25,7 +25,7 @@
 
     function resetReadingSpeed() {
         readingSpeedHasBeenChanged = false
-        userReadingSpeed = 250
+        userReadingSpeed = $loggedInUser.reading_speed
     }
 
     function resetEmailField() {
@@ -37,6 +37,9 @@
     onMount(async () => {
         await getImageFromCloud(imageId)
         await getUserFromId(imageId)
+        userFirstName = $loggedInUser.first_name
+        userLastName = $loggedInUser.last_name
+        userReadingSpeed = $loggedInUser.reading_speed
     });
 
 </script>
@@ -76,18 +79,18 @@
                         <div class="col-span-2">
                             <p class="text-xl font-bold">Your name</p>
                             <p class="pt-2">Please enter your full name, or a display name you are comfortable with.</p>
-                            <form action="?/user" method="POST" class="flex items-center gap-4 mt-2">
+                            <form action="?/user" method="POST" id="userForm" class="flex items-center gap-4 mt-2">
                                 <div>
-                                    <label for="firstname" class="font-semibold">First name</label>
+                                    <label for="first_name" class="font-semibold">First name</label>
                                     <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
-                                           type="text" id="firstname" name="firstname"
+                                           type="text" id="first_name" name="first_name"
                                            bind:value={userFirstName} on:input={() => { userNameHasBeenChanged = true }}>
                                 </div>
 
                                 <div>
-                                    <label for="firstname" class="font-semibold">Last name</label>
+                                    <label for="last_name" class="font-semibold">Last name</label>
                                     <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
-                                           type="text" id="lastname" name="lastname"
+                                           type="text" id="last_name" name="last_name"
                                            bind:value={userLastName} on:input={() => { userNameHasBeenChanged = true }}>
                                 </div>
                             </form>
@@ -101,7 +104,7 @@
                                     <button class="cancel-button" on:click|preventDefault={() => {resetNameField()}}>CANCEL</button>
                                 </div>
                             {/if}
-                            <button class="small-primary-button" disabled="{!userNameHasBeenChanged}" type="submit">SAVE</button>
+                            <button class="small-primary-button" form="userForm" disabled="{!userNameHasBeenChanged}" type="submit">SAVE</button>
                         </div>
                     </div>
                 </div>
@@ -111,9 +114,9 @@
                         <div class="col-span-2">
                             <p class="text-xl font-bold">Your reading speed</p>
                             <p class="pt-2">Please enter your reading speed in Words pr. Minute (WPM)</p>
-                            <form action="?/readingspeed" method="POST" class="flex flex-col w-1/2 xl:w-2/3 mt-2">
+                            <form action="?/reading_speed" id="readingSpeedForm" method="POST" class="flex flex-col w-1/2 xl:w-2/3 mt-2">
                                 <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
-                                       type="number" id="readingSpeed" name="readingSpeed"
+                                       type="number" id="reading_speed" name="reading_speed"
                                        bind:value={userReadingSpeed} on:input={() => { readingSpeedHasBeenChanged = true }}>
                             </form>
                         </div>
@@ -126,7 +129,7 @@
                                     <button class="cancel-button" on:click|preventDefault={() => {resetReadingSpeed()}}>CANCEL</button>
                                 </div>
                             {/if}
-                            <button class="small-primary-button" disabled="{!readingSpeedHasBeenChanged}" type="submit">SAVE</button>
+                            <button class="small-primary-button" form="readingSpeedForm" disabled="{!readingSpeedHasBeenChanged}" type="submit">SAVE</button>
                         </div>
                     </div>
                 </div>

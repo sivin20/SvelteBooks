@@ -8,7 +8,7 @@
     import BooksInProgress from "$lib/components/dashboard/booksInProgress.svelte";
     import BookCarousel from "$lib/components/dashboard/bookCarousel.svelte";
     import TbrPile from "$lib/components/dashboard/tbrPile.svelte";
-    import {getImageFromCloud, getUserFromId, userProfilePicture} from "$lib/stores/userStore";
+    import {getImageFromCloud, getUserFromId, loggedInUser, userProfilePicture} from "$lib/stores/userStore";
     import {onMount} from "svelte";
     import type {BookListItemForBarChart} from "$lib/models/BookListItemForBarChart";
 
@@ -101,7 +101,7 @@
 <main class="content-box rounded-lg flex flex-col gap-[42px]">
     <section>
         <WelcomeSection
-                first_name="{data.session.user.user_metadata.first_name}"
+                first_name="{$loggedInUser.first_name}"
                 userProfilePicture="{$userProfilePicture}"/>
     </section>
 
