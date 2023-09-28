@@ -25,9 +25,8 @@ export async function getUserFromId(id: string) {
     try {
         const response = await supabase.from('users').select().eq('id', id)
         if(!response.error) {
-            const user: LoggedInUser[] = response.data
-            console.log("user", user[0])
-            loggedInUser.set(user[0])
+            const user: LoggedInUser = response.data[0]
+            loggedInUser.set(user)
         }
     } catch (error) {
         console.log("Error loading user", error)

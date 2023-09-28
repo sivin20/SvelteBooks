@@ -88,11 +88,7 @@
         <div class="w-[100px] flex justify-center col-span-1 justify-self-end">
             <button class="small-primary-button" form="avatarform"
                     type="submit" disabled={!avatar || avatar === 'empty' || formLoading}>
-                {#if formLoading}
-                    Loading...
-                {:else}
-                    SAVE
-                {/if}
+                {formLoading? 'Loading...' : 'SAVE'}
             </button>
         </div>
     </div>

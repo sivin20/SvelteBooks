@@ -1,8 +1,15 @@
 <script lang="ts" xmlns="http://www.w3.org/1999/html">
     import UserProfileChanger from "$lib/components/user/userProfileChanger.svelte";
-    import {userProfilePicture, getImageFromCloud, loggedInUser, getUserFromId} from "$lib/stores/userStore";
+    import {
+        userProfilePicture,
+        getImageFromCloud,
+        loggedInUser,
+        getUserFromId,
+    } from "$lib/stores/userStore";
     import {onMount} from "svelte";
+    import {enhance} from "$app/forms";
     import Modal from '$lib/components/modal.svelte'
+    import toast from "svelte-french-toast";
 
     export let data
     const imageId = data.session.user.id;
@@ -16,6 +23,9 @@
     let emailHasBeenChanged: boolean = false
 
     let showDeleteModal: boolean = false
+
+    let userFormLoading: boolean = false
+    let readingFormLoading: boolean = false
 
     function resetNameField() {
         userNameHasBeenChanged = false
@@ -33,6 +43,31 @@
         userEmail = data.session.user.email
     }
 
+    function enhanceUserForm() {
+        userFormLoading = true;
+        return async ({ update }) => {
+            await getUserFromId(imageId)
+            resetNameField()
+            userFormLoading = false;
+            toast.success(`Succesfully updated your name`, {
+                position: "top-right"
+            })
+            update({reset: false});
+        };
+    }
+
+    function enhanceReadingForm() {
+        readingFormLoading = true;
+        return async ({ update }) => {
+            await getUserFromId(imageId)
+            resetReadingSpeed()
+            readingFormLoading = false;
+            toast.success(`Succesfully updated your name`, {
+                position: "top-right"
+            })
+            update({reset: false});
+        };
+    }
 
     onMount(async () => {
         await getImageFromCloud(imageId)
@@ -79,7 +114,7 @@
                         <div class="col-span-2">
                             <p class="text-xl font-bold">Your name</p>
                             <p class="pt-2">Please enter your full name, or a display name you are comfortable with.</p>
-                            <form action="?/user" method="POST" id="userForm" class="flex items-center gap-4 mt-2">
+                            <form action="?/user" method="POST" id="userForm" class="flex items-center gap-4 mt-2" use:enhance={enhanceUserForm}>
                                 <div>
                                     <label for="first_name" class="font-semibold">First name</label>
                                     <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
@@ -99,12 +134,16 @@
                     <div class="border-t-2 border-[--input-field-color] grid grid-cols-3 items-center p-4 bg-[--input-field-color]">
                         <p class="col-span-2">Please use 20 characters maximum pr. field</p>
                         <div class="w-[100px] flex justify-center col-span-1 justify-self-end relative">
-                            {#if userNameHasBeenChanged}
+                            {#if userNameHasBeenChanged && !userFormLoading}
                                 <div class="absolute right-[100px]">
                                     <button class="cancel-button" on:click|preventDefault={() => {resetNameField()}}>CANCEL</button>
                                 </div>
                             {/if}
-                            <button class="small-primary-button" form="userForm" disabled="{!userNameHasBeenChanged}" type="submit">SAVE</button>
+                            <button class="small-primary-button" form="userForm"
+                                    disabled="{!userNameHasBeenChanged || userFormLoading}"
+                                    type="submit">
+                                {userFormLoading? 'Loading...' : 'SAVE'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -114,7 +153,8 @@
                         <div class="col-span-2">
                             <p class="text-xl font-bold">Your reading speed</p>
                             <p class="pt-2">Please enter your reading speed in Words pr. Minute (WPM)</p>
-                            <form action="?/reading_speed" id="readingSpeedForm" method="POST" class="flex flex-col w-1/2 xl:w-2/3 mt-2">
+                            <form action="?/reading_speed" id="readingSpeedForm" method="POST" class="flex flex-col w-1/2 xl:w-2/3 mt-2"
+                            use:enhance={enhanceReadingForm}>
                                 <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
                                        type="number" id="reading_speed" name="reading_speed"
                                        bind:value={userReadingSpeed} on:input={() => { readingSpeedHasBeenChanged = true }}>
@@ -122,14 +162,17 @@
                         </div>
                     </div>
                     <div class="border-t-2 border-[--input-field-color] grid grid-cols-3 items-center p-4 bg-[--input-field-color]">
-                        <p class="col-span-2">We'll send you an email to verify the change</p>
+                        <p class="col-span-2">This will affect your dashboard stats</p>
                         <div class="w-[100px] flex justify-center col-span-1 justify-self-end relative">
                             {#if readingSpeedHasBeenChanged}
                                 <div class="absolute right-[100px]">
                                     <button class="cancel-button" on:click|preventDefault={() => {resetReadingSpeed()}}>CANCEL</button>
                                 </div>
                             {/if}
-                            <button class="small-primary-button" form="readingSpeedForm" disabled="{!readingSpeedHasBeenChanged}" type="submit">SAVE</button>
+                            <button class="small-primary-button" form="readingSpeedForm"
+                                    disabled="{!readingSpeedHasBeenChanged}" type="submit">
+                                {readingFormLoading ? 'Loading..' : 'SAVE'}
+                            </button>
                         </div>
                     </div>
                 </div>
