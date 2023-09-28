@@ -69,6 +69,16 @@
         };
     }
 
+    function enhanceEmailForm() {
+        return async ({update}) => {
+            toast.error(`Lmao, you can't update your email, make a new account or something..`, {
+                position: "top-right"
+            })
+            userEmail = data.session.user.email
+            update({reset: false})
+        }
+    }
+
     onMount(() => {
         getUserFromId(imageId).then(() => {
             userFirstName = $loggedInUser.first_name
@@ -165,7 +175,7 @@
                     <div class="border-t-2 border-[--input-field-color] grid grid-cols-3 items-center p-4 bg-[--input-field-color]">
                         <p class="col-span-2">This will affect your dashboard stats</p>
                         <div class="w-[100px] flex justify-center col-span-1 justify-self-end relative">
-                            {#if readingSpeedHasBeenChanged}
+                            {#if readingSpeedHasBeenChanged  && !readingFormLoading}
                                 <div class="absolute right-[100px]">
                                     <button class="cancel-button" on:click|preventDefault={() => {resetReadingSpeed()}}>CANCEL</button>
                                 </div>
@@ -183,7 +193,8 @@
                         <div class="col-span-2">
                             <p class="text-xl font-semibold">Your Email</p>
                             <p class="pt-2">Please enter the email address you want to log in with Vercel</p>
-                            <form action="?/user" method="POST" class="flex flex-col w-1/2 xl:w-2/3 mt-2">
+                            <form action="?/email" id="emailForm" method="POST" class="flex flex-col w-1/2 xl:w-2/3 mt-2"
+                            use:enhance={enhanceEmailForm}>
                                 <input class="w-full focus:bg-[--input-field-color] bg-[--input-field-color] h-[40px] p-2 rounded-[6px]"
                                        type="text" id="email" name="email"
                                        bind:value={userEmail} on:input={() => { emailHasBeenChanged = true }}>
@@ -198,7 +209,7 @@
                                     <button class="cancel-button" on:click|preventDefault={() => {resetEmailField()}}>CANCEL</button>
                                 </div>
                             {/if}
-                            <button class="small-primary-button" disabled="{!emailHasBeenChanged}" type="submit">SAVE</button>
+                            <button class="small-primary-button" form="emailForm" disabled="{!emailHasBeenChanged}" type="submit">SAVE</button>
                         </div>
                     </div>
                 </div>

@@ -8,31 +8,6 @@ import {first_name} from "$lib/components/dashboard/welcomeSection.svelte";
 
 
 export const actions: Actions = {
-    avatar: async ({ request,  locals: { getSession } }) => {
-        const session = await getSession();
-        if (!session) {
-            throw redirect(303, '/login');
-        }
-        const data: FormData = await request.formData();
-        const imageFile: Blob = data.get('avatar') as Blob
-        const imageBuffer: ArrayBuffer = await imageFile.arrayBuffer();
-        const resizedImageBuffer: Buffer = await sharp(Buffer.from(imageBuffer))
-            .resize(100, 100)
-            .toBuffer();
-
-
-        const storageService: GoogleCloudStorageService = new GoogleCloudStorageService();
-
-        // Sending the upload request using the service
-        try {
-           await storageService.uploadImage(resizedImageBuffer, session.user.id, imageFile.type)
-            console.log(`Image uploaded to ${storageService.bucketName}.`);
-        } catch (err) {
-            console.error(`Error uploading image: ${err}`);
-        }
-
-    },
-
     user: async ({request, url, locals: {getSession} }) => {
         const session = await getSession();
         if (!session) {
@@ -64,6 +39,46 @@ export const actions: Actions = {
         } catch (err) {
             console.error("Error updating user", err)
         }
+    },
+
+    email: async ({request, locals: {getSession} }) => {
+        const session = await getSession();
+        if (!session) {
+            throw redirect(303, '/login');
+        }
+        const body = Object.fromEntries(await request.formData())
+        const email: string = body.email as string
+        console.log("email", email)
+        try{
+            await supabase.auth.updateUser({email: email}).then(() => console.log("GAGKSD"))
+        } catch (err) {
+            console.log("Error updating user email", err)
+        }
+    },
+
+    avatar: async ({ request,  locals: { getSession } }) => {
+        const session = await getSession();
+        if (!session) {
+            throw redirect(303, '/login');
+        }
+        const data: FormData = await request.formData();
+        const imageFile: Blob = data.get('avatar') as Blob
+        const imageBuffer: ArrayBuffer = await imageFile.arrayBuffer();
+        const resizedImageBuffer: Buffer = await sharp(Buffer.from(imageBuffer))
+            .resize(100, 100)
+            .toBuffer();
+
+
+        const storageService: GoogleCloudStorageService = new GoogleCloudStorageService();
+
+        // Sending the upload request using the service
+        try {
+           await storageService.uploadImage(resizedImageBuffer, session.user.id, imageFile.type)
+            console.log(`Image uploaded to ${storageService.bucketName}.`);
+        } catch (err) {
+            console.error(`Error uploading image: ${err}`);
+        }
+
     },
 
     deleteUser: async ({request, url, locals: {getSession} }) => {
