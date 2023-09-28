@@ -11,6 +11,8 @@
     import {getImageFromCloud, getUserFromId, loggedInUser, userProfilePicture} from "$lib/stores/userStore";
     import {onMount} from "svelte";
     import type {BookListItemForBarChart} from "$lib/models/BookListItemForBarChart";
+    import {faSearch} from "@fortawesome/free-solid-svg-icons";
+    import Fa from "svelte-fa";
 
 
     /** @type {import('.$types').PageData} */
@@ -98,7 +100,7 @@
 
 </script>
 
-<main class="content-box rounded-lg flex flex-col gap-[42px]">
+<main class="content-box rounded-lg flex flex-col gap-[50px]">
     <section>
         <WelcomeSection
                 first_name="{$loggedInUser.first_name}"

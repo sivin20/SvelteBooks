@@ -8,10 +8,14 @@
     import Fa from 'svelte-fa'
     import {faSearch, faTrashCan, faPlus} from '@fortawesome/free-solid-svg-icons'
     import {SEARCH_TYPE} from "$lib/models/SearchType";
+    import {onMount} from "svelte";
+    import {page as currentPage} from "$app/stores";
 
     /** @type {import('.$types').PageData} */
     export let data;
-    let searchParam = ''
+
+    const searchUrlParam = $currentPage.params.search
+    let searchString = ''
 
     let searchType = [];
     $: searchType
@@ -35,7 +39,7 @@
     let showPagination: boolean = false
 
    async function searchBooks() {
-        let query = `q=${searchParam.replace(/ /g, '+')}`;
+        let query = `q=${searchString.replace(/ /g, '+')}`;
         for (let i = 0; i < searchType.length; i++) {
             if(searchValue[i]) {
                 if(searchType[i] === SEARCH_TYPE.inauthor || searchType[i] === SEARCH_TYPE.intitle) {
@@ -49,7 +53,6 @@
         let bookData
         try {
             bookData = await BookService.searchBook(query)
-            console.log("data" ,bookData)
             bookCount = bookData[1]
             showPagination = true
             return bookData[0] as Book[]
@@ -94,6 +97,15 @@
         await handleSearch()
     }
 
+    onMount(async () => {
+        console.log("decode", decodeURI(searchUrlParam))
+        if(searchUrlParam) {
+            searchString = decodeURI(searchUrlParam)
+            await handleSearch()
+        }
+
+    })
+
 </script>
 
 <main class="h-full flex flex-col">
@@ -104,7 +116,7 @@
     <form class="flex bg-[--background-primary] w-full mt-4">
         <div class="flex p-1 bg-[--input-field-color] rounded-[6px] w-full max-w-[650px] h-[52px] items-center mr-2">
             <Fa class="h-full mr-2 ml-2 text-[--secondary--accent-1]" icon="{faSearch}"></Fa>
-            <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchParam} placeholder="Search">
+            <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchString} placeholder="Search">
         </div>
         <button type="submit" on:click={handleSearch} class="secondary-button">Search</button>
     </form>

@@ -23,7 +23,6 @@ export namespace BookService {
                     let img: string = ''
                     if(!!book.volumeInfo.imageLinks?.thumbnail) {
                         img = book.volumeInfo.imageLinks?.thumbnail.replace('http', 'https')
-                        console.log(img)
                     }
                     bookList.push(
                         {

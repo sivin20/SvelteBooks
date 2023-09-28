@@ -71,10 +71,10 @@
 
     function enhanceEmailForm() {
         return async ({update}) => {
+            resetEmailField()
             toast.error(`Lmao, you can't update your email, make a new account or something..`, {
                 position: "top-right"
             })
-            userEmail = data.session.user.email
             update({reset: false})
         }
     }

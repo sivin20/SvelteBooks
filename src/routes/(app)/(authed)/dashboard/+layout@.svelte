@@ -3,8 +3,8 @@
     import Header from '$lib/components/navbar/navbar.svelte'
     import Sidebar from '$lib/components/sidebar/sidebar.svelte'
     import Fa from 'svelte-fa'
-    import { faUser } from '@fortawesome/free-solid-svg-icons'
-    import {navigating} from "$app/stores";
+    import {faSearch} from '@fortawesome/free-solid-svg-icons'
+    import {navigating, page} from "$app/stores";
 
     /** @type {import('.$types').PageData} */
     export let data;
@@ -13,6 +13,9 @@
     let scrollBar
     let yScroll = 0
     let pct = 0
+
+    let searchString: string;
+    let searchBox: HTMLElement
 
     //Reset scrollbar pos at route navigation
     $: if($navigating) pageContent.scrollTop = 0
@@ -23,7 +26,15 @@
         scrollBar.style.width = pct + "%";
     }
 
-    let showUserInfoBox = false
+    function onKeyDown(e: KeyboardEvent) {
+        if(e.ctrlKey && e.key == 'k') {
+            console.log("go search")
+            e.preventDefault()
+            searchBox.focus()
+        }
+    }
+
+    let searchBoxFocused = false
 
 </script>
 
@@ -52,24 +63,27 @@
             </div>
         </div>
         <div class="w-full pt-10 px-0 md:px-4 relative max-w-[1400px] overflow-y-auto">
-            <!--
-            <div class="absolute fixed top-12 right-10 rounded-xl hidden sm:block z-10" on:mouseleave={() => {showUserInfoBox = false}} on:mouseenter={() => {showUserInfoBox = true}}>
-                <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
-                    <div class="flex border-slate-100 bg-gray-100 items-center relative" style='width: max-content'>
-                        <img class="h-[50px] w-[50px] rounded-full absolute left-[-25px]" src="{avatar}" alt="profile image">
-                        <p class="ml-6 p-2">{data.session.user.user_metadata.first_name}</p>
-                    </div>
-                    {#if showUserInfoBox}
-                        <form action="/logout" method="POST">
-                            <button type="submit">Logout</button>
+            {#if !($page.url.pathname.includes('add-book'))}
+                <div class="absolute sm:top-12 sm:right-10 rounded-xl block z-10 opacity-50"
+                     class:opacity-100={searchBoxFocused}
+                     on:mouseleave={() => {searchBoxFocused = false}} on:mouseenter={() => {searchBoxFocused = true}}>
+                    <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
+                        <form class="flex" action="/dashboard/library/add-book/{searchString}">
+                            <div class="flex p-1 bg-[--input-field-color] rounded-[6px] w-full items-center mr-2">
+                                <Fa class="h-full mr-2 ml-2 text-[--secondary--accent-1]" icon="{faSearch}"></Fa>
+                                <input on:focus={() => {searchBoxFocused = true}} on:blur={() => {searchBoxFocused = false}}
+                                       class="h-full w-full bg-transparent" type="text" id="bookSearch"
+                                       bind:this={searchBox} bind:value={searchString} placeholder="Search">
+                            </div>
+                            <button class="small-secondary-button">SEARCH</button>
                         </form>
-                    {/if}
+                    </div>
                 </div>
-            </div>
-            -->
+            {/if}
             <div class="h-full p-4 overflow-x-hidden" bind:this={pageContent} on:scroll={handleScrollProgress}>
                 <slot></slot>
             </div>
         </div>
     </div>
 </main>
+<svelte:window on:keydown={onKeyDown}/>
