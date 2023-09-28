@@ -14,6 +14,8 @@
     /** @type {import('.$types').PageData} */
     export let data;
 
+    let searchBox: HTMLElement
+
     const searchUrlParam = $currentPage.params.search
     let searchString = ''
 
@@ -106,6 +108,13 @@
 
     })
 
+    function onKeyDown(e: KeyboardEvent) {
+        if(e.ctrlKey && e.key == 'k') {
+            e.preventDefault()
+            searchBox.focus()
+        }
+    }
+
 </script>
 
 <main class="h-full flex flex-col">
@@ -114,9 +123,12 @@
     </div>
     <h1 class="text-xl">Search for books you wish to add to your library</h1>
     <form class="flex bg-[--background-primary] w-full mt-4">
-        <div class="flex p-1 bg-[--input-field-color] rounded-[6px] w-full max-w-[650px] h-[52px] items-center mr-2">
+        <div class="flex p-1 bg-[--input-field-color] rounded-[6px] w-full max-w-[650px] h-[52px] items-center mr-2 pr-2">
             <Fa class="h-full mr-2 ml-2 text-[--secondary--accent-1]" icon="{faSearch}"></Fa>
-            <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:value={searchString} placeholder="Search">
+            <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:this={searchBox} bind:value={searchString} placeholder="Search">
+            <div class="opacity-50 flex h-[20px] items-center">
+                <kbd>Ctrl</kbd>+<kbd>K</kbd>
+            </div>
         </div>
         <button type="submit" on:click={handleSearch} class="secondary-button">Search</button>
     </form>
@@ -208,6 +220,7 @@
     </section>
     <Toaster/>
 </main>
+<svelte:window on:keydown={onKeyDown}/>
 
 <style lang="scss">
 

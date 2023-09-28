@@ -28,7 +28,6 @@
 
     function onKeyDown(e: KeyboardEvent) {
         if(e.ctrlKey && e.key == 'k') {
-            console.log("go search")
             e.preventDefault()
             searchBox.focus()
         }
@@ -64,8 +63,9 @@
         </div>
         <div class="w-full pt-10 px-0 md:px-4 relative max-w-[1400px] overflow-y-auto">
             {#if !($page.url.pathname.includes('add-book'))}
-                <div class="absolute sm:top-12 sm:right-10 rounded-xl block z-10 opacity-50"
-                     class:opacity-100={searchBoxFocused}
+                {searchBoxFocused}
+                <div class="absolute sm:top-12 sm:right-10 rounded-xl block z-10"
+                     class:opacity-100={searchBoxFocused} class:opacity-50={!searchBoxFocused}
                      on:mouseleave={() => {searchBoxFocused = false}} on:mouseenter={() => {searchBoxFocused = true}}>
                     <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
                         <form class="flex" action="/dashboard/library/add-book/{searchString}">
@@ -74,6 +74,7 @@
                                 <input on:focus={() => {searchBoxFocused = true}} on:blur={() => {searchBoxFocused = false}}
                                        class="h-full w-full bg-transparent" type="text" id="bookSearch"
                                        bind:this={searchBox} bind:value={searchString} placeholder="Search">
+                                <kbd>Ctrl</kbd>+<kbd>K</kbd>
                             </div>
                             <button class="small-secondary-button">SEARCH</button>
                         </form>
