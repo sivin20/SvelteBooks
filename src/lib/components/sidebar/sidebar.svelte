@@ -5,7 +5,6 @@
     import {page} from '$app/stores'
     import logo from '../../assets/siglib_blue_white.svg'
 
-    $: console.log($page.url.pathname)
 </script>
 
 <aside class="absolute fixed left-0 top-0 w-22 h-full flex flex-col bg-[--primary]">

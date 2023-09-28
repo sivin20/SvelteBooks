@@ -4,6 +4,7 @@
     import Sidebar from '$lib/components/sidebar/sidebar.svelte'
     import Fa from 'svelte-fa'
     import { faUser } from '@fortawesome/free-solid-svg-icons'
+    import {navigating} from "$app/stores";
 
     /** @type {import('.$types').PageData} */
     export let data;
@@ -12,6 +13,9 @@
     let scrollBar
     let yScroll = 0
     let pct = 0
+
+    //Reset scrollbar pos at route navigation
+    $: if($navigating) pageContent.scrollTop = 0
 
     function handleScrollProgress() {
         yScroll=pageContent.scrollTop
