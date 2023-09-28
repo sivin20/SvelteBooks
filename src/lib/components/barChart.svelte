@@ -3,6 +3,7 @@
     import { flip } from 'svelte/animate';
     import {onMount} from "svelte";
     import type {BookListItemForBarChart} from "$lib/models/BookListItemForBarChart";
+    import {loggedInUser} from "$lib/stores/userStore";
 
     const marginTop = 20; // top margin, in pixels
     const marginRight = 0; // right margin, in pixels
@@ -139,9 +140,14 @@
             <div class="bg-[--secondary--accent-2] h-[42px] w-full flex items-center justify-center rounded-[6px]">
                 <p class="text-[25px] font-bold">Monitor your reading</p>
             </div>
-            <p class="pt-4 text-center w-5/6">Track your book count, pages read, and time spent immersed in your reads.
-                Time calculations are based on an average of 300 words per page and a default reading speed set at 250 words per minute,
-                which can be customized to reflect your own pace.</p>
+            {#if $loggedInUser.reading_speed}
+                <p class="pt-4 text-center w-5/6">Track your book count, pages read, and time spent immersed in your reads.
+                    Time calculations are based on an average of 300 words per page and your reading speed of <u title="Change reading speed here"><a href="/dashboard/user" >{$loggedInUser.reading_speed} words pr. minute.</a></u></p>
+            {:else}
+                <p class="pt-4 text-center w-5/6">Track your book count, pages read, and time spent immersed in your reads.
+                    Time calculations are based on an average of 300 words per page and a default reading speed set at 250 words per minute,
+                    which can be <u title="Change reading speed here"><a href="/dashboard/user">customized</a></u> to reflect your own pace.</p>
+            {/if}
         </div>
         {#if  !!bookListForBarChart[0].books && !!bookListForBarChart[1].books && !!bookListForBarChart[2].books}
             <div class="self-end xl:self-start">

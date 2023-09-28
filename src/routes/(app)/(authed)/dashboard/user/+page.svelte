@@ -69,12 +69,13 @@
         };
     }
 
-    onMount(async () => {
-        await getImageFromCloud(imageId)
-        await getUserFromId(imageId)
-        userFirstName = $loggedInUser.first_name
-        userLastName = $loggedInUser.last_name
-        userReadingSpeed = $loggedInUser.reading_speed
+    onMount(() => {
+        getUserFromId(imageId).then(() => {
+            userFirstName = $loggedInUser.first_name
+            userLastName = $loggedInUser.last_name
+            userReadingSpeed = $loggedInUser.reading_speed
+        })
+        getImageFromCloud(imageId)
     });
 
 </script>

@@ -18,7 +18,6 @@
 
     const { booksRead, tbrs, inProgress }: Book[] = data
 
-    const readingSpeed: number = 238
     const avgWordsPerPage: number = 300
     const imageId = data.session.user.id;
 
@@ -41,6 +40,7 @@
     $: totalHoursSpend = () => {
         const pages = totalPagesRead()
         const words = pages * avgWordsPerPage
+        const readingSpeed = $loggedInUser.reading_speed ? $loggedInUser.reading_speed : 250
         return ((words / readingSpeed) / 60).toFixed(0)
     }
 
@@ -91,9 +91,9 @@
         return booksRead.sort((a,b) => a.page_count - b.page_count).slice(0, 5)
     }
 
-    onMount(async () => {
-        await getImageFromCloud(imageId)
-        await getUserFromId(data.session.user.id)
+    onMount(() => {
+        getImageFromCloud(imageId)
+        getUserFromId(data.session.user.id)
     });
 
 </script>
