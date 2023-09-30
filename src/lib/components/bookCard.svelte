@@ -103,7 +103,7 @@
             <div class="flex flex-col justify-start items-start">
                 <p class='text-[16px] sm:text-[25px] trunc font-black'>{book.title}</p>
                 <p class="text-[14px] sm:text-[18px] trunc">{book.author ? book.author : 'Unknown author'}</p>
-                <p class="text-[14px] sm:text-[14px]"><i>ISBN-13: {book.isbn_13 ? book.isbn_13 : 'N/A'}</i></p>
+                <p class="text-[14px] sm:text-[14px] italic">ISBN-13: {book.isbn_13 ? book.isbn_13 : 'N/A'}</p>
             </div>
             <div class="flex flex-col justify-start items-start">
                 <p class="mb-2 text-[15px] sm:text-[18px]">Pages: <strong class="font-semibold">{book.page_count}</strong></p>

@@ -61,20 +61,21 @@
                 <div class="h-[8px] bg-[--primary]" bind:this={scrollBar}></div>
             </div>
         </div>
-        <div class="w-full pt-10 px-0 md:px-4 relative max-w-[1400px] overflow-y-auto">
+        <div class="w-full pt-4 px-0 md:px-4 relative max-w-[1400px] overflow-y-auto">
             {#if !($page.url.pathname.includes('add-book'))}
-                {searchBoxFocused}
-                <div class="absolute sm:top-12 sm:right-10 rounded-xl block z-10"
+                <div class="md:absolute flex items-center justify-center w-full md:w-auto sm:top-12 sm:right-10 rounded-xl md:block z-20"
                      class:opacity-100={searchBoxFocused} class:opacity-50={!searchBoxFocused}
                      on:mouseleave={() => {searchBoxFocused = false}} on:mouseenter={() => {searchBoxFocused = true}}>
-                    <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2" style='width: max-content'>
+                    <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2 max-w-[375px] sm:max-w-xl" style='width: max-content'>
                         <form class="flex" action="/dashboard/library/add-book/{searchString}">
                             <div class="flex p-1 bg-[--input-field-color] rounded-[6px] w-full items-center mr-2">
                                 <Fa class="h-full mr-2 ml-2 text-[--secondary--accent-1]" icon="{faSearch}"></Fa>
                                 <input on:focus={() => {searchBoxFocused = true}} on:blur={() => {searchBoxFocused = false}}
                                        class="h-full w-full bg-transparent" type="text" id="bookSearch"
                                        bind:this={searchBox} bind:value={searchString} placeholder="Search">
-                                <kbd>Ctrl</kbd>+<kbd>K</kbd>
+                                <div class="md:flex h-[20px] ml-2 items-center hidden">
+                                    <kbd>Ctrl</kbd>+<kbd>K</kbd>
+                                </div>
                             </div>
                             <button class="small-secondary-button">SEARCH</button>
                         </form>

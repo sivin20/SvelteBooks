@@ -126,7 +126,7 @@
         <div class="flex p-1 bg-[--input-field-color] rounded-[6px] w-full max-w-[650px] h-[52px] items-center mr-2 pr-2">
             <Fa class="h-full mr-2 ml-2 text-[--secondary--accent-1]" icon="{faSearch}"></Fa>
             <input class="h-full w-full bg-transparent" type="text" id="bookSearch" bind:this={searchBox} bind:value={searchString} placeholder="Search">
-            <div class="opacity-50 flex h-[20px] items-center">
+            <div class="opacity-50 hidden md:flex h-[20px] ml-2  items-center">
                 <kbd>Ctrl</kbd>+<kbd>K</kbd>
             </div>
         </div>
