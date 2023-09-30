@@ -99,11 +99,15 @@
                 </div>
             </div>
         {/if}
-        <div class='flex flex-col justify-between h-full w-auto ml-5'>
-            <div class="flex flex-col justify-start items-start">
+        <div class='flex flex-col justify-between h-full w-1/2 sm:w-auto ml-5'>
+            <div class="flex flex-col justify-start items-start w-full">
                 <p class='text-[16px] sm:text-[25px] trunc font-black'>{book.title}</p>
                 <p class="text-[14px] sm:text-[18px] trunc">{book.author ? book.author : 'Unknown author'}</p>
-                <p class="text-[14px] sm:text-[14px] italic">ISBN-13: {book.isbn_13 ? book.isbn_13 : 'N/A'}</p>
+                <p class="text-[14px] sm:text-[14px] w-full trunc-one italic">
+                    <span>ISBN-13:</span>
+                    <br>
+                    {book.isbn_13 ? book.isbn_13 : 'N/A'}
+                </p>
             </div>
             <div class="flex flex-col justify-start items-start">
                 <p class="mb-2 text-[15px] sm:text-[18px]">Pages: <strong class="font-semibold">{book.page_count}</strong></p>
@@ -162,6 +166,12 @@
         -webkit-line-clamp: 2; /* number of lines to show */
         line-clamp: 2;
         -webkit-box-orient: vertical;
+      }
+
+      .trunc-one {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .book {
