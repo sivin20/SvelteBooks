@@ -65,6 +65,7 @@
             {#if !($page.url.pathname.includes('add-book'))}
                 <div class="md:absolute flex items-center justify-center w-full md:w-auto sm:top-12 sm:right-10 rounded-xl md:block z-20"
                      class:opacity-100={searchBoxFocused} class:opacity-50={!searchBoxFocused}
+                     class:shadow={searchBoxFocused}
                      on:mouseleave={() => {searchBoxFocused = false}} on:mouseenter={() => {searchBoxFocused = true}}>
                     <div class="flex flex-col border-slate-100 bg-gray-100 items-center p-2 max-w-[375px] sm:max-w-xl" style='width: max-content'>
                         <form class="flex" action="/dashboard/library/add-book/{searchString}">
@@ -89,3 +90,9 @@
     </div>
 </main>
 <svelte:window on:keydown={onKeyDown}/>
+
+<style>
+    .shadow {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1607843137);
+    }
+</style>
