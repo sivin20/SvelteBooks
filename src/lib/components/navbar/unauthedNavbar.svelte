@@ -15,15 +15,25 @@
         <a class="" href="/dashboard">
             <strong class="text-2xl"><span>SIG</span><span class="text-[#1e3f6d]">LIB</span></strong>
         </a>
-        <!--    <nav class="text-xl ml-10">-->
-        <!--        <a class="block hover:bg-purple-400 pd-4" href="/dashboard/library">Library</a>-->
-        <!--    </nav>-->
-        <div on:click={() => {openBurger()}}>
-            <Burger burgerOpen="{burgerOpen}"/>
+        <div class="flex">
+            <div class="hidden sm:flex items-center">
+                <nav class="text-md ml-14">
+                    <a class="block hover:font-bold pd-4" href="/dashboard/library">How it works</a>
+                </nav>
+                <nav class="text-md ml-14">
+                    <a class="block hover:font-bold pd-4" href="/dashboard/library">About us</a>
+                </nav>
+                <nav class="ml-14">
+                    <a class="small-secondary-button pd-4" href="/dashboard/login">Login</a>
+                </nav>
+            </div>
+            <div class="block sm:hidden" on:click={() => {openBurger()}}>
+                <Burger burgerOpen="{burgerOpen}"/>
+            </div>
         </div>
     </div>
     {#if burgerOpen}
-        <div class="bg-[--secondary] text-white absolute w-full p-5 z-10"
+        <div class="bg-[--secondary] text-white absolute w-full p-5 z-30"
              in:slide={{duration: 400}}
              out:slide={{duration: 400}}>
             <a href="#" on:click={() => {openBurger()}}><p class="mb-2">How it works</p></a>

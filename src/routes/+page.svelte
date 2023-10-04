@@ -19,7 +19,7 @@
             <div class="w-1/2 py-[64px] flex flex-col justify-center">
                 <p class="text-[50px] font-bold">Organize</p>
                 <p class="text-[50px] text-white font-bold mt-[-20px]">your reading life</p>
-                <p class="text-[25px] text-white pt-4">All your books tracked in one place. Plans, reviews, and goals. Completely private.</p>
+                <p class="text-[25px] text-white pt-4">All your books tracked in <strong>one place</strong>. Plans, reviews, and goals. <strong>Completely private</strong>.</p>
                 <div class="flex pt-8">
                     <button class="secondary-button">Get started</button>
                 </div>

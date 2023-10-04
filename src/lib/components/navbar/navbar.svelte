@@ -24,7 +24,7 @@
         </div>
     </div>
     {#if burgerOpen}
-        <div class="bg-[--secondary] text-white absolute w-full p-5 z-10"
+        <div class="bg-[--secondary] text-white absolute w-full p-5 z-30"
                 in:slide={{duration: 400}}
                 out:slide={{duration: 400}}>
             <a href="/dashboard" on:click={() => {openBurger()}}><p class="mb-2">Dashboard</p></a>
