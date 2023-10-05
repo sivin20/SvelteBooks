@@ -108,9 +108,9 @@
         <div class="flex items-start justify-start w-full">
             <div >
                 <p class="self-start text-[25px]">Active libraries</p>
-                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <div class="mt-4 flex flex-wrap gap-3">
                     {#each libraries as library}
-                        <div class="mb-5" on:click={() => handleGetBooks(library)}>
+                        <div on:click={() => handleGetBooks(library)}>
                             <LibraryCard active="{current_library === library}" library="{library}"></LibraryCard>
                         </div>
                     {/each}

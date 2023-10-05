@@ -4,7 +4,7 @@
 </script>
 
 <main>
-    <div class="p-2 content-box mr-5 cursor-pointer w-[185px] h-[96px] bg-[--primary-accent-1] rounded-[6px]" class:active={active}>
+    <div class="p-2 content-box cursor-pointer w-[160px] h-[96px] bg-[--primary-accent-1] rounded-[6px]" class:active={active}>
         <div class="flex flex-row justify-between items-center">
             <p class="font-bold">{library.name}</p>
             {#if library.name === 'BOOKS READ'}
@@ -33,8 +33,8 @@
             {/if}
 
         </div>
-        <p>Number of books: {library.books}</p>
-        <p>Page count: {library.pages}</p>
+        <p>Books: {library.books ? library.books : "-"}</p>
+        <p>Pages: {library.pages ? library.pages : "-"}</p>
     </div>
 </main>
 
