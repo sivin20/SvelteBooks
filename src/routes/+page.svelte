@@ -1,7 +1,7 @@
 
 <script>
     import UnauthedHeader from '$lib/components/navbar/unauthedNavbar.svelte'
-    import LandingImage from '$lib/assets/images/woman_reading.jpeg'
+    import LandingImage from '$lib/assets/images/woman_reading.png'
     import OpenBook from '$lib/assets/images/openbook.png'
     import BookStack from '$lib/assets/images/bookstack.png'
     import BookBarChart from '$lib/assets/images/bookbarchart.png'
