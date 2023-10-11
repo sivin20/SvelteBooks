@@ -4,7 +4,7 @@
     import DashboardPage from '$lib/assets/images/dashboardpage.png'
 </script>
 
-<div class="w-full max-w-[1400px] flex flex-col justify-center items-center bg-[--primary-accent-1] gap-[80px] py-[80px] p-4">
+<div class="w-full flex flex-col justify-center items-center gap-[80px] py-[80px] p-4">
     <div class="flex flex-col items-center justify-center text-center">
         <p class="text-[50px]">Organize with Siglib</p>
         <p class="text-[25px]">Now matter how many books you read, our tools help you organize and read more</p>

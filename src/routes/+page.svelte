@@ -1,6 +1,7 @@
 
 <script>
     import UnauthedHeader from '$lib/components/navbar/unauthedNavbar.svelte'
+    import CallToAction from '$lib/components/landingpage/callToAction.svelte'
     import LandingImage from '$lib/assets/images/woman_reading.png'
     import WhySection from '$lib/components/landingpage/whySection.svelte'
     import HowItWorksSection from '$lib/components/landingpage/howItWorksSection.svelte'
@@ -36,8 +37,12 @@
         <WhySection/>
     </section>
 
-    <section class="w-full flex items-center justify-center">
+    <section class="w-full flex items-center justify-center bg-[--primary-accent-1]" id="howItWorks">
         <HowItWorksSection/>
+    </section>
+
+    <section class="w-full bg-[--primary]">
+       <CallToAction/>
     </section>
     <div>
         Track your books
