@@ -119,7 +119,7 @@
 
 <main class="h-full flex flex-col">
     <div class="mb-2">
-        <p class="text-3xl"><strong>Add books</strong></p>
+        <p class="text-[50px]"><strong>Add books</strong></p>
     </div>
     <h1 class="text-xl">Search for books you wish to add to your library</h1>
     <form class="flex bg-[--background-primary] w-full mt-4">

@@ -107,7 +107,7 @@
 <!--        Library cards-->
         <div class="flex items-start justify-start w-full">
             <div >
-                <p class="self-start text-[25px]">Active libraries</p>
+                <p class="self-start text-[25px] font-bold">Active libraries</p>
                 <div class="mt-4 flex flex-wrap gap-3">
                     {#each libraries as library}
                         <div on:click={() => handleGetBooks(library)}>
