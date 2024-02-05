@@ -9,10 +9,7 @@
     </div>
     <div class="flex flex-col lg:flex-row gap-6">
         <p class="w-full lg:w-1/2">
-            Here, we spotlight the authors you frequent the most,
-            as well as the longest and shortest books that you've read.
-            Gain valuable insights into your reading preferences,
-            discovering the writers and book lengths that have truly captivated your interest.
+            Look at all these books in progress! Get reading!
         </p>
         <ul class="flex justify-between items-center flex-auto flex-wrap">
             {#if inProgress}

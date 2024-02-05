@@ -100,7 +100,7 @@
 
 </script>
 
-<main class="content-box rounded-lg flex flex-col gap-[50px]">
+<main class="content-box rounded-lg flex flex-col gap-[60px]">
     <section>
         <WelcomeSection
                 first_name="{$loggedInUser.first_name}"

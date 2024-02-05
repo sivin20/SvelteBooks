@@ -7,9 +7,9 @@ import BookBarChart from "$lib/assets/images/bookbarchart.png";
 <div class="w-full max-w-[1400px] flex flex-col justify-center items-center">
     <p class="text-[50px] font-bold">Why Siglib?</p>
     <p class="text-[25px] text-center pt-4 max-w-[800px]">
-        We’re built for growing businesses.
-        Put our marketing and sales tools behind your idea, dream, brand,
-        or business and we’ll help you share it with the world.
+        We’re built for enhancing your reading experience.
+        Put our tools to use, to keep track of all the books you've read,
+        you want to read, and perhaps even those on your wishlist.
     </p>
     <div class="flex flex-wrap py-10 justify-center items-center">
         <div class="flex flex-col justify-center items-center text-center">

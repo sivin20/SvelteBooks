@@ -24,7 +24,7 @@
                 <p class="text-[38px] sm:text-[50px] text-white font-bold mt-[-20px]">your reading life</p>
                 <p class="text-[18px] sm:text-[25px] text-white pt-4">All your books tracked in <strong>one place</strong>. Plans, reviews, and goals. <strong>Completely private</strong>.</p>
                 <div class="flex pt-8">
-                    <button class="secondary-button">Get started</button>
+                    <a href="/dashboard" class="secondary-button">Get started</a>
                 </div>
             </div>
             <div class="py-[32px] sm:py-[64px] flex items-center justify-center flex-auto">

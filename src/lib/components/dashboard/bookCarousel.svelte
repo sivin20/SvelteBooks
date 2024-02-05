@@ -66,6 +66,12 @@
 
 <div bind:this={contentBox}>
     <p class="text-[25px] mb-2"><strong>Explore Book Stats</strong></p>
+    <p class="w-full lg:w-1/2">
+        Here, we spotlight the authors you frequent the most,
+        as well as the longest and shortest books that you've read.
+        Gain valuable insights into your reading preferences,
+        discovering the writers and book lengths that have truly captivated your interest.
+    </p>
     <div class="relative h-[300px]">
         <div class="items h-fit" bind:this={slider}>
             <div class="item active">
